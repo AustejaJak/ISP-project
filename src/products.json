@@ -1,0 +1,244 @@
+{
+  "new": {
+    "title": "New",
+    "description": "New",
+    "imageUrl": "https://img01.ztat.net/article/spp-media-p1/f372489037264aa5953b4cd0902740e8/a30d86f56b674c66a2127242525bd753.jpg?imwidth=1800",
+    "items": []
+  },
+  "men": {
+    "title": "Men",
+    "description": "Men",
+    "imageUrl": "https://img01.ztat.net/banner/0e04e441b5ea4593a0e5d351bfb0e5c8/0397d46c3bf34725a4f0818f0c3b6a26.jpg?imwidth=693",
+    "items": []
+  },
+  "women": {
+    "title": "Women",
+    "description": "Women",
+    "imageUrl": "https://img01.ztat.net/banner/2453fc4568c2413fa04d2febfc07022b/13266e6897a54f62a3e5913695cb72e2.jpg?imwidth=1200",
+    "items": []
+  },
+  "hats": {
+    "title": "Hats",
+    "description": "Hats",
+    "imageUrl": "https://img01.ztat.net/article/spp-media-p1/8a73890d9355496bb815a6f61c07d51d/f5b76d20fef841b7b84f888588587792.jpg?imwidth=1800&filter=packshot",
+    "items": []
+  },
+  "watches": {
+    "title": "Watches",
+    "description": "Watches",
+    "imageUrl": "https://tailwindui.com/img/ecommerce-images/home-page-01-category-03.jpg",
+    "items": [
+      {
+        "id": 1,
+        "vendor": "Casio",
+        "name": "Skaitmeninis laikrodis",
+        "price": 3995,
+        "rating": 4,
+        "images": [
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/550814c45dbb37b698230bbfc69e678c/1f2841c199c145e3a8336bb443f17afb.jpg?imwidth=1800",
+            "alt": "Casio - Skaitmeninis laikrodis - silber, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/6775dfc91ebe3f30a5a6d15f51df5e03/53dc38021df347c3a0a273daf64369de.jpg?imwidth=1800",
+            "alt": "Casio - Skaitmeninis laikrodis - silber, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/a3e14715ed9d3a388fa4fefd2065c173/58a885d1233e414b904588ad185ec833.jpg?imwidth=1800&filter=packshot",
+            "alt": "Casio - Skaitmeninis laikrodis - silber, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/6135b7e6ceac33489cd09a489f7bd888/33e3513e06c8476bb1b30e9063610907.jpg?imwidth=1800",
+            "alt": "Casio - Skaitmeninis laikrodis - silber, Padidinti"
+          }
+        ],
+        "colors": [
+          {
+            "name": "silber",
+            "bgColor": "bg-silver-700",
+            "selectedColor": "ring-gray-700"
+          }
+        ],
+        "description": "<p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>",
+        "details": [
+          {
+            "name": "Medžiaga ir priežiūra",
+            "items": [
+              "Korpusas: Plastikinis",
+              "Apyrankė: Nerūdijantysis plienas"
+            ]
+          },
+          {
+            "name": "Išsami informacija",
+            "items": [
+              "Užsegimas: Užlenkiama sagtis",
+              "Atsparus vandeniui: 3 atm",
+              "Funkcija: Datos rodymas",
+              "Laikrodžio mechanizmas: Kvarcinis",
+              "Ciferblatas: Skaitmeninis",
+              "Prekės numeris: C1554F003-D11"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "vendor": "Casio",
+        "name": "UNISEX - Laikrodis",
+        "price": 5995,
+        "rating": 4,
+        "images": [
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/b7ba2c94368a497eab6d7fd57dc04aef/ba1a06c7b26e4f7a8651037c33754dee.jpg?imwidth=1800&filter=packshot",
+            "alt": "Casio - UNISEX - Laikrodis - silver-coloured/aqua, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/fdb8a516aca64e02ac128c58282091e8/9e75d9d190ce43669164ffcb4ed3f4d6.jpg?imwidth=1800",
+            "alt": "Casio - UNISEX - Laikrodis - silver-coloured/aqua, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/41012f7b95b84e5cafdcaab1825093e1/51481fab6e3e4b15950d6a6dd1f90dc0.jpg?imwidth=1800",
+            "alt": "Casio - UNISEX - Laikrodis - silver-coloured/aqua, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/603eb240cd214496b948eda1ea1c2e4e/226ef88fb86c48df80dc143929330330.jpg?imwidth=1800",
+            "alt": "Casio - UNISEX - Laikrodis - silver-coloured/aqua, Padidinti"
+          }
+        ],
+        "colors": [
+          {
+            "name": "silver-coloured/aqua",
+            "bgColor": "bg-silver-700",
+            "selectedColor": "ring-gray-700"
+          }
+        ],
+        "description": "<p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>",
+        "details": [
+          {
+            "name": "Medžiaga ir priežiūra",
+            "items": [
+              "Apdaila: šlifuota apdaila, poliruota apdaila",
+              "Korpusas: Nerūdijantysis plienas"
+            ]
+          },
+          {
+            "name": "Išsami informacija",
+            "items": [
+              "Užsegimas: Užlenkiama sagtis",
+              "Atsparus vandeniui: 5 atm",
+              "Funkcija: Datos rodymas",
+              "Ciferblatas: Analoginis",
+              "Prekės numeris: C1554M034-D11"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "vendor": "Guess",
+        "name": "CONNOISSEUR UNISEX - Laikrodis",
+        "price": 16995,
+        "rating": 3.8,
+        "images": [
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/2a83a131ea8d40c0b8ca18d7d8a42a63/a8b5c0f775d74cdf9ed104f87f46a101.jpg?imwidth=1800&filter=packshot",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/c858b52e24bd4de79e8f26174a5837b5/3d778bf2c72442db9beb515eede3c3cb.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/88068f7005d844f8b8e15a6cae87f984/12adc9b41c0e466db515fc0343e68706.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/b77a30e0fcf94bb1ba865f7799e339e5/c95b2013c3e94e87a6c772bf5d4d4880.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          }
+        ],
+        "colors": [
+          {
+            "name": "green sunray",
+            "bgColor": "bg-green-700",
+            "selectedColor": "ring-gray-700"
+          }
+        ],
+        "description": "<p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>",
+        "details": [
+          {
+            "name": "Medžiaga ir priežiūra",
+            "items": [
+              "Apdaila: poliruota apdaila",
+              "Korpusas: Nerūdijantysis plienas",
+              "Apyrankė: Nerūdijantysis plienas"
+            ]
+          },
+          {
+            "name": "Išsami informacija",
+            "items": [
+              "Užsegimas: Užlenkiama sagtis",
+              "Atsparus vandeniui: 50 atm",
+              "Funkcija: Datos rodymas",
+              "Ciferblatas: Analoginis",
+              "Prekės numeris: GU154M02H-D11"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "vendor": "Pier One",
+        "name": "SET UNISEX - Laikrodis",
+        "price": 2459,
+        "rating": 3.8,
+        "images": [
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/2a83a131ea8d40c0b8ca18d7d8a42a63/a8b5c0f775d74cdf9ed104f87f46a101.jpg?imwidth=1800&filter=packshot",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/c858b52e24bd4de79e8f26174a5837b5/3d778bf2c72442db9beb515eede3c3cb.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/88068f7005d844f8b8e15a6cae87f984/12adc9b41c0e466db515fc0343e68706.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          },
+          {
+            "imageUrl": "https://img01.ztat.net/article/spp-media-p1/b77a30e0fcf94bb1ba865f7799e339e5/c95b2013c3e94e87a6c772bf5d4d4880.jpg?imwidth=1800",
+            "alt": "Pagrindinis vaizdas 4, Padidinti"
+          }
+        ],
+        "colors": [
+          {
+            "name": "gold-coloured",
+            "bgColor": "bg-gold-700",
+            "selectedColor": "ring-gray-700"
+          },
+          {
+            "name": "silver-coloured",
+            "bgColor": "bg-silver-700",
+            "selectedColor": "ring-gray-700"
+          }
+        ],
+        "description": "<p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>",
+        "details": [
+          {
+            "name": "Medžiaga ir priežiūra",
+            "items": ["Apdaila: poliruota apdaila"]
+          },
+          {
+            "name": "Išsami informacija",
+            "items": [
+              "Užsegimas: Skląstis",
+              "Raštas: Vienspalvis",
+              "Ciferblatas: Analoginis",
+              "Prekės numeris: PI954M01A-F11"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

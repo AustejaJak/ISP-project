@@ -1,0 +1,3 @@
+export enum QueryKey {
+  USER_AUTHENTICATION = "USER_AUTHENTICATION",
+}
