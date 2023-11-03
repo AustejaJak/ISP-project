@@ -3,6 +3,7 @@ import ProductsList from "../../../components/products-list/ProductsList";
 import ProductsFilter from "../../../components/products-filter/ProductsFilter";
 import products from "../../../products.json";
 import { useMemo } from "react";
+import Footer from "../../../components/footer/Footer";
 
 export type categoryProps = {
   title: string;
@@ -41,6 +42,7 @@ const CategoryPage = () => {
       <ProductsFilter category={clothingCategory}>
         <ProductsList products={clothingItems} />
       </ProductsFilter>
+      <Footer />
     </>
   );
 };

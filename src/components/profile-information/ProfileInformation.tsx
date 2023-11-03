@@ -30,7 +30,7 @@ const ProfileInformation = () => {
         <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
           <BaseInput
             formField={ProfileInformationFormField.NAME}
-            label='Name'
+            label='Vardas'
             type='text'
             disabled
             errorMessage={errors[ProfileInformationFormField.NAME]?.message}
@@ -38,7 +38,7 @@ const ProfileInformation = () => {
 
           <BaseInput
             formField={ProfileInformationFormField.SURNAME}
-            label='Surname'
+            label='Pavardė'
             type='text'
             disabled
             errorMessage={errors[ProfileInformationFormField.SURNAME]?.message}
@@ -46,7 +46,7 @@ const ProfileInformation = () => {
 
           <BaseInput
             formField={ProfileInformationFormField.EMAIL}
-            label='Email'
+            label='El. Paštas'
             type='text'
             disabled
             errorMessage={errors[ProfileInformationFormField.EMAIL]?.message}

@@ -8,13 +8,14 @@ import CategoryPreview from "../../components/category-preview/CategoryPreview";
 import CategoryPage from "./category/CategoryPage";
 import ProductPage from "./product/ProductPage";
 import ProfilePage from "./profile/ProfilePage";
+import InitialUiPage from "./initial-promo-section/InitialUiPage";
 
 const Client = () => {
   return (
     <>
       <Header />
       <DomRoutes>
-        <Route path={Routes.client.base} element={<p></p>} />
+          <Route path={Routes.client.base} element={<InitialUiPage />} />
         <Route
           path={Routes.client.login}
           element={

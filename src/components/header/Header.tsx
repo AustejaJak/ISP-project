@@ -4,9 +4,9 @@ import Routes from "../../routes/routes";
 import ProfileBubble from "../profile-bubble/ProfileBubble";
 
 const navigation = [
-  { name: "New", href: Routes.client.new },
-  { name: "Collection", href: "#" },
-  { name: "Shop", href: Routes.client.shop },
+  { name: "Naujienos", href: Routes.client.new },
+  { name: "Kolekcija", href: "#" },
+  { name: "Parduotuvė", href: Routes.client.shop },
 ];
 
 const isAuthenticated = true;
