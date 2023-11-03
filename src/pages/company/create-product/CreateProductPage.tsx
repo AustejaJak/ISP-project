@@ -1,5 +1,5 @@
 import React from "react";
-import CreateProcuctForm from "../../../components/forms/product-create/CreateProcuctForm";
+import CreateProcuctForm from "../../../components/forms/product/ProcuctForm";
 import BasePage from "../../../components/base-page/BasePage";
 import { useTranslation } from "react-i18next";
 import closeIcon from "../../../images/close.svg";

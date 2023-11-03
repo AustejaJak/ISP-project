@@ -22,6 +22,7 @@ const Routes = {
     pending: "/pending",
     active: "/active",
     createProduct: "/create-product",
+    product: "/product/:productId/edit",
   },
 };
 

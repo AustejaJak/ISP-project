@@ -6,6 +6,7 @@ import PendingPage from "./pending/PendingPage";
 import Header from "./header/Header";
 import IndexPage from "./index/IndexPage";
 import CreateProductPage from "./create-product/CreateProductPage";
+import ProductEditPage from "./product/edit/ProductEditPage";
 
 const Company = () => {
   return (
@@ -41,6 +42,14 @@ const Company = () => {
           element={
             <PrivateRoute>
               <CreateProductPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={Routes.company.product}
+          element={
+            <PrivateRoute>
+              <ProductEditPage />
             </PrivateRoute>
           }
         />

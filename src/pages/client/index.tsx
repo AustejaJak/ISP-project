@@ -15,14 +15,7 @@ const Client = () => {
       <Header />
       <DomRoutes>
         <Route path={Routes.client.base} element={<p></p>} />
-        <Route
-          path={Routes.client.login}
-          element={
-            <PrivateRoute>
-              <SignInPage />
-            </PrivateRoute>
-          }
-        />
+        <Route path={Routes.client.login} element={<SignInPage />} />
         <Route path={Routes.client.register} element={<SignUpPage />} />
         <Route path={Routes.client.shop} element={<CategoryPreview />} />
         <Route path={Routes.client.category} element={<CategoryPage />} />

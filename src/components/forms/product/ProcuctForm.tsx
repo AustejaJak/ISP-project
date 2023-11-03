@@ -1,19 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  CreateProductFields,
-  createProductDefaultValues,
-  createProductModel,
-} from "./model";
+import { ProductFields, productDefaultValues, productModel } from "./model";
 import BaseInput from "../../input/Input";
 import { useTranslation } from "react-i18next";
 import FileUploader from "../../file-uploader/FileUploader";
+import SpecificationPicker from "../../specification-picker/SpecificationPicker";
+import { useState } from "react";
 
 const CreateProcuctForm = () => {
+  const [isSpecificationFormOpen, setIsSpecificationFormOpen] = useState(false);
   const { t } = useTranslation();
   const methods = useForm({
-    resolver: zodResolver(createProductModel),
-    defaultValues: createProductDefaultValues,
+    resolver: zodResolver(productModel),
+    defaultValues: productDefaultValues,
   });
 
   const {
@@ -23,52 +22,60 @@ const CreateProcuctForm = () => {
   } = methods;
 
   const processForm = () => {
-    const data = createProductModel.parse(getValues());
+    const data = productModel.parse(getValues());
   };
+
+  console.log(methods);
 
   return (
     <FormProvider {...methods}>
       <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
         <BaseInput
-          formField={CreateProductFields.TITLE}
+          formField={ProductFields.TITLE}
           label={t("Product.Title")}
           type='text'
-          errorMessage={errors[CreateProductFields.TITLE]?.message}
+          errorMessage={errors[ProductFields.TITLE]?.message}
         />
 
         <BaseInput
-          formField={CreateProductFields.DESCRIPTION}
+          formField={ProductFields.DESCRIPTION}
           label={t("Product.Description")}
           type='text'
-          errorMessage={errors[CreateProductFields.DESCRIPTION]?.message}
+          errorMessage={errors[ProductFields.DESCRIPTION]?.message}
         />
         <BaseInput
-          formField={CreateProductFields.PRICE}
+          formField={ProductFields.PRICE}
           label={t("Product.Price")}
           type='number'
-          errorMessage={errors[CreateProductFields.PRICE]?.message}
+          errorMessage={errors[ProductFields.PRICE]?.message}
         />
         <BaseInput
-          formField={CreateProductFields.VENDOR}
+          formField={ProductFields.VENDOR}
           label={t("Product.Vendor")}
           type='text'
-          errorMessage={errors[CreateProductFields.VENDOR]?.message}
+          errorMessage={errors[ProductFields.VENDOR]?.message}
         />
         <FileUploader
           label={t("Product.Images")}
-          fieldName={CreateProductFields.IMAGES}
+          fieldName={ProductFields.IMAGES}
         />
         <BaseInput
-          formField={CreateProductFields.COLORS}
+          formField={ProductFields.COLORS}
           label={t("Product.Colors")}
           type='text'
-          errorMessage={errors[CreateProductFields.COLORS]?.message}
+          errorMessage={errors[ProductFields.COLORS]?.message}
         />
-        <BaseInput
-          formField={CreateProductFields.DETAILS}
+        {/* <BaseInput
+          formField={ProductFields.DETAILS}
           label={t("Product.Details")}
           type='text'
-          errorMessage={errors[CreateProductFields.DETAILS]?.message}
+          errorMessage={errors[ProductFields.DETAILS]?.message}
+        /> */}
+        <SpecificationPicker
+          label={t("Product.Details")}
+          isOpen={isSpecificationFormOpen}
+          setIsOpen={setIsSpecificationFormOpen}
+          formField={ProductFields.DETAILS}
         />
 
         <div>

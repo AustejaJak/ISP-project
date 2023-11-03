@@ -10,8 +10,12 @@ import {
 } from "@tanstack/react-query";
 import i18next from "./i18n/config";
 import { I18nextProvider } from "react-i18next";
+import countries from "i18n-iso-countries";
+import ltCountries from "i18n-iso-countries/langs/lt.json";
 
 const queryClient = new QueryClient();
+
+countries.registerLocale(ltCountries);
 
 function App() {
   return (
