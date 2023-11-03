@@ -604,7 +604,7 @@ export default function Example() {
           </div>
         </section>
 
-        {/* Collection section */}
+        {/* CollectionPage section */}
         <section
           aria-labelledby="collection-heading"
           className="mx-auto max-w-xl px-4 pt-24 sm:px-6 sm:pt-32 lg:max-w-7xl lg:px-8"

@@ -69,7 +69,7 @@ const navigation = {
           },
           {
             id: 'collection',
-            name: 'Shop Collection',
+            name: 'Shop CollectionPage',
             items: [
               { name: 'Everything', href: '#' },
               { name: 'Core', href: '#' },
@@ -159,7 +159,7 @@ const navigation = {
           },
           {
             id: 'collection',
-            name: 'Shop Collection',
+            name: 'Shop CollectionPage',
             items: [
               { name: 'Everything', href: '#' },
               { name: 'Core', href: '#' },

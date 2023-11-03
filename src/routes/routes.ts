@@ -13,6 +13,9 @@ const Routes = {
     profile: "/profile",
     category: "/shop/:category",
     product: "/shop/:category/:productId",
+    newProducts: "/new/:productId",
+    collection: "/collection/",
+    collectionProduct: "/collection/:productId"
   },
   company: {
     prefix: "/company",

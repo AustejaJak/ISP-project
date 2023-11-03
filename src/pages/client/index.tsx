@@ -9,6 +9,9 @@ import CategoryPage from "./category/CategoryPage";
 import ProductPage from "./product/ProductPage";
 import ProfilePage from "./profile/ProfilePage";
 import InitialUiPage from "./initial-promo-section/InitialUiPage";
+import NewPage from "./new/NewPage";
+import CollectionPage from "./collection/CollectionPage";
+
 
 const Client = () => {
   return (
@@ -27,6 +30,10 @@ const Client = () => {
         <Route path={Routes.client.register} element={<SignUpPage />} />
         <Route path={Routes.client.shop} element={<CategoryPreview />} />
         <Route path={Routes.client.category} element={<CategoryPage />} />
+          <Route path={Routes.client.new} element={<NewPage />} />
+          <Route path={Routes.client.newProducts} element={<ProductPage />} />
+          <Route path={Routes.client.collection} element={<CollectionPage />} />
+          <Route path={Routes.client.collectionProduct} element={<ProductPage />} />
         <Route path={Routes.client.product} element={<ProductPage />} />
         <Route path={Routes.client.profile} element={<ProfilePage />} />
       </DomRoutes>

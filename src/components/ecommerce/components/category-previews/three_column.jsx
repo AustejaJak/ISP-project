@@ -31,7 +31,7 @@ const callouts = [
     name: 'Travel',
     description: 'Daily commute essentials',
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-02-edition-03.jpg',
-    imageAlt: 'Collection of four insulated travel bottles on wooden shelf.',
+    imageAlt: 'CollectionPage of four insulated travel bottles on wooden shelf.',
     href: '#',
   },
 ]

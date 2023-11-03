@@ -5,7 +5,7 @@ import ProfileBubble from "../profile-bubble/ProfileBubble";
 
 const navigation = [
   { name: "Naujienos", href: Routes.client.new },
-  { name: "Kolekcija", href: "#" },
+  { name: "Kolekcija", href: Routes.client.collection },
   { name: "Parduotuvė", href: Routes.client.shop },
 ];
 

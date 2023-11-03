@@ -2,14 +2,22 @@ import React from "react";
 import Anchor from "../anchor/Anchor";
 import Routes from "../../routes/routes";
 
-const ProfileBubble = () => {
-  return (
-    <Anchor href={Routes.client.profile}>
-      <div className='ml-10 space-x-4'>
-        <div className='rounded-full bg-white w-9 h-9'></div>
-      </div>
-    </Anchor>
-  );
-};
-
-export default ProfileBubble;
+export default function ProfileBubble() {
+    return (
+        <a href={Routes.client.profile} className="group block flex-shrink-0">
+            <div className="flex items-center">
+                <div>
+                    <img
+                        className="inline-block h-9 w-9 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt=""
+                    />
+                </div>
+                <div className="ml-3">
+                    <p className="text-sm font-medium text-white group-hover:text-black">Tom Cook</p>
+                    <p className="text-xs font-medium text-gray-300 group-hover:text-black">View profile</p>
+                </div>
+            </div>
+        </a>
+    )
+}
