@@ -15,7 +15,10 @@ const Routes = {
     product: "/shop/:category/:productId",
     newProducts: "/new/:productId",
     collection: "/collection/",
-    collectionProduct: "/collection/:productId"
+    collectionProduct: "/collection/:productId",
+    checkout: "/checkout",
+    shoppingBag: "/shopping-bag",
+    orderHistory: "/order-history"
   },
   company: {
     prefix: "/company",

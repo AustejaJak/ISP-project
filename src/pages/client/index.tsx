@@ -11,6 +11,9 @@ import ProfilePage from "./profile/ProfilePage";
 import InitialUiPage from "./initial-promo-section/InitialUiPage";
 import NewPage from "./new/NewPage";
 import CollectionPage from "./collection/CollectionPage";
+import CheckoutPage from "./checkout/CheckoutPage";
+import ShoppingCartPage from "./shopping-cart-page-ui/ShoppingCartPage";
+import OrderHistoryPage from "./order-history/OrderHistoryPage";
 
 
 const Client = () => {
@@ -36,6 +39,9 @@ const Client = () => {
           <Route path={Routes.client.collectionProduct} element={<ProductPage />} />
         <Route path={Routes.client.product} element={<ProductPage />} />
         <Route path={Routes.client.profile} element={<ProfilePage />} />
+          <Route path={Routes.client.checkout} element={<CheckoutPage />} />
+          <Route path={Routes.client.shoppingBag} element={<ShoppingCartPage />} />
+          <Route path={Routes.client.orderHistory} element={<OrderHistoryPage />} />
       </DomRoutes>
     </>
   );
