@@ -18,7 +18,8 @@ const Routes = {
     collectionProduct: "/collection/:productId",
     checkout: "/checkout",
     shoppingBag: "/shopping-bag",
-    orderHistory: "/order-history"
+    orderHistory: "/order-history",
+    return: "/order-history/:productId/return",
   },
   company: {
     prefix: "/company",
