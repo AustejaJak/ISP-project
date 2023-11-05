@@ -6,6 +6,7 @@ import BackOfficeBasePage from "../backoffice/backoffice-base-order/BackOfficeBa
 import Routes from "../../routes/routes";
 import InventoryPage from "./inventory/InventoryPage";
 import UserPage from "./users/UserPage";
+import ProductAdd from "../../components/product-add-ui/ProductAddUI";
 
 const Backoffice = () => {
     return (
@@ -13,6 +14,7 @@ const Backoffice = () => {
             <Route path={Routes.backoffice.base} element={<PrivateRoute><BackOfficeBasePage /></PrivateRoute>} />
             <Route path={Routes.backoffice.inventory} element={<PrivateRoute><InventoryPage /></PrivateRoute>} />
             <Route path={Routes.backoffice.users} element={<PrivateRoute><UserPage /></PrivateRoute>} />
+            <Route path={Routes.backoffice.productsAdd} element={<PrivateRoute><ProductAdd /></PrivateRoute>} />
         </DomRoutes>
     );
 };
