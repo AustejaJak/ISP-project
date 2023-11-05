@@ -2,6 +2,8 @@ const Routes = {
   backoffice: {
     prefix: "/backoffice",
     base: "/",
+    inventory: "/inventory",
+    users: "/users"
   },
   client: {
     prefix: "/client",
