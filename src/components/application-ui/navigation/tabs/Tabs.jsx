@@ -1,6 +1,6 @@
 const tabs = [
-  { name: 'Mano paskyra', href: '#', current: true },
-  { name: 'Užsakymai', href: '#', current: false }
+  { name: 'Mano paskyra', href: '', current: true },
+  { name: 'Užsakymai', href: '/order-history', current: false }
 ]
 
 function classNames(...classes) {

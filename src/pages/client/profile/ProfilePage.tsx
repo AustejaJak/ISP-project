@@ -9,6 +9,7 @@ const ProfilePage = () => {
     <BasePage>
       <Tabs />
       <ProfileInformation />
+      <Footer />
     </BasePage>
   );
 };
