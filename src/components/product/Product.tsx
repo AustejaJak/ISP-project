@@ -3,6 +3,8 @@ import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { ProductProp } from "../../pages/client/product/ProductPage";
+import { Loader } from "../Loader/Loader";
+import { t } from "i18next";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,11 +12,23 @@ function classNames(...classes: any[]) {
 
 type ProductProps = {
   product: ProductProp;
+  isLoading: boolean;
 };
 
-const Product: React.FC<ProductProps> = ({ product }) => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-
+const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]);
+  if (isLoading)
+    return (
+      <div className='w-full'>
+        <Loader isLoading={isLoading} />
+      </div>
+    );
+  if (!isLoading && Object.keys(product).length === 0)
+    return (
+      <p className='my-12 text-slate-500 text-center'>
+        {t("Errors.ProductNotExist")}
+      </p>
+    );
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8'>

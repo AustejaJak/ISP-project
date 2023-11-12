@@ -1,5 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../../clients/react-query/queryKeys";
 import Product from "../../../components/product/Product";
 import { useParams } from "react-router-dom";
+import { productApi } from "../../../clients/api/productApi";
 
 export type ProductProp = {
   id: number;
@@ -82,7 +85,15 @@ const product = {
 const ProductPage = () => {
   const { productId } = useParams();
 
-  return <Product product={product} />;
+  const { data: product, isLoading } = useQuery({
+    queryKey: [QueryKey.FIND_PRODUCT_BY_ID, productId],
+    queryFn: () => productApi.findProductById({ productId: productId! }),
+    enabled: !!productId,
+  });
+  console.log(isLoading);
+  return (
+    <Product isLoading={isLoading} product={product || ({} as ProductProp)} />
+  );
 };
 
 export default ProductPage;

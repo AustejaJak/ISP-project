@@ -14,6 +14,7 @@
   "Product.CreateButton": "Sukurti produktą",
   "ProductRow.ViewProductText": "Peržiūrėti",
   "Order.PageTitleText": "Užsakymų istorija",
+  "Order.NoOrders": "Nėra atliktų užsakymų",
   "Order.PageDescriptionText": "Peržiūrėkite užsakymų statusus, grąžinkite prekes ir atsisiųskite faktūras.",
   "Order.ReturnButtonText": "Grąžinimas",
   "Order.TotalPriceText": "Pilna suma",
@@ -32,5 +33,6 @@
   "Error.ProductDetails.SizeOverLimit": "Nuotrauka privalo būti mažesnė nei 5MB.",
   "Error.ProductImages.SupportedImageTypes": "Priimami tik šie nuotraukų formatai: .jpg, .jpeg, .png and .webp",
   "Error.ProductColors.AtLeastOneRequired": "Prekė privalo turėti bent vieną spalvą.",
-  "Error.ProductDetails.AtLeastOneRequired": "Prekė privalo turėti bent vieną specifikaciją."
+  "Error.ProductDetails.AtLeastOneRequired": "Prekė privalo turėti bent vieną specifikaciją.",
+  "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta."
 }

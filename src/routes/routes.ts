@@ -4,7 +4,7 @@ const Routes = {
     base: "/",
     inventory: "/inventory",
     users: "/users",
-    productsAdd: "/inventory/productsAdd"
+    productsAdd: "/inventory/productsAdd",
   },
   client: {
     prefix: "/client",
@@ -16,6 +16,7 @@ const Routes = {
     profile: "/profile",
     category: "/shop/:category",
     product: "/shop/:category/:productId",
+    individualProduct: "/product/:productId",
     newProducts: "/new/:productId",
     collection: "/collection/",
     collectionProduct: "/collection/:productId",
