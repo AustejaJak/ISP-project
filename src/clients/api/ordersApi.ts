@@ -10,4 +10,16 @@ export const ordersApi = {
     }>(`${BASE_URL}/${userId}`);
     return data.data;
   },
+  getOrderById: async ({
+    userId,
+    orderId,
+  }: {
+    userId: string;
+    orderId: string;
+  }) => {
+    const { data } = await axiosInstance.get<{
+      data: OrderProps;
+    }>(`${BASE_URL}/${userId}/order/${orderId}`);
+    return data.data;
+  },
 };
