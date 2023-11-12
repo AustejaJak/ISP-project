@@ -34,5 +34,6 @@
   "Error.ProductImages.SupportedImageTypes": "Priimami tik šie nuotraukų formatai: .jpg, .jpeg, .png and .webp",
   "Error.ProductColors.AtLeastOneRequired": "Prekė privalo turėti bent vieną spalvą.",
   "Error.ProductDetails.AtLeastOneRequired": "Prekė privalo turėti bent vieną specifikaciją.",
-  "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta."
+  "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta.",
+  "Errors.OrderNotExist": "Įvyko klaida. Užsakymas nerastas."
 }

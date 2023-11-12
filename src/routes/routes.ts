@@ -23,7 +23,7 @@ const Routes = {
     checkout: "/checkout",
     shoppingBag: "/shopping-bag",
     orderHistory: "/order-history",
-    return: "/order-history/:productId/return",
+    return: "/order-history/:orderId/return",
   },
   company: {
     prefix: "/company",

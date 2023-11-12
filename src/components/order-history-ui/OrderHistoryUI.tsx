@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import ProductRow from "../product-row/ProductRow";
 import Anchor from "../anchor/Anchor";
 import HashLoader from "react-spinners/HashLoader";
+import { useReturnContext } from "../../context/returnContext";
 
 interface OrdersHistoryProps {
   orders: OrderProps[];
@@ -31,8 +32,9 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
   isLoading,
 }) => {
   const { t } = useTranslation();
+  const { order: returnOrder, setOrderInformation } = useReturnContext();
   const [open, setOpen] = useState(false);
-
+  console.log(returnOrder);
   return (
     <div className='bg-white'>
       <main className='mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8 lg:pb-24'>
@@ -84,6 +86,7 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
                   </dl>
                   <div className='flex flex-row gap-2'>
                     <Anchor
+                      onClick={() => setOrderInformation(order)}
                       href={`${order.number}/return`}
                       className='mt-6 flex w-full items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto'
                     >
@@ -126,7 +129,7 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
                   </thead>
                   <tbody className='divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t'>
                     {order.products.map((product) => (
-                      <ProductRow product={product} />
+                      <ProductRow key={product.id} product={product} />
                     ))}
                   </tbody>
                 </table>

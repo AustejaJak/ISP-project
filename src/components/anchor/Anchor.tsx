@@ -5,11 +5,17 @@ interface AnchorProps {
   children: React.ReactNode;
   href: string;
   className?: string;
+  onClick?: (data: any) => void;
 }
 
-const Anchor: React.FC<AnchorProps> = ({ children, href, className }) => {
+const Anchor: React.FC<AnchorProps> = ({
+  children,
+  href,
+  className,
+  onClick,
+}) => {
   return (
-    <Link className={className} to={href}>
+    <Link onClick={onClick} className={className} to={href}>
       {children}
     </Link>
   );

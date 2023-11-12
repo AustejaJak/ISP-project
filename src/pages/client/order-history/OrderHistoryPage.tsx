@@ -10,23 +10,23 @@ import { useUserContext } from "../../../context/userContext";
 
 const orders = [
   {
-    number: "WU88191111",
+    number: "WU88191112",
     date: "January 22, 2021",
     invoiceHref: "#",
     total: "$104.00",
     products: [
       {
         id: 1,
-        name: "Men's 3D Glasses Artwork Tee",
+        name: "Glasses Artwork t-shirt",
         href: "#",
-        price: "$36.00",
+        price: "$26.00",
         imageSrc:
           "https://tailwindui.com/img/ecommerce-images/order-history-page-04-product-01.jpg",
         imageAlt:
           "Black tee with intersecting red, white, and green curved lines on front.",
       },
       {
-        id: 1,
+        id: 2,
         name: "Men's 3D Glasses Artwork Tee",
         href: "#",
         price: "$36.00",
@@ -45,7 +45,7 @@ const orders = [
     total: "$104.00",
     products: [
       {
-        id: 1,
+        id: 3,
         name: "Men's 3D Glasses Artwork Tee",
         href: "#",
         price: "$36.00",
@@ -60,16 +60,16 @@ const orders = [
 
 const OrderHistoryPage = () => {
   const { userInformation } = useUserContext();
-  const { data: orders, isLoading } = useQuery({
-    queryKey: [QueryKey.GET_CLIENT_ORDERS_HISTORY],
-    queryFn: () => ordersApi.getOrdersHistory({ userId: userInformation.id }),
-    enabled: !!userInformation,
-  });
+  // const { data: orders, isLoading } = useQuery({
+  //   queryKey: [QueryKey.GET_CLIENT_ORDERS_HISTORY],
+  //   queryFn: () => ordersApi.getOrdersHistory({ userId: userInformation.id }),
+  //   enabled: !!userInformation,
+  // });
 
   return (
     <>
       <OrdersHistory
-        isLoading={isLoading}
+        isLoading={false}
         orders={orders || ([] as OrderProps[])}
       />
       <Footer />

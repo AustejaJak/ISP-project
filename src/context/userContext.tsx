@@ -38,9 +38,4 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
   );
 };
 
-export interface UserContextType {
-  userInformation: UserProps;
-  setUserInformation: (data: UserProps) => void;
-}
-
-export const useUserContext = (): UserContextType => useContext(UserContext);
+export const useUserContext = (): UserContextProps => useContext(UserContext);
