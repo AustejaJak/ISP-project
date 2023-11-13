@@ -85,15 +85,12 @@ const product = {
 const ProductPage = () => {
   const { productId } = useParams();
 
-  const { data: product, isLoading } = useQuery({
-    queryKey: [QueryKey.FIND_PRODUCT_BY_ID, productId],
-    queryFn: () => productApi.findProductById({ productId: productId! }),
-    enabled: !!productId,
-  });
-  console.log(isLoading);
-  return (
-    <Product isLoading={isLoading} product={product || ({} as ProductProp)} />
-  );
+  // const { data: product, isLoading } = useQuery({
+  //   queryKey: [QueryKey.FIND_PRODUCT_BY_ID, productId],
+  //   queryFn: () => productApi.findProductById({ productId: productId! }),
+  //   enabled: !!productId,
+  // });
+  return <Product isLoading={false} product={product || ({} as ProductProp)} />;
 };
 
 export default ProductPage;
