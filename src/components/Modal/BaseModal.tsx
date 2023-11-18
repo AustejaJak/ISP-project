@@ -6,6 +6,7 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   onClose?: () => void;
+  width?: string;
 }
 
 export const BaseModal: React.FC<ModalProps> = ({
@@ -13,6 +14,7 @@ export const BaseModal: React.FC<ModalProps> = ({
   title,
   children,
   onClose,
+  width = "w-[430px]",
 }) => {
   return (
     <Modal
@@ -23,7 +25,7 @@ export const BaseModal: React.FC<ModalProps> = ({
     >
       <Box>
         <div className='w-full h-screen flex justify-center items-center'>
-          <div className='bg-white w-[430px] rounded-lg'>
+          <div className={`bg-white ${width} rounded-lg`}>
             <Typography
               id='modal-modal-title'
               variant='h5'

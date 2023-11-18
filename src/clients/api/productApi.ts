@@ -40,4 +40,10 @@ export const productApi = {
     }>(`${BASE_URL}/active`);
     return data.data;
   },
+  getCompanyPendingProducts: async () => {
+    const { data } = await axiosInstance.get<{
+      data: ProductProp[];
+    }>(`${BASE_URL}/pending`);
+    return data.data;
+  },
 };
