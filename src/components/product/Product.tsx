@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { ProductProp } from "../../pages/client/product/ProductPage";
+import { Loader } from "../Loader/Loader";
+import { t } from "i18next";
+import { useCartContext } from "../../context/cartContext";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,10 +13,29 @@ function classNames(...classes: any[]) {
 
 type ProductProps = {
   product: ProductProp;
+  isLoading: boolean;
 };
 
-const Product: React.FC<ProductProps> = ({ product }) => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]);
+  const { AddItemToCart } = useCartContext();
+  if (isLoading)
+    return (
+      <div className='w-full'>
+        <Loader isLoading={isLoading} />
+      </div>
+    );
+  if (!isLoading && Object.keys(product).length === 0)
+    return (
+      <p className='my-12 text-slate-500 text-center'>
+        {t("Errors.ProductNotExist")}
+      </p>
+    );
+
+  const handleItemAdd = (e: any) => {
+    e.preventDefault();
+    AddItemToCart(product);
+  };
 
   return (
     <div className='bg-white'>
@@ -111,10 +133,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               />
             </div>
 
-            <form className='mt-6'>
+            <form className='mt-6' onSubmit={handleItemAdd}>
               {/* Colors */}
               <div>
-                <h3 className='text-sm text-gray-600'>Color</h3>
+                <h3 className='text-sm text-gray-600'>{t("Product.Color")}</h3>
 
                 <RadioGroup
                   value={selectedColor}
@@ -140,8 +162,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                         }
                       >
                         <RadioGroup.Label as='span' className='sr-only'>
-                          {" "}
-                          {color.name}{" "}
+                          {color.name}
                         </RadioGroup.Label>
                         <span
                           aria-hidden='true'
@@ -161,18 +182,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   type='submit'
                   className='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
                 >
-                  Add to bag
-                </button>
-
-                <button
-                  type='button'
-                  className='ml-4 flex items-center justify-center rounded-md py-3 px-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500'
-                >
-                  <HeartIcon
-                    className='h-6 w-6 flex-shrink-0'
-                    aria-hidden='true'
-                  />
-                  <span className='sr-only'>Add to favorites</span>
+                  {t("Product.AddToCart")}
                 </button>
               </div>
             </form>

@@ -1,78 +1,40 @@
-import { Fragment, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 import ProductRow from "../product-row/ProductRow";
-import Routes from "../../routes/routes";
 import Anchor from "../anchor/Anchor";
+import HashLoader from "react-spinners/HashLoader";
+import { useReturnContext } from "../../context/returnContext";
 
-const orders = [
-  {
-    number: "WU88191111",
-    date: "January 22, 2021",
-    datetime: "2021-01-22",
-    invoiceHref: "#",
-    total: "$104.00",
-    products: [
-      {
-        id: 1,
-        name: "Men's 3D Glasses Artwork Tee",
-        href: "#",
-        price: "$36.00",
-        status: "Delivered Jan 25, 2021",
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-04-product-01.jpg",
-        imageAlt:
-          "Black tee with intersecting red, white, and green curved lines on front.",
-      },
-      {
-        id: 1,
-        name: "Men's 3D Glasses Artwork Tee",
-        href: "#",
-        price: "$36.00",
-        status: "Delivered Jan 25, 2021",
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-04-product-01.jpg",
-        imageAlt:
-          "Black tee with intersecting red, white, and green curved lines on front.",
-      },
-      // More products...
-    ],
-  },
-  {
-    number: "WU88191111",
-    date: "January 22, 2021",
-    datetime: "2021-01-22",
-    invoiceHref: "#",
-    total: "$104.00",
-    products: [
-      {
-        id: 1,
-        name: "Men's 3D Glasses Artwork Tee",
-        href: "#",
-        price: "$36.00",
-        status: "Delivered Jan 25, 2021",
-        imageSrc:
-          "https://tailwindui.com/img/ecommerce-images/order-history-page-04-product-01.jpg",
-        imageAlt:
-          "Black tee with intersecting red, white, and green curved lines on front.",
-      },
-      // More products...
-    ],
-  },
-  // More orders...
-];
-export default function OrderHistoryUI() {
+interface OrdersHistoryProps {
+  orders: OrderProps[];
+  isLoading: boolean;
+}
+
+export interface OrderProps {
+  number: string;
+  date: string;
+  invoiceHref: string;
+  total: string;
+  products: Product[];
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  href: string;
+  price: string;
+  imageSrc: string;
+}
+
+export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
+  orders,
+  isLoading,
+}) => {
   const { t } = useTranslation();
+  const { order: returnOrder, setOrderInformation } = useReturnContext();
   const [open, setOpen] = useState(false);
-
+  console.log(returnOrder);
   return (
     <div className='bg-white'>
       <main className='mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8 lg:pb-24'>
@@ -84,18 +46,21 @@ export default function OrderHistoryUI() {
             {t("Order.PageDescriptionText")}
           </p>
         </div>
+        <div className='w-full mt-10 flex justify-center'>
+          {isLoading && <HashLoader color='#4F45E4' />}
+          <div>
+            {!isLoading && orders.length === 0 && (
+              <p className='text-slate-500'>{t("Order.NoOrders")}</p>
+            )}
+          </div>
+        </div>
 
         <section aria-labelledby='recent-heading' className='mt-16'>
-          <h2 id='recent-heading' className='sr-only'>
-            Recent orders
-          </h2>
-
           <div className='space-y-20'>
             {orders.map((order) => (
               <div key={order.number}>
                 <h3 className='sr-only'>
-                  Order placed on{" "}
-                  <time dateTime={order.datetime}>{order.date}</time>
+                  Order placed on <time>{order.date}</time>
                 </h3>
 
                 <div className='rounded-lg bg-gray-50 py-6 px-4 sm:flex sm:items-center sm:justify-between sm:space-x-6 sm:px-6 lg:space-x-8'>
@@ -105,7 +70,7 @@ export default function OrderHistoryUI() {
                         {t("Order.DatePlaceText")}
                       </dt>
                       <dd className='sm:mt-1'>
-                        <time dateTime={order.datetime}>{order.date}</time>
+                        <time>{order.date}</time>
                       </dd>
                     </div>
                     <div className='flex justify-between pt-6 sm:block sm:pt-0'>
@@ -121,6 +86,7 @@ export default function OrderHistoryUI() {
                   </dl>
                   <div className='flex flex-row gap-2'>
                     <Anchor
+                      onClick={() => setOrderInformation(order)}
                       href={`${order.number}/return`}
                       className='mt-6 flex w-full items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto'
                     >
@@ -155,12 +121,6 @@ export default function OrderHistoryUI() {
                       </th>
                       <th
                         scope='col'
-                        className='hidden py-3 pr-8 font-normal sm:table-cell'
-                      >
-                        {t("Order.StatusColumnText")}
-                      </th>
-                      <th
-                        scope='col'
                         className='w-0 py-3 text-right font-normal'
                       >
                         Info
@@ -169,7 +129,7 @@ export default function OrderHistoryUI() {
                   </thead>
                   <tbody className='divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t'>
                     {order.products.map((product) => (
-                      <ProductRow product={product} />
+                      <ProductRow key={product.id} product={product} />
                     ))}
                   </tbody>
                 </table>
@@ -180,4 +140,4 @@ export default function OrderHistoryUI() {
       </main>
     </div>
   );
-}
+};

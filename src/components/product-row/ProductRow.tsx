@@ -1,19 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Product } from "../order-history-ui/OrderHistoryUI";
+import Anchor from "../anchor/Anchor";
+import Routes from "../../routes/routes";
 
-type Product = {
-  product: {
-    id: number;
-    imageSrc: string;
-    imageAlt: string;
-    name: string;
-    price: string;
-    status: string;
-    href: string;
-  };
+type ProductRowProps = {
+  product: Product;
 };
 
-const ProductRow: React.FC<Product> = ({ product }) => {
+const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
   const { t } = useTranslation();
   return (
     <tr key={product.id}>
@@ -21,7 +16,7 @@ const ProductRow: React.FC<Product> = ({ product }) => {
         <div className='flex items-center'>
           <img
             src={product.imageSrc}
-            alt={product.imageAlt}
+            alt={""}
             className='mr-6 h-16 w-16 rounded object-cover object-center'
           />
           <div>
@@ -31,11 +26,10 @@ const ProductRow: React.FC<Product> = ({ product }) => {
         </div>
       </td>
       <td className='hidden py-6 pr-8 sm:table-cell'>{product.price}</td>
-      <td className='hidden py-6 pr-8 sm:table-cell'>{product.status}</td>
       <td className='whitespace-nowrap py-6 text-right font-medium'>
-        <a href={product.href} className='text-indigo-600'>
+        <Anchor href={`/product/${product.id}`} className='text-indigo-600'>
           {t("ProductRow.ViewProductText")}
-        </a>
+        </Anchor>
       </td>
     </tr>
   );

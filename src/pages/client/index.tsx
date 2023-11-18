@@ -41,6 +41,10 @@ const Client = () => {
           element={<ProductPage />}
         />
         <Route path={Routes.client.product} element={<ProductPage />} />
+        <Route
+          path={Routes.client.individualProduct}
+          element={<ProductPage />}
+        />
         <Route path={Routes.client.profile} element={<ProfilePage />} />
         <Route path={Routes.client.checkout} element={<CheckoutPage />} />
         <Route
