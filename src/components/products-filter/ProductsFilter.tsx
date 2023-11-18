@@ -1,51 +1,17 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { categoryProps } from "../../pages/client/category/CategoryPage";
+import { FilterProps } from "../../pages/client/category/model";
+import { t } from "i18next";
 
 interface ProductsFilterProps {
   children?: React.ReactNode;
   category?: categoryProps;
+  filters: FilterProps[];
+  setQueryFilters?: (query: string) => void;
 }
-
-const filters = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White" },
-      { value: "beige", label: "Beige" },
-      { value: "blue", label: "Blue" },
-      { value: "brown", label: "Brown" },
-      { value: "green", label: "Green" },
-      { value: "purple", label: "Purple" },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "All New Arrivals" },
-      { value: "tees", label: "Tees" },
-      { value: "crewnecks", label: "Crewnecks" },
-      { value: "sweatshirts", label: "Sweatshirts" },
-      { value: "pants-shorts", label: "Pants & Shorts" },
-    ],
-  },
-  {
-    id: "sizes",
-    name: "Sizes",
-    options: [
-      { value: "xs", label: "XS" },
-      { value: "s", label: "S" },
-      { value: "m", label: "M" },
-      { value: "l", label: "L" },
-      { value: "xl", label: "XL" },
-      { value: "2xl", label: "2XL" },
-    ],
-  },
-];
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -54,8 +20,51 @@ function classNames(...classes: any[]) {
 const ProductsFilter: React.FC<ProductsFilterProps> = ({
   children,
   category,
+  filters,
+  setQueryFilters,
 }) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const [filterQueries, setFilterQueries] = useState<{
+    [key: string]: string[];
+  }>({});
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    let query = "?";
+    Object.entries(filterQueries).forEach(([keys, values], index) => {
+      query += index > 0 ? "&" : "";
+      query += `${keys}=${values.join(",")}`;
+    });
+    setQueryFilters?.(query);
+  };
+
+  const handleValueChange = (e: any, id: string) => {
+    const { value } = e.target;
+    if (!e.target.checked) {
+      console.log(id);
+      const modifiedFilterQuery = filterQueries[id].filter(
+        (query: string) => query !== value
+      );
+      setFilterQueries((prevState) => ({
+        ...prevState,
+        [id]: modifiedFilterQuery,
+      }));
+    }
+    if (e.target.checked) {
+      const modifiedFilterQuery = filterQueries[id]
+        ? [...filterQueries[id], value]
+        : [value];
+      setFilterQueries((prevState) => ({
+        ...prevState,
+        [id]: modifiedFilterQuery,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    console.log(filterQueries);
+  }, [filterQueries]);
 
   return (
     <div className='bg-white'>
@@ -105,7 +114,7 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
                   </div>
 
                   {/* Filters */}
-                  <form className='mt-4'>
+                  <form className='mt-4' onSubmit={handleSubmit}>
                     {filters.map((section) => (
                       <Disclosure
                         as='div'
@@ -141,6 +150,9 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
                                       id={`${section.id}-${optionIdx}-mobile`}
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
+                                      onChange={(e) =>
+                                        handleValueChange(e, section.id)
+                                      }
                                       type='checkbox'
                                       className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                                     />
@@ -158,6 +170,12 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
                         )}
                       </Disclosure>
                     ))}
+                    <button
+                      type='submit'
+                      className='flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                    >
+                      {t("Filter.SearchText")}
+                    </button>
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -194,7 +212,10 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
               </button>
 
               <div className='hidden lg:block'>
-                <form className='space-y-10 divide-y divide-gray-200'>
+                <form
+                  onSubmit={handleSubmit}
+                  className='space-y-10 divide-y divide-gray-200'
+                >
                   {filters.map((section, sectionIdx) => (
                     <div
                       key={section.name}
@@ -215,6 +236,9 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
                                 name={`${section.id}[]`}
                                 defaultValue={option.value}
                                 type='checkbox'
+                                onChange={(e) =>
+                                  handleValueChange(e, section.id)
+                                }
                                 className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                               />
                               <label
@@ -229,6 +253,12 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
                       </fieldset>
                     </div>
                   ))}
+                  <button
+                    type='submit'
+                    className='flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                  >
+                    {t("Filter.SearchText")}
+                  </button>
                 </form>
               </div>
             </aside>
