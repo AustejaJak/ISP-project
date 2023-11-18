@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { z, object, string, date } from "zod";
 
 export enum SignUpFormField {
@@ -10,15 +11,16 @@ export enum SignUpFormField {
 }
 
 export const signUpModel = object({
-  [SignUpFormField.NAME]: string().min(1, "Name is required."),
-  [SignUpFormField.SURNAME]: string().min(1, "Surname is required."),
-  [SignUpFormField.BIRTHDATE]: date(),
-  [SignUpFormField.EMAIL]: string().min(1, "Email is required.").email(),
-  [SignUpFormField.PASSWORD]: string().min(1, "Password is required."),
-  [SignUpFormField.REPEAT_PASSWORD]: string().min(1, "Password is required."),
+  [SignUpFormField.NAME]: string().min(1, t("Errors.FieldNotEmpty")),
+  [SignUpFormField.SURNAME]: string().min(1, t("Errors.FieldNotEmpty")),
+  [SignUpFormField.BIRTHDATE]: date().transform((val) => val.toUTCString()),
+  [SignUpFormField.EMAIL]: string()
+    .min(1, t("Errors.FieldNotEmpty"))
+    .email("Elektroninis paštas neatitinka formato"),
+  [SignUpFormField.PASSWORD]: string().min(1, t("Errors.FieldNotEmpty")),
+  [SignUpFormField.REPEAT_PASSWORD]: string().min(1, t("Errors.FieldNotEmpty")),
 }).refine(
   (data) => {
-    console.log("labas");
     if (
       data[SignUpFormField.PASSWORD] === data[SignUpFormField.REPEAT_PASSWORD]
     )
@@ -27,7 +29,7 @@ export const signUpModel = object({
   },
   {
     path: [SignUpFormField.REPEAT_PASSWORD],
-    message: "Passwords should match.",
+    message: "Slaptažodžiai nesutampa",
   }
 );
 

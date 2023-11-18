@@ -1,8 +1,9 @@
+import { t } from "i18next";
 import { z, object, string } from "zod";
 
 export const signInModel = object({
-  email: string().min(1, "Email is required.").email(),
-  password: string().min(1, "Password is required."),
+  email: string().min(1, t("Errors.FieldNotEmpty")).email(),
+  password: string().min(1, t("Errors.FieldNotEmpty")),
 });
 
 export const signInDefaultValues = {

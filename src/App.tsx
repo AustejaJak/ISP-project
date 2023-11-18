@@ -7,23 +7,31 @@ import { I18nextProvider } from "react-i18next";
 import { UserContextProvider } from "./context/userContext";
 import { CartContextProvider } from "./context/cartContext";
 import { ReturnContextProvider } from "./context/returnContext";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import "date-fns/locale/lt";
+import { SnackbarContextProvider } from "./context/snackbarContext";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <I18nextProvider i18n={i18next}>
-      <UserContextProvider>
-        <CartContextProvider>
-          <ReturnContextProvider>
-            <QueryClientProvider client={queryClient}>
-              <BrowserRouter>
-                <AppRoutes />
-              </BrowserRouter>
-            </QueryClientProvider>
-          </ReturnContextProvider>
-        </CartContextProvider>
-      </UserContextProvider>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <UserContextProvider>
+          <CartContextProvider>
+            <SnackbarContextProvider>
+              <ReturnContextProvider>
+                <QueryClientProvider client={queryClient}>
+                  <BrowserRouter>
+                    <AppRoutes />
+                  </BrowserRouter>
+                </QueryClientProvider>
+              </ReturnContextProvider>
+            </SnackbarContextProvider>
+          </CartContextProvider>
+        </UserContextProvider>
+      </LocalizationProvider>
     </I18nextProvider>
   );
 }

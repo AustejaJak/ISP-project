@@ -5,7 +5,6 @@ import ActivePage from "./active/ActivePage";
 import PendingPage from "./pending/PendingPage";
 import Header from "./header/Header";
 import IndexPage from "./index/IndexPage";
-import CreateProductPage from "./create-product/CreateProductPage";
 
 const Company = () => {
   return (
@@ -33,14 +32,6 @@ const Company = () => {
           element={
             <PrivateRoute>
               <PendingPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={Routes.company.createProduct}
-          element={
-            <PrivateRoute>
-              <CreateProductPage />
             </PrivateRoute>
           }
         />

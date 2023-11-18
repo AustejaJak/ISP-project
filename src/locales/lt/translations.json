@@ -35,6 +35,30 @@
   "Filter.ClockFaceDigital": "Skaitmeninis",
   "Filter.ClockFaceAnalogue": "Analogas",
   "Filter.SearchText": "Ieškoti",
+
+  "Checkout.EmailAddress": "Elektronis paštas",
+  "Checkout.Address": "Adresas",
+  "Checkout.DiscoundCode": "Nuolaidos kodas",
+  "Checkout.Discount": "Nuolaida",
+  "Checkout.Total": "Visa suma",
+
+  "ShoppingBag.ViewBag": "Peržiūrėti krepšelį",
+  "ShoppingBag.Checkout": "Apmokėjimas",
+
+  "SignUpPage.PageTitle": "Registracija",
+  "SignUpPage.FirstName": "Vardas",
+  "SignUpPage.LastName": "Pavardė",
+  "SignUpPage.Birthdate": "Gimimo data",
+  "SignUpPage.Email": "Elektroninis paštas",
+  "SignUpPage.Password": "Slaptažodis",
+  "SignUpPage.RepeatPassword": "Pakartokite slaptažodį",
+  "SignUpPage.SignUpButton": "Registruotis",
+
+  "SignInPage.PageTitle": "Prisijungimas",
+  "SignInPage.Email": "Elektroninis paštas",
+  "SignInPage.Password": "Slaptažodis",
+  "SignInPage.SignInButton": "Prisijungti",
+
   "Error.ProductNameRequired": "Prekės pavadinimas privalomas.",
   "Error.ProductDescriptionRequired": "Prekės aprašymas privalomas.",
   "Error.ProductPriceRequired": "Kaina privaloma.",
@@ -45,5 +69,6 @@
   "Error.ProductColors.AtLeastOneRequired": "Prekė privalo turėti bent vieną spalvą.",
   "Error.ProductDetails.AtLeastOneRequired": "Prekė privalo turėti bent vieną specifikaciją.",
   "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta.",
-  "Errors.OrderNotExist": "Įvyko klaida. Užsakymas nerastas."
+  "Errors.OrderNotExist": "Įvyko klaida. Užsakymas nerastas.",
+  "Errors.FieldNotEmpty": "Šis laukas privalomas"
 }

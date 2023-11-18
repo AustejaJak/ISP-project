@@ -32,7 +32,6 @@ const Routes = {
     login: "/log-in",
     pending: "/pending",
     active: "/active",
-    createProduct: "/create-product",
   },
 };
 

@@ -25,13 +25,13 @@ const Header = () => {
             </Anchor>
             <div className='ml-10 hidden space-x-8 lg:block'>
               {navigation.map((link) => (
-                <a
+                <Anchor
                   key={link.name}
                   href={link.href}
                   className='text-base font-medium text-white hover:text-indigo-50'
                 >
                   {link.name}
-                </a>
+                </Anchor>
               ))}
             </div>
             {/* <SearchBox /> */}

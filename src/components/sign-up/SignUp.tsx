@@ -1,7 +1,13 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { SignUpFormField, signUpDefaultValues, signUpModel } from "./model";
 import { zodResolver } from "@hookform/resolvers/zod";
-import BaseInput from "../input/Input";
+import { t } from "i18next";
+import { BaseDatePicker } from "../BaseDatePicker/BaseDatePicker";
+import { BaseTextField } from "../BaseTextField/BaseTextField";
+import { useMutation } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { clientApi } from "../../clients/api/clientApi";
+import { useSnackbarContext } from "../../context/snackbarContext";
 
 const SignUp = () => {
   const methods = useForm({
@@ -15,9 +21,24 @@ const SignUp = () => {
     formState: { errors },
   } = methods;
 
+  const registerClient = useMutation({
+    mutationKey: [QueryKey.REGISTER_CLIENT],
+    mutationFn: clientApi.registerClient,
+  });
+
+  const { setMessage } = useSnackbarContext();
+
   const processForm = () => {
     const data = signUpModel.parse(getValues());
-    console.log(data);
+
+    registerClient.mutate(data, {
+      onSuccess: (res) => {
+        setMessage("Registracija sėkminga");
+      },
+      onError: (err) => {
+        setMessage(err.message);
+      },
+    });
   };
 
   return (
@@ -25,45 +46,57 @@ const SignUp = () => {
       <div className='flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8'>
         <div className='sm:mx-auto sm:w-full sm:max-w-md'>
           <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
-            Sign up
+            {t("SignUpPage.PageTitle")}
           </h2>
         </div>
 
         <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
             <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
-              <BaseInput
+              <BaseTextField
                 formField={SignUpFormField.NAME}
-                label='First Name'
+                label={t("SignUpPage.FirstName")}
                 type='text'
+                className='w-full'
                 autoComplete='name'
                 errorMessage={errors[SignUpFormField.NAME]?.message}
               />
-              <BaseInput
+              <BaseTextField
                 formField={SignUpFormField.SURNAME}
-                label='Last Name'
+                label={t("SignUpPage.LastName")}
                 type='text'
+                className='w-full'
                 autoComplete='surname'
                 errorMessage={errors[SignUpFormField.SURNAME]?.message}
               />
-              <BaseInput
+              <BaseTextField
                 formField={SignUpFormField.EMAIL}
-                label='Email Address'
+                label={t("SignUpPage.Email")}
                 type='email'
+                className='w-full'
                 autoComplete='email'
                 errorMessage={errors[SignUpFormField.EMAIL]?.message}
               />
-              <BaseInput
+              <BaseDatePicker
+                formField={SignUpFormField.BIRTHDATE}
+                label={t("SignUpPage.Birthdate")}
+                maxDate={new Date()}
+                className='w-full'
+                errorMessage={errors[SignUpFormField.BIRTHDATE]?.message}
+              />
+              <BaseTextField
                 formField={SignUpFormField.PASSWORD}
-                label='Password'
+                label={t("SignUpPage.Password")}
                 type='password'
+                className='w-full'
                 autoComplete='current-password'
                 errorMessage={errors[SignUpFormField.PASSWORD]?.message}
               />
-              <BaseInput
+              <BaseTextField
                 formField={SignUpFormField.REPEAT_PASSWORD}
-                label='Repeat Password'
+                label={t("SignUpPage.RepeatPassword")}
                 type='password'
+                className='w-full'
                 errorMessage={errors[SignUpFormField.REPEAT_PASSWORD]?.message}
               />
 
@@ -72,7 +105,7 @@ const SignUp = () => {
                   type='submit'
                   className='flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                 >
-                  Sign in
+                  {t("SignUpPage.SignUpButton")}
                 </button>
               </div>
             </form>

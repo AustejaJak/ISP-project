@@ -9,4 +9,19 @@ export const clientApi = {
     }>(`${BASE_URL}`);
     return data.data;
   },
+  registerClient: async (userInformation: any) => {
+    const { data } = await axiosInstance.post<{
+      data: any;
+    }>(`${BASE_URL}`, { userInformation });
+    return data.data;
+  },
+  authenticateClient: async (userInformation: {
+    email: string;
+    password: string;
+  }) => {
+    const { data } = await axiosInstance.post<{
+      data: any;
+    }>(`${BASE_URL}`, { userInformation });
+    return data.data;
+  },
 };
