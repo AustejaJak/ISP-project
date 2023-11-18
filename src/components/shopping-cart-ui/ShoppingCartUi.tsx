@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/20/solid";
 import Routes from "../../routes/routes";
 import React from "react";
-import { CartProductsProps } from "../../context/cartContext";
+import { CartProductsProps, useCartContext } from "../../context/cartContext";
 import Anchor from "../anchor/Anchor";
 
 interface ShoppingCartProps {
@@ -16,6 +16,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
   products,
   total,
 }) => {
+  const { ClearItemFromCart, ChangeProductCount } = useCartContext();
   return (
     <div className='bg-white'>
       <main className='mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8'>
@@ -77,6 +78,12 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                           id={`quantity-${productIdx}`}
                           name={`quantity-${productIdx}`}
                           value={count}
+                          onChange={(e) =>
+                            ChangeProductCount(
+                              product.id,
+                              Number(e.target.value)
+                            )
+                          }
                           className='max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm'
                         >
                           <option value={1}>1</option>
@@ -91,6 +98,9 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
                         <div className='absolute top-0 right-0'>
                           <button
+                            onClick={() =>
+                              ClearItemFromCart(product.id.toString())
+                            }
                             type='button'
                             className='-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
                           >
@@ -149,7 +159,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='flex items-center text-sm text-gray-600'>
                   <span>Shipping estimate</span>
-                  <a
+                  <Anchor
                     href='#'
                     className='ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500'
                   >
@@ -160,14 +170,14 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                       className='h-5 w-5'
                       aria-hidden='true'
                     />
-                  </a>
+                  </Anchor>
                 </dt>
                 <dd className='text-sm font-medium text-gray-900'>$5.00</dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='flex text-sm text-gray-600'>
                   <span>Tax estimate</span>
-                  <a
+                  <Anchor
                     href='#'
                     className='ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500'
                   >
@@ -178,7 +188,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                       className='h-5 w-5'
                       aria-hidden='true'
                     />
-                  </a>
+                  </Anchor>
                 </dt>
                 <dd className='text-sm font-medium text-gray-900'>$8.32</dd>
               </div>
@@ -193,12 +203,12 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
             </dl>
 
             <div className='mt-6'>
-              <a
+              <Anchor
                 href={Routes.client.checkout}
                 className='w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
               >
                 Checkout
-              </a>
+              </Anchor>
             </div>
           </section>
         </form>

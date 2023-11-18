@@ -16,7 +16,7 @@ export enum CreateProductFields {
   VENDOR = "vendor",
   IMAGES = "images",
   COLORS = "colors",
-  DETAILS = "details",
+  // DETAILS = "details",
 }
 
 const imagesSchema = z.object({
@@ -32,10 +32,10 @@ const imagesSchema = z.object({
     ),
 });
 
-const detailsSchema = z.object({
-  name: string(),
-  items: array(string()),
-});
+// const detailsSchema = z.object({
+//   name: string(),
+//   items: array(string()),
+// });
 
 export const createProductModel = object({
   [CreateProductFields.TITLE]: string().min(1, t("Error.ProductNameRequired")),
@@ -49,8 +49,8 @@ export const createProductModel = object({
     t("Error.ProductVendorRequired")
   ),
   [CreateProductFields.IMAGES]: array(imagesSchema),
-  [CreateProductFields.COLORS]: array(string()),
-  [CreateProductFields.DETAILS]: array(detailsSchema),
+  [CreateProductFields.COLORS]: string().min(1, t("Errors.FieldNotEmpty")),
+  // [CreateProductFields.DETAILS]: array(detailsSchema),
 });
 
 export const createProductDefaultValues = {
@@ -59,8 +59,8 @@ export const createProductDefaultValues = {
   [CreateProductFields.PRICE]: 0,
   [CreateProductFields.VENDOR]: "",
   [CreateProductFields.IMAGES]: [],
-  [CreateProductFields.COLORS]: [],
-  [CreateProductFields.DETAILS]: [],
+  [CreateProductFields.COLORS]: "",
+  // [CreateProductFields.DETAILS]: [],
 };
 
 export type SignUpModel = z.infer<typeof createProductModel>;
