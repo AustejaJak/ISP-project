@@ -7,6 +7,7 @@ import { useSnackbarContext } from "../../../context/snackbarContext";
 import { useMutation } from "@tanstack/react-query";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { productApi } from "../../../clients/api/productApi";
+import { t } from "i18next";
 
 const IndexPage = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -59,10 +60,10 @@ const IndexPage = () => {
         </Anchor>
       </div>
       <ProductModal
-        buttonTitle='Sukurti'
+        buttonTitle={t("ProductModal.Create")}
         closeModal={() => setIsProductModalOpen(false)}
         processSubmit={(data) => processForm(data)}
-        headerTitle='Redaguoti produktą'
+        headerTitle={t("ProductModal.EditProduct")}
         open={isProductModalOpen}
       />
     </BasePage>

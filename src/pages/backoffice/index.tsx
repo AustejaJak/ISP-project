@@ -7,27 +7,28 @@ import InventoryPage from "./inventory/InventoryPage";
 import UserPage from "./users/UserPage";
 import ProductAdd from "../../components/product-add-ui/ProductAddUI";
 import Header from "../../components/header/Header";
+import { t } from "i18next";
 
-const navigation = [
-  {
-    name: "Užsakymai",
-    href: `${Routes.backoffice.prefix}${Routes.backoffice.base}`,
-    current: true,
-  },
-  {
-    name: "Inventorius",
-    href: `${Routes.backoffice.prefix}${Routes.backoffice.inventory}`,
-    current: false,
-  },
-  {
-    name: "Vartotojai",
-    href: `${Routes.backoffice.prefix}${Routes.backoffice.users}`,
-    current: false,
-  },
-];
 const userNavigation = [{ name: "Atsijungti", href: Routes.client.base }];
 
 const Backoffice = () => {
+  const navigation = [
+    {
+      name: t("BackofficeBasePage.OrdersTitle"),
+      href: `${Routes.backoffice.prefix}`,
+      current: true,
+    },
+    {
+      name: t("BackofficeInventoryPage.TitleText"),
+      href: `${Routes.backoffice.prefix}${Routes.backoffice.inventory}`,
+      current: false,
+    },
+    {
+      name: t("BackofficeEmployersPage.TitleText"),
+      href: `${Routes.backoffice.prefix}${Routes.backoffice.users}`,
+      current: false,
+    },
+  ];
   return (
     <>
       <Header

@@ -15,6 +15,12 @@
   "Product.AddToCart": "Pridėti į krepšelį",
   "Product.Color": "Spalva",
   "ProductRow.ViewProductText": "Peržiūrėti",
+
+  "ProductModal.Save": "Išsaugoti",
+  "ProductModal.Create": "Sukurti",
+  "ProductModal.EditProduct": "Redaguoti produktą",
+  "ProductModal.CreateProduct": "Sukurti produktą",
+
   "Order.PageTitleText": "Užsakymų istorija",
   "Order.NoOrders": "Nėra atliktų užsakymų",
   "Order.PageDescriptionText": "Peržiūrėkite užsakymų statusus, grąžinkite prekes ir atsisiųskite faktūras.",
@@ -81,9 +87,20 @@
   "BackofficeInventoryPage.TableHeader.Quantity": "Kiekis",
   "BackofficeInventoryPage.TableHeader.Price": "Kaina",
   "BackofficeInventoryPage.TableHeader.Edit": "Redaguoti",
+  "BackofficeInventoryPage.TableRow.Pending": "Laukiantis patvirtinimo",
 
   "BackofficeInventoryPage.TableRow.Active": "Aktyvus",
-  "BackofficeInventoryPage.TableRow.Pending": "Laukiantis patvirtinimo",
+  "BackofficeInventoryPage.AddProduct": "Pridėti produktą",
+
+  "BackofficeEmployersPage.TitleText": "Darbuotojai",
+  "BackofficeEmployersPage.WebsiteEmployersHeader": "Svetainės darbuotojai",
+  "BackofficeEmployersPage.WebsiteEmployersDescription": "Darbuotojų sąrašas",
+  "BackofficeEmployersPage.AddEmployer": "Pridėti darbuotoją",
+  "BackofficeEmployersPage.TableHeader.Name": "Vardas",
+  "BackofficeEmployersPage.TableHeader.Position": "Pozicija",
+  "BackofficeEmployersPage.TableHeader.Email": "Elektroninis paštas",
+  "BackofficeEmployersPage.TableHeader.Role": "Rolė",
+  "BackofficeEmployersPage.TableRow.Edit": "Redaguoti",
 
   "Error.ProductNameRequired": "Prekės pavadinimas privalomas.",
   "Error.ProductDescriptionRequired": "Prekės aprašymas privalomas.",
@@ -97,5 +114,6 @@
   "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta.",
   "Errors.OrderNotExist": "Įvyko klaida. Užsakymas nerastas.",
   "Errors.NetworkError": "Įvyko klaida. Perkraukite puslapį.",
-  "Errors.FieldNotEmpty": "Šis laukas privalomas"
+  "Errors.FieldNotEmpty": "Šis laukas privalomas",
+  "Errors.EmptyArray": "Įrašų nerasta."
 }

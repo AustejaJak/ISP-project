@@ -53,11 +53,11 @@ const PendingPage = () => {
         title={t("PageTitle.PendingProducts")}
       />
       <ProductModal
-        buttonTitle='Išsaugoti'
+        buttonTitle={t("ProductModal.Save")}
         productId={productId}
         closeModal={handleModalClose}
         processSubmit={(data) => processForm(data)}
-        headerTitle='Redaguoti produktą'
+        headerTitle={t("ProductModal.EditProduct")}
         open={isProductModalOpen}
       />
     </BasePage>
