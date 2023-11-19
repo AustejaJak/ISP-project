@@ -1,11 +1,8 @@
 import React from "react";
-import UserUi from "../../../components/user-ui/UserUI";
-
+import { UserUI } from "../../../components/user-ui/UserUI";
 
 const UserPage = () => {
-    return (
-        <UserUi />
-    );
+  return <UserUI />;
 };
 
 export default UserPage;

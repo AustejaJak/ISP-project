@@ -1,10 +1,15 @@
+import { t } from "i18next";
 import Anchor from "../anchor/Anchor";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { ordersApi } from "../../clients/api/backoffice/ordersApi";
+import { Loader } from "../Loader/Loader";
 
 const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -13,7 +18,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -22,7 +27,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -31,7 +36,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -40,7 +45,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -49,7 +54,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -58,7 +63,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -67,7 +72,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -76,7 +81,7 @@ const transactions = [
   {
     id: "AAPS0L",
     name: "vardenis",
-    lastname: "pavardenis",
+    surname: "pavardenis",
     email: "vardenis@gmail.com",
     phoneNumber: "+37091261684",
     commission: "+$4.37",
@@ -85,6 +90,15 @@ const transactions = [
 ];
 
 export default function OrderList() {
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [QueryKey.GET_COMPANY_ORDERS],
+    queryFn: ordersApi.getCompanyOrdersStatistics,
+  });
+
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='mt-8 flex flex-col'>
@@ -98,43 +112,43 @@ export default function OrderList() {
                       scope='col'
                       className='whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6'
                     >
-                      Užsakymo ID
+                      {t("BackofficeBasePage.OrderList.OrderID")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      Vardas
+                      {t("BackofficeBasePage.OrderList.Name")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      Pavardė
+                      {t("BackofficeBasePage.OrderList.Surname")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      El. paštas
+                      {t("BackofficeBasePage.OrderList.Email")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      Telefono nr.
+                      {t("BackofficeBasePage.OrderList.TelephoneNumber")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      Mokesčiai
+                      {t("BackofficeBasePage.OrderList.Tax")}
                     </th>
                     <th
                       scope='col'
                       className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                     >
-                      Kaina
+                      {t("BackofficeBasePage.OrderList.Price")}
                     </th>
                     <th
                       scope='col'
@@ -145,40 +159,64 @@ export default function OrderList() {
                   </tr>
                 </thead>
                 <tbody className='divide-y divide-gray-200 bg-white'>
-                  {transactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                      <td className='whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6'>
-                        {transaction.id}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
-                        {transaction.name}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
-                        {transaction.lastname}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                        {transaction.email}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                        {transaction.phoneNumber}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                        {transaction.commission}
-                      </td>
-                      <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                        {transaction.price}
-                      </td>
-                      <td className='relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                        <Anchor
-                          href='#'
-                          className='text-indigo-600 hover:text-indigo-900'
-                        >
-                          Peržiūrėti užsakymą
-                          <span className='sr-only'>, {transaction.id}</span>
-                        </Anchor>
-                      </td>
-                    </tr>
-                  ))}
+                  {!isLoading && !error ? (
+                    <>
+                      {orders.map(
+                        (transaction: {
+                          id: string;
+                          name: string;
+                          surname: string;
+                          email: string;
+                          phoneNumber: string;
+                          commission: string;
+                          price: string;
+                        }) => (
+                          <tr key={transaction.id}>
+                            <td className='whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6'>
+                              {transaction.id}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
+                              {transaction.name}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
+                              {transaction.surname}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
+                              {transaction.email}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
+                              {transaction.phoneNumber}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
+                              {transaction.commission}
+                            </td>
+                            <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
+                              {transaction.price}
+                            </td>
+                            <td className='relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                              <Anchor
+                                href='#'
+                                className='text-indigo-600 hover:text-indigo-900'
+                              >
+                                {t("BackofficeBasePage.OrderList.ViewOrder")}
+                                <span className='sr-only'>
+                                  , {transaction.id}
+                                </span>
+                              </Anchor>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </>
+                  ) : (
+                    <div className='flex w-full justify-center items-center'>
+                      {!error ? (
+                        <Loader isLoading={isLoading} />
+                      ) : (
+                        <p className='my-3'>{t("Errors.NetworkError")}</p>
+                      )}
+                    </div>
+                  )}
                 </tbody>
               </table>
             </div>

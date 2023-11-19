@@ -1,29 +1,27 @@
 import React from "react";
 import Anchor from "../anchor/Anchor";
-import Routes from "../../routes/routes";
-import DropdownMenu from "../dropdownmenu/DropdownMenu";
+import { DropdownMenu } from "../dropdownmenu/DropdownMenu";
 import ShoppingCart from "../shopping-cart/ShoppingCart";
-
-const navigation = [
-  { name: "Naujienos", href: Routes.client.new },
-  { name: "Kolekcija", href: Routes.client.collection },
-  { name: "Parduotuvė", href: Routes.client.shop },
-];
 
 const isAuthenticated = true;
 
-const Header = () => {
+interface HeaderProps {
+  navigation: { name: string; href: string }[];
+  profileNavigation: { name: string; href: string }[];
+  isCompany?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  navigation,
+  profileNavigation,
+  isCompany = false,
+}) => {
   return (
     <header className='bg-indigo-600 relative'>
-      {" "}
-      {/* Add relative positioning */}
       <nav className='mx-auto max-w-7xl px-6 lg:px-8' aria-label='Top'>
         <div className='flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none relative z-10'>
-          {" "}
-          {/* Add relative and z-10 to the container */}
           <div className='flex items-center'>
             <Anchor href='/'>
-              <span className='sr-only'>Your Company</span>
               <img
                 className='h-10 w-auto'
                 src='https://tailwindui.com/img/logos/mark.svg?color=white'
@@ -41,11 +39,8 @@ const Header = () => {
                 </Anchor>
               ))}
             </div>
-            {/* <SearchBox /> */}
           </div>
           <div className='flex items-center space-x-4 absolute right-6 top-6'>
-            {" "}
-            {/* Absolute positioning */}
             {!isAuthenticated ? (
               <>
                 <Anchor
@@ -63,8 +58,8 @@ const Header = () => {
               </>
             ) : (
               <div className='flex items-center space-x-0'>
-                <DropdownMenu />
-                <ShoppingCart />
+                <DropdownMenu navigation={profileNavigation} />
+                {!isCompany && <ShoppingCart />}
               </div>
             )}
           </div>

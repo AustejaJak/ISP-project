@@ -1,11 +1,7 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Stats from "../stats/Stats";
-import OrderList from "../order-list/OrderList";
 import Routes from "../../routes/routes";
-import ProductList from "../product-list/ProductList";
-import UserList from "../user-list/UserList";
 import ProductAdd from "../product-add/ProductAdd";
 import Anchor from "../anchor/Anchor";
 
@@ -45,14 +41,6 @@ function classNames(...classes: string[]) {
 export default function InventoryUI() {
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className='min-h-full'>
         <div className='bg-gray-800 pb-32'>
           <Disclosure as='nav' className='bg-gray-800'>

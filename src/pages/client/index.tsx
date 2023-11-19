@@ -16,10 +16,21 @@ import ShoppingCartPage from "./shopping-cart-page-ui/ShoppingCartPage";
 import OrderHistoryPage from "./order-history/OrderHistoryPage";
 import ReturnPage from "./return/ReturnPage";
 
+const userNavigation = [
+  { name: "Mano paskyra", href: Routes.client.profile },
+  { name: "Atsijungti", href: Routes.client.base },
+];
+
+const navigation = [
+  { name: "Naujienos", href: Routes.client.new },
+  { name: "Kolekcija", href: Routes.client.collection },
+  { name: "Parduotuvė", href: Routes.client.shop },
+];
+
 const Client = () => {
   return (
     <>
-      <Header />
+      <Header profileNavigation={userNavigation} navigation={navigation} />
       <DomRoutes>
         <Route path={Routes.client.base} element={<InitialUiPage />} />
         <Route
