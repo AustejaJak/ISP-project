@@ -1,11 +1,8 @@
 import React from "react";
-import InventoryUI from "../../../components/inventory-ui/InventoryUI"
-
+import { InventoryUI } from "../../../components/inventory-ui/InventoryUI";
 
 const InventoryPage = () => {
-    return (
-        <InventoryUI />
-    );
+  return <InventoryUI />;
 };
 
 export default InventoryPage;

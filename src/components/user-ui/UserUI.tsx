@@ -1,6 +1,15 @@
-import UserList from "../user-list/UserList";
+import { t } from "i18next";
+import { UserList } from "../user-list/UserList";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { employersApi } from "../../clients/api/backoffice/employersApi";
 
 export const UserUI = () => {
+  const { data: employers, isLoading } = useQuery({
+    queryKey: [QueryKey.GET_COMPANY_EMPLOYERS],
+    queryFn: employersApi.getCompanyEmployers,
+  });
+
   return (
     <>
       <div className='min-h-full'>
@@ -8,7 +17,7 @@ export const UserUI = () => {
           <header className='py-10'>
             <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
               <h1 className='text-3xl font-bold tracking-tight text-white'>
-                Vartotojai
+                {t("BackofficeEmployersPage.TitleText")}
               </h1>
             </div>
           </header>
@@ -16,9 +25,8 @@ export const UserUI = () => {
 
         <main className='-mt-32'>
           <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
-            {/* Replace with your content */}
             <div className='rounded-lg bg-white px-5 py-6 shadow sm:px-6'>
-              <UserList />
+              <UserList isLoading={isLoading} employers={employers || []} />
             </div>
           </div>
         </main>

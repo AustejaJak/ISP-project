@@ -1,12 +1,12 @@
 import { t } from "i18next";
-import Routes from "../../routes/routes";
-import Anchor from "../anchor/Anchor";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
 import { inventoryApi } from "../../clients/api/backoffice/inventoryApi";
 import { Loader } from "../Loader/Loader";
 import { useSnackbarContext } from "../../context/snackbarContext";
 import { useEffect } from "react";
+import { InventoryProduct } from "../../types/types";
+import { statusEnum } from "../../enums/enums";
 
 const products = [
   {
@@ -81,14 +81,11 @@ const products = [
   },
 ];
 
-const statusEnum = {
-  ACTIVE: t("BackofficeInventoryPage.TableRow.Active"),
-  PENDING: t("BackofficeInventoryPage.TableRow.Pending"),
-};
+interface ProductListProps {
+  setModalOpen: (id?: string) => void;
+}
 
-type statusEnumKey = keyof typeof statusEnum;
-
-export const ProductList = () => {
+export const ProductList: React.FC<ProductListProps> = ({ setModalOpen }) => {
   const { setMessage } = useSnackbarContext();
   const {
     data: inventoryOrders,
@@ -116,12 +113,12 @@ export const ProductList = () => {
           </p>
         </div>
         <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
-          <Anchor
-            href={`${Routes.backoffice.prefix}${Routes.backoffice.productsAdd}`}
+          <button
+            onClick={() => setModalOpen()}
             className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
           >
-            Pridėti produktą
-          </Anchor>
+            {t("BackofficeInventoryPage.AddProduct")}
+          </button>
         </div>
       </div>
       <div className='mt-8 flex flex-col'>
@@ -173,64 +170,52 @@ export const ProductList = () => {
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-gray-200 bg-white'>
-                    {inventoryOrders.map(
-                      (product: {
-                        name: string;
-                        image: string;
-                        sku: string;
-                        category: string;
-                        status: statusEnumKey;
-                        quantity: string;
-                        price: string;
-                      }) => (
-                        <tr key={product.name}>
-                          <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6'>
-                            <div className='flex items-center'>
-                              <div className='h-10 w-10 flex-shrink-0'>
-                                <img
-                                  className='h-10 w-10'
-                                  src={product.image}
-                                  alt=''
-                                />
-                              </div>
-                              <div className='ml-4'>
-                                <div className='font-medium text-gray-900'>
-                                  {product.name}
-                                </div>
-                                <div className='text-gray-500'>
-                                  {product.sku}
-                                </div>
-                              </div>
+                    {inventoryOrders.map((product: InventoryProduct) => (
+                      <tr key={product.name}>
+                        <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6'>
+                          <div className='flex items-center'>
+                            <div className='h-10 w-10 flex-shrink-0'>
+                              <img
+                                className='h-10 w-10'
+                                src={product.image}
+                                alt=''
+                              />
                             </div>
-                          </td>
-                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            <div className='text-gray-900'>
-                              {product.category}
+                            <div className='ml-4'>
+                              <div className='font-medium text-gray-900'>
+                                {product.name}
+                              </div>
+                              <div className='text-gray-500'>{product.sku}</div>
                             </div>
-                          </td>
-                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            <span className='inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800'>
-                              {statusEnum[product.status]}
-                            </span>
-                          </td>
-                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            {product.quantity}
-                          </td>
-                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            {product.price}
-                          </td>
-                          <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                            <Anchor
-                              href='#'
-                              className='text-indigo-600 hover:text-indigo-900'
-                            >
-                              {t("BackofficeInventoryPage.TableHeader.Edit")}
-                              <span className='sr-only'>, {product.name}</span>
-                            </Anchor>
-                          </td>
-                        </tr>
-                      )
-                    )}
+                          </div>
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          <div className='text-gray-900'>
+                            {product.category}
+                          </div>
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          <span className='inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800'>
+                            {statusEnum[product.status]}
+                          </span>
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {product.quantity}
+                        </td>
+                        <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                          {product.price}
+                        </td>
+                        <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                          <button
+                            onClick={() => setModalOpen(product.id)}
+                            className='text-indigo-600 hover:text-indigo-900'
+                          >
+                            {t("BackofficeInventoryPage.TableHeader.Edit")}
+                            <span className='sr-only'>, {product.name}</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               ) : (
