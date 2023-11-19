@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import ProductList from "../product-list/ProductList";
+import { ProductList } from "../product-list/ProductList";
 
 export default function InventoryUI() {
   return (
