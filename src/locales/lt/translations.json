@@ -59,6 +59,32 @@
   "SignInPage.Password": "Slaptažodis",
   "SignInPage.SignInButton": "Prisijungti",
 
+  "BackofficeBasePage.OrdersTitle": "Užsakymai",
+  "BackofficeBasePage.StatisticLast30Days": "Paskutinės 30 dienų",
+  "OrdersStatistics.ProfitTitle": "Pelnas",
+  "OrdersStatistics.AverageOrderPriceTitle": "Vidutinė užsakymo kaina",
+  "OrdersStatistics.ProductsQuantityTitle": "Produktų kiekis",
+
+  "BackofficeBasePage.OrderList.OrderID": "Užsakymo ID",
+  "BackofficeBasePage.OrderList.Name": "Vardas",
+  "BackofficeBasePage.OrderList.Surname": "Pavardė",
+  "BackofficeBasePage.OrderList.Email": "El. paštas",
+  "BackofficeBasePage.OrderList.TelephoneNumber": "Telefono nr.",
+  "BackofficeBasePage.OrderList.Tax": "Mokesčiai",
+  "BackofficeBasePage.OrderList.Price": "Kaina",
+  "BackofficeBasePage.OrderList.ViewOrder": "Peržiūrėti užsakymą",
+
+  "BackofficeInventoryPage.TitleText": "Inventorius",
+  "BackofficeInventoryPage.TableHeader.Title": "Pavadinimas",
+  "BackofficeInventoryPage.TableHeader.Category": "Kategorija",
+  "BackofficeInventoryPage.TableHeader.Status": "Statusas",
+  "BackofficeInventoryPage.TableHeader.Quantity": "Kiekis",
+  "BackofficeInventoryPage.TableHeader.Price": "Kaina",
+  "BackofficeInventoryPage.TableHeader.Edit": "Redaguoti",
+
+  "BackofficeInventoryPage.TableRow.Active": "Aktyvus",
+  "BackofficeInventoryPage.TableRow.Pending": "Laukiantis patvirtinimo",
+
   "Error.ProductNameRequired": "Prekės pavadinimas privalomas.",
   "Error.ProductDescriptionRequired": "Prekės aprašymas privalomas.",
   "Error.ProductPriceRequired": "Kaina privaloma.",
@@ -70,5 +96,6 @@
   "Error.ProductDetails.AtLeastOneRequired": "Prekė privalo turėti bent vieną specifikaciją.",
   "Errors.ProductNotExist": "Įvyko klaida. Prekė nerasta.",
   "Errors.OrderNotExist": "Įvyko klaida. Užsakymas nerastas.",
+  "Errors.NetworkError": "Įvyko klaida. Perkraukite puslapį.",
   "Errors.FieldNotEmpty": "Šis laukas privalomas"
 }
