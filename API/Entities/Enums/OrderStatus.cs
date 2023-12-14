@@ -2,8 +2,8 @@
 {
     public enum OrderStatus
     {
-        PENDING = 0,
-        PAYMENT_RECEIVED = 1,
-        PAYMENT_FAILED = 2
+        PENDING,
+        PAYMENT_RECEIVED,
+        PAYMENT_FAILED
     }
 }

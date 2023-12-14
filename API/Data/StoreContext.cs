@@ -1,4 +1,6 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace API.Data
 {
-    public class StoreContext : DbContext
+    public class StoreContext : IdentityDbContext<User, IdentityRole<string>, string>
     {
-        public StoreContext(DbContextOptions<StoreContext> options) : base(options) 
+        public StoreContext(DbContextOptions options) : base(options) 
         {
 
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -30,6 +32,36 @@ namespace API.Data
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Payment> Payments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<IdentityRole>().HasData(new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "2",
+                    Name = "Client",
+                    NormalizedName = "CLIENT"
+                },
+                new IdentityRole
+                {
+                    Id = "3",
+                    Name = "Shop-Employee",
+                    NormalizedName = "SHOP-EMPLOYEE"
+                }
+            });
+
+
+        }
+
 
     }
 }

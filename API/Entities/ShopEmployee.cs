@@ -1,20 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API.Entities.Enums;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Entities
 {
-    public class ShopEmployee
+    public class ShopEmployee : User
     {
-        [Key]
-        public int PersonalIdentificationNumber { get; set; }
-        public string Name { get; set; } = null!;
-        public string Surname { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public string Email { get; set; } = null!;
         public float Wage { get; set; }
-        public string Gender { get; set; } = null!;
+        public Gender Gender { get; set; } 
         public string JobPosition { get; set; } = null!;
-        public int ShopId { get; set; }
+        public virtual int ShopId { get; set; }
 
         
     }

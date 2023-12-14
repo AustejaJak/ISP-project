@@ -1,5 +1,11 @@
 ﻿using API.Data;
+using API.Data.DTOs;
+using API.Entities;
+using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace API.Controllers
 {
@@ -9,9 +15,177 @@ namespace API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly StoreContext _context;
-        public ProductsController(StoreContext storeContext)
+        private readonly IProductService _productService;
+
+        public ProductsController(StoreContext storeContext, IProductService productService)
         {
             _context = storeContext;
+            _productService = productService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ProductDTO>>> GetProducts()
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products.Select(prod =>
+                new ProductDTO()
+                {
+                    SKU = prod.SKU,
+                    Name = prod.Name,
+                    Description = prod.Description,
+                    Cost = prod.Cost,
+                    PictureUrl = prod.PictureUrl,
+                    QuantityInStorage = prod.QuantityInStorage,
+                    Type = prod.Type,
+                    CountryOfOrigin = prod.CountryOfOrigin,
+                    Measurements = prod.Measurements,
+                    QuantityInPackage = prod.QuantityInPackage,
+                    Weight = prod.Weight,
+                    IsConfirmed = prod.IsConfirmed,
+
+                }       
+            ).ToListAsync();
+
+            return products;
+
+        }
+
+        [Authorize(Roles = "Client")]
+        [HttpGet("{sku}", Name = "GetById")]
+        public async Task<ActionResult<ProductDTO>> GetProductById (string sku)
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products.Where(prod => prod.SKU.Equals(sku)).SingleOrDefaultAsync();
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
+        }
+
+        [Authorize(Roles = "Client")]
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProduct(ProductDTO productDTO)
+        {
+            var product = new Product()
+            {
+                SKU = productDTO.SKU,
+                Name = productDTO.Name,
+                Description = productDTO.Description,
+                Cost = productDTO.Cost,
+                PictureUrl = productDTO.PictureUrl,
+                QuantityInStorage = productDTO.QuantityInStorage,
+                Type = productDTO.Type,
+                CountryOfOrigin = productDTO.CountryOfOrigin,
+                Measurements = productDTO.Measurements,
+                QuantityInPackage = productDTO.QuantityInPackage,
+                Weight = productDTO.Weight,
+                IsConfirmed = productDTO.IsConfirmed,
+            };
+
+            await _context.Products.AddAsync(product);
+            var result = await _context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                return CreatedAtRoute("GetById", new { sku = product.SKU }, product);
+            }
+
+            return BadRequest(new ProblemDetails { Title = "Problem creating new product" });
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("{sku}")]
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(string sku, [FromBody] ProductDTO productDTO)
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products.FindAsync(sku);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            string jsonString = System.Text.Json.JsonSerializer.Serialize<ProductDTO>(productDTO);
+            JsonConvert.PopulateObject(jsonString, product);
+            await _context.SaveChangesAsync();
+
+            ProductDTO updatedProduct = new ProductDTO()
+            {
+                SKU = product.SKU,
+                Name = product.Name,
+                Description = product.Description,
+                Cost = product.Cost,
+                PictureUrl = product.PictureUrl,
+                QuantityInStorage = product.QuantityInStorage,
+                Type = product.Type,
+                CountryOfOrigin = product.CountryOfOrigin,
+                Measurements = product.Measurements,
+                QuantityInPackage = product.QuantityInPackage,
+                Weight = product.Weight,
+                IsConfirmed = product.IsConfirmed,
+            };
+
+            return Ok(updatedProduct);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{sku}")]
+        public async Task<ActionResult> DeleteProduct(string sku)
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products.Where(prod => prod.SKU.Equals(sku)).SingleOrDefaultAsync();
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            bool result = await _context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(new ProblemDetails { Title = "Problem deleting product" });
+        }
+
+        [HttpGet("GetUnvalidated")]
+        public async Task<ActionResult<List<Product>>> GetUnvalidatedProducts()
+        {
+            var products = await _productService.GetUnvalidatedProducts();
+            if (products == null)
+            {
+                return NotFound();
+            }
+            return Ok(products);
+        }
+
+        [HttpPost("{productId}")]
+        public async Task<ActionResult> ValidateProduct(string productId)
+        {
+            var result = await _productService.ValidateProduct(productId);
+            if (result == false)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
     }
 }

@@ -18,5 +18,7 @@ namespace API.Entities
         public float Weight { get; set; }
         public bool IsConfirmed { get; set; } = false;
 
+
+
     }
 }
