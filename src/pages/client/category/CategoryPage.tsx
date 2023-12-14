@@ -3,7 +3,6 @@ import ProductsList from "../../../components/products-list/ProductsList";
 import ProductsFilter from "../../../components/products-filter/ProductsFilter";
 import products from "../../../products.json";
 import { useEffect, useMemo, useState } from "react";
-import Footer from "../../../components/footer/Footer";
 import { filters } from "./model";
 import { useMutation } from "@tanstack/react-query";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
@@ -68,7 +67,6 @@ const CategoryPage = () => {
       >
         <ProductsList products={clothingItems} />
       </ProductsFilter>
-      <Footer />
     </>
   );
 };

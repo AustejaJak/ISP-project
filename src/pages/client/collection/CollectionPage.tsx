@@ -2,7 +2,6 @@ import React from "react";
 import products from "../../../products.json";
 import ProductsFilter from "../../../components/products-filter/ProductsFilter";
 import ProductsList from "../../../components/products-list/ProductsList";
-import Footer from "../../../components/footer/Footer";
 import { defaultFilters } from "../../../filters/DefaultFilters";
 
 const CollectionPage = () => {
@@ -25,7 +24,6 @@ const CollectionPage = () => {
       <ProductsFilter category={category} filters={defaultFilters}>
         <ProductsList products={watchItems} />
       </ProductsFilter>
-      <Footer />
     </>
   );
 };

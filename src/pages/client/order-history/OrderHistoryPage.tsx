@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import Footer from "../../../components/footer/Footer";
 import {
   OrderProps,
   OrdersHistory,
@@ -72,7 +71,6 @@ const OrderHistoryPage = () => {
         isLoading={false}
         orders={orders || ([] as OrderProps[])}
       />
-      <Footer />
     </>
   );
 };

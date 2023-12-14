@@ -1,6 +1,5 @@
 import React from "react";
 import { ShoppingCart } from "../../../components/shopping-cart-ui/ShoppingCartUi";
-import Footer from "../../../components/footer/Footer";
 import { useCartContext } from "../../../context/cartContext";
 
 const ShoppingCartPage = () => {
@@ -9,7 +8,6 @@ const ShoppingCartPage = () => {
   return (
     <>
       <ShoppingCart products={cart.products} total={cart.total} />
-      <Footer />
     </>
   );
 };

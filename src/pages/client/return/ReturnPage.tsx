@@ -1,5 +1,4 @@
 import ReturnForm from "../../../components/forms/return/ReturnForm";
-import Footer from "../../../components/footer/Footer";
 import BasePage from "../../../components/base-page/BasePage";
 import { useNavigate, useParams } from "react-router-dom";
 import closeIcon from "../../../images/close.svg";
@@ -47,7 +46,6 @@ const ReturnPage = () => {
         <div className='flex justify-center'>
           <ReturnForm order={order || returnOrder} isLoading={isLoading} />
         </div>
-        <Footer />
       </div>
     </BasePage>
   );
