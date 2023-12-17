@@ -8,18 +8,19 @@ namespace API.Entities
         public int Id { get; set; }
         public float TotalSum { get; set; } = 0;
         public int ItemCount { get; set; } = 0;
-        public virtual string ClientId { get; set; } = null!;
-        public virtual Client Client { get; set; } = null!;
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
+        public string ClientId { get; set; } = null!;
         public virtual ICollection<BasketItem> Items { get; set; } = new List<BasketItem>();
 
         public void AddItem(Product product, int quantity)
         {
             if(Items.All(it => !it.Id.Equals(product.SKU)))
             {
-                Items.Add(new BasketItem { Id = product.SKU, Quantity = quantity });
+                Items.Add(new BasketItem { Product = product, ProductId = product.SKU, Quantity = quantity });
             }
 
-            var item = Items.FirstOrDefault(it => it.Id.Equals(product.SKU));
+            var item = Items.FirstOrDefault(it => it.ProductId.Equals(product.SKU));
             if (item != null)
             {
                 item.Quantity += quantity;
@@ -33,7 +34,7 @@ namespace API.Entities
 
         public void RemoveItem(string itemId, int quantity)
         {
-            var item = Items.FirstOrDefault(it => it.Id.Equals(itemId));
+            var item = Items.FirstOrDefault(it => it.ProductId.Equals(itemId));
             if (item == null)
             {
                 return;

@@ -27,17 +27,21 @@ namespace API.Data.Migrations
 
                     b.Property<string>("ClientId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("longtext");
 
                     b.Property<int>("ItemCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("longtext");
 
                     b.Property<float>("TotalSum")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
 
                     b.ToTable("Baskets");
                 });
@@ -147,6 +151,10 @@ namespace API.Data.Migrations
                     b.Property<int?>("OrderSummaryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("ShopId")
                         .HasColumnType("int");
 
@@ -244,6 +252,10 @@ namespace API.Data.Migrations
                 {
                     b.Property<string>("SKU")
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<float>("Cost")
                         .HasColumnType("float");
@@ -707,17 +719,6 @@ namespace API.Data.Migrations
                             Name = "Shop-Employee",
                             NormalizedName = "SHOP-EMPLOYEE"
                         });
-                });
-
-            modelBuilder.Entity("API.Entities.Basket", b =>
-                {
-                    b.HasOne("API.Entities.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("API.Entities.BasketItem", b =>

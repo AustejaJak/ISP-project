@@ -56,6 +56,12 @@ namespace API.Data
                     Id = "3",
                     Name = "Shop-Employee",
                     NormalizedName = "SHOP-EMPLOYEE"
+                },
+                new IdentityRole
+                {
+                    Id = "4",
+                    Name = "Shop-Admin",
+                    NormalizedName = "SHOP-ADMIN"
                 }
             });
 

@@ -1,11 +1,6 @@
 ﻿using API.Data.DTOs;
 using API.Services.Interfaces;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
-using MimeKit.Text;
 
 namespace API.Controllers
 {

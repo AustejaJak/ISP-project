@@ -72,8 +72,7 @@ namespace API.Controllers
             var result = await _authService.Login(user);
             if (result != null)
             {
-                var tokenString = await _jwtGenerationService.CreateToken(result);
-                var userBasket = await RetrieveBasket(result.UserName!);
+                var userBasket = await RetrieveBasket(result.Id!);
                 var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
 
                 if (anonBasket != null)
@@ -88,7 +87,11 @@ namespace API.Controllers
                     await _storeContext.SaveChangesAsync();
                 }
 
-                var dto = new UserDTO { Username = result.UserName!, Token = tokenString, Basket = anonBasket != null ? anonBasket.MapBasketToBasketDTO() : userBasket.MapBasketToBasketDTO() };
+                var dto = new UserDTO 
+                { 
+                    Username = result.UserName!,
+                    Token = await _jwtGenerationService.CreateToken(result),
+                    Basket = anonBasket != null ? anonBasket.MapBasketToBasketDTO() : userBasket?.MapBasketToBasketDTO() };
                 
                 return Ok(dto);
             }

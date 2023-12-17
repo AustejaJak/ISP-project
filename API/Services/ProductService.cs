@@ -42,5 +42,17 @@ namespace API.Services
             }
             return false;
         }
+
+        public async Task<List<Product>?> GetValidatedProducts()
+        {
+            var products = await _storeContext.Products.Where(x => x.IsConfirmed == true).ToListAsync();
+            if (products == null)
+            {
+                //string errorMessage = "There are no unvalidated products";
+                return null;
+
+            }
+            return products;
+        }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using API.Data.DTOs;
-using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
-using MailKit.Net.Smtp;
 using API.Services.Interfaces;
+using SendGrid.Helpers.Mail;
+using SendGrid;
 
 namespace API.Services
 {
@@ -15,22 +13,17 @@ namespace API.Services
         {
             _config = config;
         }
-        public void SendEmail(EmailDTO request)
+        public async Task SendEmail(EmailDTO request)
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_config["MailSettings:EmailUsername"]));
-            email.To.Add(MailboxAddress.Parse(request.EmailToName));
-            email.Subject = request.EmailSubject;
-            email.Body = new TextPart(TextFormat.Html)
-            {
-                Text = request.EmailBody
-            };
-
-            using var smtp = new SmtpClient();
-            smtp.Connect(_config["MailSettings:EmailHost"], 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_config["MailSettings:EmailUsername"], _config["MailSettings:EmailPassword"]);
-            smtp.Send(email);
-            smtp.Disconnect(true);
+            var apiKey = _config["MailSettings:ApiKey"];
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress(_config["MailSettings:EmailHost"], "ISP-Ecommerce");
+            var subject = request.EmailSubject;
+            var to = new EmailAddress(request.EmailName, request.UserName);
+            var plainTextContent = request.EmailBody;
+            var htmlContent = "";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
         }
     }
 }

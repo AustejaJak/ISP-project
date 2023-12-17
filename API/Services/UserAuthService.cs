@@ -29,7 +29,6 @@ namespace API.Services
                 Gender = client.Gender,
                 HasAccepted = client.HasAccepted == null ? false : true,
                 RegisterDate = DateTime.Now,
-                DeliveryAddress = client.DeliveryAddress,
                 PhoneNumber = client.PhoneNumber
             };
             var result = await _userManager.CreateAsync(user, client.Password);
@@ -52,10 +51,23 @@ namespace API.Services
                 Address = employee.Address,
                 Wage = employee.Wage,
                 Gender = employee.Gender,
-                JobPosition = employee.JobPosition
+                JobPosition = employee.JobPosition,
+                ShopId = employee.ShopId
+
             };
+
             var result = await _userManager.CreateAsync(user, employee.Password);
-            await _userManager.AddToRoleAsync(user, "Shop-Employee");
+
+            if (employee.IsShopAdmin)
+            {
+                await _userManager.AddToRoleAsync(user, "Shop-Admin");
+
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(user, "Shop-Employee");
+            }
+
             return result.Succeeded;
 
         }

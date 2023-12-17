@@ -9,9 +9,10 @@ namespace API.Entities
         public int OrderId { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public float OrderCost { get; set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.PENDING;
         public string AttachedDocuments { get; set; } = null!;
         public string DeliveryAddress { get; set; } = null!;
+        public string PaymentIntentId { get; set; } = null!;
         public virtual string ClientId { get; set; } = null!;
         public virtual Client Client { get; set; } = null!;
         public virtual int BasketId { get; set; }

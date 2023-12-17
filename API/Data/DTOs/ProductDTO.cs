@@ -10,6 +10,7 @@
         public int QuantityInStorage { get; set; }
         public string Type { get; set; } = null!;
         public string CountryOfOrigin { get; set; } = null!;
+        public string Brand { get; set; } = null!;
         public string Measurements { get; set; } = null!;
         public int QuantityInPackage { get; set; }
         public float Weight { get; set; }

@@ -42,6 +42,7 @@ namespace API.Controllers
                     QuantityInStorage = prod.QuantityInStorage,
                     Type = prod.Type,
                     CountryOfOrigin = prod.CountryOfOrigin,
+                    Brand = prod.Brand,
                     Measurements = prod.Measurements,
                     QuantityInPackage = prod.QuantityInPackage,
                     Weight = prod.Weight,
@@ -72,7 +73,7 @@ namespace API.Controllers
             return Ok(product);
         }
 
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> CreateProduct(ProductDTO productDTO)
         {
@@ -86,6 +87,7 @@ namespace API.Controllers
                 QuantityInStorage = productDTO.QuantityInStorage,
                 Type = productDTO.Type,
                 CountryOfOrigin = productDTO.CountryOfOrigin,
+                Brand = productDTO.Brand,
                 Measurements = productDTO.Measurements,
                 QuantityInPackage = productDTO.QuantityInPackage,
                 Weight = productDTO.Weight,
@@ -103,9 +105,9 @@ namespace API.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPatch("{sku}")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(string sku, [FromBody] ProductDTO productDTO)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(string sku, [FromBody] ProductEditDTO productDTO)
         {
             if (_context.Products == null)
             {
@@ -118,7 +120,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            string jsonString = System.Text.Json.JsonSerializer.Serialize<ProductDTO>(productDTO);
+            string jsonString = System.Text.Json.JsonSerializer.Serialize<ProductEditDTO>(productDTO);
             JsonConvert.PopulateObject(jsonString, product);
             await _context.SaveChangesAsync();
 
@@ -132,6 +134,7 @@ namespace API.Controllers
                 QuantityInStorage = product.QuantityInStorage,
                 Type = product.Type,
                 CountryOfOrigin = product.CountryOfOrigin,
+                Brand = product.Brand,
                 Measurements = product.Measurements,
                 QuantityInPackage = product.QuantityInPackage,
                 Weight = product.Weight,
@@ -186,6 +189,17 @@ namespace API.Controllers
                 return NotFound();
             }
             return Ok();
+        }
+
+        [HttpGet("GetValidated")]
+        public async Task<ActionResult<List<Product>>> GetValidatedProducts()
+        {
+            var products = await _productService.GetValidatedProducts();
+            if (products == null)
+            {
+                return NotFound();
+            }
+            return Ok(products);
         }
     }
 }

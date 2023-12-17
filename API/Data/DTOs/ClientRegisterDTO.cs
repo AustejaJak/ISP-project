@@ -13,6 +13,5 @@ namespace API.Data.DTOs
         public required DateTime BirthDate { get; set; }
         public required Gender Gender { get; set; }
         public bool? HasAccepted { get; set; }
-        public required string DeliveryAddress { get; set; }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using API.Data.DTOs;
 using API.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
 namespace API.Extensions
 {
     public static class MapOrderToDTO
     {
-        public static OrderDTO MapOrderToOrderDTO(this Order order)
+        public static IQueryable<OrderDTO> MapOrderToOrderDTO(this IQueryable<Order> query)
         {
-            return new OrderDTO
+            return query
+            .Select(order => new OrderDTO
             {
                 OrderId = order.OrderId,
                 OrderDate = order.OrderDate,
@@ -20,7 +22,7 @@ namespace API.Extensions
                 BasketId = order.BasketId,
                 ShopId = order.ShopId,
                 DiscountId = order.DiscountId
-            };
+            }).AsNoTracking();
         }
     }
 }

@@ -15,6 +15,7 @@ import CheckoutPage from "./checkout/CheckoutPage";
 import ShoppingCartPage from "./shopping-cart-page-ui/ShoppingCartPage";
 import OrderHistoryPage from "./order-history/OrderHistoryPage";
 import ReturnPage from "./return/ReturnPage";
+import { Footer } from "../../components/footer/Footer";
 
 const userNavigation = [
   { name: "Mano paskyra", href: Routes.client.profile },
@@ -75,6 +76,7 @@ const Client = () => {
           }
         />
       </DomRoutes>
+      <Footer />
     </>
   );
 };

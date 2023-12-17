@@ -15,5 +15,6 @@ namespace API.Data.DTOs
         public required Gender Gender { get; set; } 
         public required string JobPosition { get; set; }
         public required int ShopId { get; set; }
+        public bool IsShopAdmin { get; set; } = false;
     }
 }

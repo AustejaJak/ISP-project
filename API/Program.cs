@@ -12,13 +12,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var config = builder.Configuration;
-
-
 
 builder.Services.AddAuthorization();
 builder.Services.AddTransient<IClientService, ClientService>();
@@ -28,7 +27,7 @@ builder.Services.AddTransient<IBasketService, BasketService>();
 builder.Services.AddTransient<IUserAuthService, UserAuthService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IJwtGenerationService, JwtGenerationService>();
-
+builder.Services.AddTransient<IPaymentService, PaymentService>();
 
 
 builder.Services.AddIdentity<User, IdentityRole>(opt =>
@@ -97,14 +96,16 @@ builder.Services.AddSwaggerGen(options =>
 var connectionString = config.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-});
+
 
 builder.Services.AddControllers().AddNewtonsoftJson();
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+//});
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

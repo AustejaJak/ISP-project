@@ -30,6 +30,7 @@ const ProfileInformation = () => {
     setValue("name", userInformation.name);
     setValue("surname", userInformation.surname);
     setValue("email", userInformation.email);
+    setValue("password", "123456789");
   }, [userInformation]);
 
   const processForm = () => {
@@ -72,6 +73,16 @@ const ProfileInformation = () => {
             errorMessage={errors[ProfileInformationFormField.EMAIL]?.message}
             isChangeable
             changeableText='Pakeisti El. paštą'
+            onChangeableTextClick={() => setIsChangeEmailModalOpen(true)}
+          />
+          <BaseChangeableInput
+            formField={ProfileInformationFormField.PASSWORD}
+            label='Slaptažodis'
+            type='password'
+            disabled
+            errorMessage={errors[ProfileInformationFormField.PASSWORD]?.message}
+            isChangeable
+            changeableText='Pakeisti slaptažodį'
             onChangeableTextClick={() => setIsChangeEmailModalOpen(true)}
           />
         </form>

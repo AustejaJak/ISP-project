@@ -19,6 +19,8 @@ export const CheckoutUi = () => {
     cart: { products, total },
   } = useCartContext();
 
+  console.log(products);
+
   const totalAfterDiscounts = useMemo(
     () => (total / 100 - Number(discount.amount / 100)).toFixed(2),
     [total, discount]

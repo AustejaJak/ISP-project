@@ -1,14 +1,11 @@
-import {CheckoutUi} from "../../../components/checkout-ui/CheckoutUi";
-import Footer from "../../../components/footer/Footer";
-
+import { CheckoutUi } from "../../../components/checkout-ui/CheckoutUi";
 
 const CheckoutPage = () => {
-    return (
-        <>
-            <CheckoutUi/>
-            <Footer/>
-        </>
-    );
+  return (
+    <>
+      <CheckoutUi />
+    </>
+  );
 };
 
 export default CheckoutPage;
