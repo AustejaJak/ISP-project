@@ -16,10 +16,16 @@ export const productApi = {
     }>(`${BASE_URL}`, product);
     return data.data;
   },
-  editProduct: async (product: any) => {
-    const { data } = await axiosInstance.put<{
+  editProduct: async ({
+    productId,
+    product,
+  }: {
+    productId: string;
+    product: ProductProp;
+  }) => {
+    const { data } = await axiosInstance.patch<{
       data: ProductProp;
-    }>(`${BASE_URL}`, { product });
+    }>(`${BASE_URL}/${productId}`, product);
     return data.data;
   },
   deleteProduct: async (productId: string) => {
@@ -35,10 +41,10 @@ export const productApi = {
     return data.data;
   },
   getCompanyActiveProducts: async () => {
-    const { data } = await axiosInstance.get<{
-      data: ProductProp[];
-    }>(`${BASE_URL}/active`);
-    return data.data;
+    const { data } = await axiosInstance.get<ProductProp[]>(
+      `${BASE_URL}/GetValidated`
+    );
+    return data;
   },
   getCompanyPendingProducts: async () => {
     const { data } = await axiosInstance.get<ProductProp[]>(

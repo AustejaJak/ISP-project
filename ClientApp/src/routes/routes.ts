@@ -5,6 +5,7 @@ const Routes = {
     inventory: "/inventory",
     users: "/users",
     productsAdd: "/inventory/productsAdd",
+    discount: "/discount",
   },
   client: {
     prefix: "/client",

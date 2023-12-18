@@ -28,6 +28,11 @@ const Backoffice = () => {
       href: `${Routes.backoffice.prefix}${Routes.backoffice.users}`,
       current: false,
     },
+    {
+      name: t("BackofficeBasePage.DiscountNavigationTitle"),
+      href: `${Routes.backoffice.discount}`,
+      current: false,
+    },
   ];
   return (
     <>

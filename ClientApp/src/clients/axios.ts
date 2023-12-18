@@ -1,4 +1,5 @@
 import axios from "axios";
+import cookie from "cookiejs";
 
 const axiosInstance = axios.create({
   baseURL: "/",
@@ -8,10 +9,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = undefined;
-    const authToken = null;
+    const token = cookie.get("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${authToken}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },

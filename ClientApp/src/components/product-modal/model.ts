@@ -12,10 +12,12 @@ export enum CreateProductFields {
   DESCRIPTION = "description",
   PRICE = "cost",
   WEIGHT = "weight",
+  BRAND = "brand",
 }
 
 export const createProductModel = object({
   [CreateProductFields.SKU]: string().min(1, t("Errors.FieldNotEmpty")),
+  [CreateProductFields.BRAND]: string().min(1, t("Errors.FieldNotEmpty")),
   [CreateProductFields.PICTURE_URL]: string().min(1, t("Errors.FieldNotEmpty")),
   [CreateProductFields.TYPE]: string().min(1, t("Errors.FieldNotEmpty")),
   [CreateProductFields.WEIGHT]: string()
@@ -42,6 +44,7 @@ export const createProductModel = object({
 
 export const createProductDefaultValues = {
   [CreateProductFields.SKU]: "",
+  [CreateProductFields.BRAND]: "",
   [CreateProductFields.PICTURE_URL]: "",
   [CreateProductFields.TYPE]: "",
   [CreateProductFields.WEIGHT]: 0,

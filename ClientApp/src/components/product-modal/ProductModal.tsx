@@ -64,7 +64,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   });
 
   useEffect(() => {
-    console.log(product, productId);
     if (product && productId) {
       setValue("sku", product.sku as never);
       setValue("pictureUrl", product.pictureUrl as never);
@@ -79,6 +78,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
       setValue("description", product.description as never);
       setValue("cost", product.cost.toString() as never);
       setValue("weight", product.weight.toString() as never);
+      setValue("brand", product.brand as never);
     }
     return () => {
       reset();
@@ -181,6 +181,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           errorMessage={
             errors[CreateProductFields.QUANTITY_IN_PACKAGE]?.message
           }
+        />
+        <BaseTextField
+          formField={CreateProductFields.BRAND}
+          label={t("Product.Brand")}
+          type='text'
+          errorMessage={errors[CreateProductFields.BRAND]?.message}
         />
       </div>
     );

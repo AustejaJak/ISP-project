@@ -25,15 +25,19 @@ const ActivePage = () => {
   });
 
   const processForm = (data: any) => {
-    editProduct.mutate(data, {
-      onSuccess: (res) => {
-        setMessage("Produkto informacija pakeista.");
-        setIsProductModalOpen(false);
-      },
-      onError: (err) => {
-        setMessage(err.message);
-      },
-    });
+    if (!productId) return;
+    editProduct.mutate(
+      { productId, product: data },
+      {
+        onSuccess: (res) => {
+          setMessage("Produkto informacija pakeista.");
+          setIsProductModalOpen(false);
+        },
+        onError: (err) => {
+          setMessage(err.message);
+        },
+      }
+    );
   };
 
   const handleProductEdit = (id: string) => {
