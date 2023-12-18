@@ -8,6 +8,7 @@ import { clientApi } from "../../clients/api/clientApi";
 import { QueryKey } from "../../clients/react-query/queryKeys";
 import { useNavigate } from "react-router-dom";
 import { useSnackbarContext } from "../../context/snackbarContext";
+import cookie from "cookiejs";
 
 const SignIn = () => {
   const methods = useForm({
@@ -33,7 +34,9 @@ const SignIn = () => {
     const data = signInModel.parse(getValues());
 
     authenticateClient.mutate(data, {
-      onSuccess: (res) => {
+      onSuccess: (data) => {
+        console.log(data);
+        cookie("token", data.token, 7);
         navigate("/");
       },
       onError: (err) => {

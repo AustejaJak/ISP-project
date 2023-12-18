@@ -11,6 +11,7 @@
   "Product.Title": "Pavadinimas",
   "Product.Weight": "Svoris",
   "Product.Description": "Aprašymas",
+  "Product.Brand": "Tiekejas",
   "Product.Price": "Kaina",
   "Product.Vendor": "Tiekėjas",
   "Product.Image": "Nuotrauka",
@@ -74,6 +75,7 @@
   "SignInPage.SignInButton": "Prisijungti",
 
   "BackofficeBasePage.OrdersTitle": "Užsakymai",
+  "BackofficeBasePage.DiscountNavigationTitle": "Nuolaidų kodai",
   "BackofficeBasePage.StatisticLast30Days": "Paskutinės 30 dienų",
   "OrdersStatistics.ProfitTitle": "Pelnas",
   "OrdersStatistics.AverageOrderPriceTitle": "Vidutinė užsakymo kaina",

@@ -40,14 +40,14 @@ namespace API.Controllers
             _context.Baskets.Add(basket);
             return basket;
         }
-
+        [Authorize]
         [HttpGet(Name = "GetBasket")]
         public async Task<ActionResult<BasketDTO>> GetUsersBasket()
         {
             var basket = await _basketService.GetBasket(GetBuyerId());
             if (basket == null)
             {
-                return NotFound();  
+                return NotFound();
             }
             return Ok(basket);
 
@@ -63,7 +63,6 @@ namespace API.Controllers
             }
             return NotFound();
         }
-
         [Authorize]
         [HttpPost("AddItem")]
         public async Task<ActionResult<BasketDTO>> AddItemToBasket(string productId, int quantity)
@@ -148,7 +147,7 @@ namespace API.Controllers
                 .ThenInclude(p => p.Product)
                 .FirstOrDefaultAsync(x => x.ClientId == buyerId);
 
-                    
+
         }
 
     }

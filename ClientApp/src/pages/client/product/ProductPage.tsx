@@ -6,7 +6,6 @@ import { productApi } from "../../../clients/api/productApi";
 
 export type ProductProp = {
   sku: string;
-  vendor: string;
   name: string;
   pictureUrl: string;
   quantityInStorage: number;
@@ -19,12 +18,13 @@ export type ProductProp = {
   rating: number;
   description: string;
   isConfirmed: boolean;
+  brand: string;
 };
 
 const product: ProductProp = {
   sku: "1",
-  vendor: "Casio",
   name: "Skaitmeninis laikrodis",
+  brand: "Casio",
   countryOfOrigin: "LIETUVA",
   measurements: "10x10x10",
   weight: 0.4,
