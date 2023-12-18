@@ -24,11 +24,39 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery]ProductFilterParams test)
         {
             if (_context.Products == null)
             {
                 return NotFound();
+            }
+
+
+            if (test != null)
+            {
+                return await _context.Products
+                    .Where(p => string.IsNullOrEmpty(test.Brands) || p.Brand.ToLower().Equals(test.Brands.ToLower()))
+                    .Where(p => string.IsNullOrEmpty(test.Types) || p.Type.ToLower().Equals(test.Types.ToLower()))
+                    .Where(p => !test.PriceFrom.HasValue || p.Cost >= test.PriceFrom.Value)
+                    .Where(p => !test.PriceTo.HasValue || p.Cost <= test.PriceTo.Value)
+                    .Select(prod => 
+                    new ProductDTO()
+                    {
+                        SKU = prod.SKU,
+                        Name = prod.Name,
+                        Description = prod.Description,
+                        Cost = prod.Cost,
+                        PictureUrl = prod.PictureUrl,
+                        QuantityInStorage = prod.QuantityInStorage,
+                        Type = prod.Type,
+                        CountryOfOrigin = prod.CountryOfOrigin,
+                        Brand = prod.Brand,
+                        Measurements = prod.Measurements,
+                        QuantityInPackage = prod.QuantityInPackage,
+                        Weight = prod.Weight,
+                        IsConfirmed = prod.IsConfirmed,
+                    })
+                    .ToListAsync();
             }
 
             var products = await _context.Products.Select(prod =>
@@ -201,5 +229,51 @@ namespace API.Controllers
             }
             return Ok(products);
         }
+
+        [HttpGet("filters")]
+        public async Task<ActionResult> GetFilters()
+        {
+            var types = await _context.Products.Select(p => p.Type).ToListAsync();
+            var brands = await _context.Products.Select(p => p.Brand).ToListAsync();
+
+            return Ok(new { types, brands });
+        }
+
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<ProductDTO>>> GetByType(string type)
+        {
+            if (type == null)
+            {
+                return BadRequest();
+            }
+
+            var products = await _context.Products.Where(x => x.Type.Equals(type)).Select(prod => new ProductDTO
+            {
+                SKU = prod.SKU,
+                Name = prod.Name,
+                Description = prod.Description,
+                Cost = prod.Cost,
+                PictureUrl = prod.PictureUrl,
+                QuantityInStorage = prod.QuantityInStorage,
+                Type = prod.Type,
+                CountryOfOrigin = prod.CountryOfOrigin,
+                Brand = prod.Brand,
+                Measurements = prod.Measurements,
+                QuantityInPackage = prod.QuantityInPackage,
+                Weight = prod.Weight,
+                IsConfirmed = prod.IsConfirmed
+            }).ToListAsync();
+
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(products);
+
+
+        }
+
+        
     }
 }

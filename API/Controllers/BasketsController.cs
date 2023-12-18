@@ -3,6 +3,7 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,7 @@ namespace API.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpPost("AddItem")]
         public async Task<ActionResult<BasketDTO>> AddItemToBasket(string productId, int quantity)
         {
