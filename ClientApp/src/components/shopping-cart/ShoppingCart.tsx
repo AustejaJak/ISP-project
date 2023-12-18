@@ -36,19 +36,18 @@ export default function ShoppingCart() {
 
             <ul role='list' className='divide-y divide-gray-200'>
               {cart.products.map(({ product }) => (
-                <li key={product.id} className='flex items-center py-6'>
+                <li key={product.sku} className='flex items-center py-6'>
                   <img
-                    src={product.images[0].imageUrl}
+                    src={product.pictureUrl}
                     alt=''
                     className='h-16 w-16 flex-none rounded-md border border-gray-200'
                   />
                   <div className='ml-4 flex-auto'>
                     <h3 className='font-medium text-gray-900'>
-                      <Anchor href={`/product/${product.id}`}>
+                      <Anchor href={`/product/${product.sku}`}>
                         {product.name}
                       </Anchor>
                     </h3>
-                    <p className='text-gray-500'>{product.colors[0].name}</p>
                   </div>
                 </li>
               ))}

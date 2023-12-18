@@ -35,10 +35,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               className='divide-y divide-gray-200 border-t border-b border-gray-200'
             >
               {products.map(({ product, count }, productIdx) => (
-                <li key={product.id} className='flex py-6 sm:py-10'>
+                <li key={product.sku} className='flex py-6 sm:py-10'>
                   <div className='flex-shrink-0'>
                     <img
-                      src={product.images[0].imageUrl}
+                      src={product.pictureUrl}
                       alt=''
                       className='h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48'
                     />
@@ -50,20 +50,15 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                         <div className='flex justify-between'>
                           <h3 className='text-sm'>
                             <Anchor
-                              href={`/product/${product.id}`}
+                              href={`/product/${product.sku}`}
                               className='font-medium text-gray-700 hover:text-gray-800'
                             >
                               {product.name}
                             </Anchor>
                           </h3>
                         </div>
-                        <div className='mt-1 flex text-sm'>
-                          <p className='text-gray-500'>
-                            {product.colors[0].name}
-                          </p>
-                        </div>
                         <p className='mt-1 text-sm font-medium text-gray-900'>
-                          {product.price / 100}$
+                          {product.cost}$
                         </p>
                       </div>
 
@@ -80,7 +75,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                           value={count}
                           onChange={(e) =>
                             ChangeProductCount(
-                              product.id,
+                              Number(product.sku),
                               Number(e.target.value)
                             )
                           }
@@ -98,9 +93,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
                         <div className='absolute top-0 right-0'>
                           <button
-                            onClick={() =>
-                              ClearItemFromCart(product.id.toString())
-                            }
+                            onClick={() => ClearItemFromCart(product.sku)}
                             type='button'
                             className='-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
                           >

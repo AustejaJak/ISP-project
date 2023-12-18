@@ -1,100 +1,26 @@
 import { t } from "i18next";
-import { useQuery } from "@tanstack/react-query";
-import { QueryKey } from "../../clients/react-query/queryKeys";
-import { inventoryApi } from "../../clients/api/backoffice/inventoryApi";
 import { Loader } from "../Loader/Loader";
 import { useSnackbarContext } from "../../context/snackbarContext";
 import { useEffect } from "react";
-import { InventoryProduct } from "../../types/types";
-import { statusEnum } from "../../enums/enums";
-
-const products = [
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    status: "ACTIVE",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    status: "ACTIVE",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    status: "PENDING",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    status: "ACTIVE",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    status: "PENDING",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    category: "Men",
-    quantity: 21,
-    status: "PENDING",
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "Produktas",
-    sku: "L1542",
-    status: "ACTIVE",
-    category: "Men",
-    quantity: 21,
-    price: 10.15,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1170&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
+import { ProductProp } from "../../pages/client/product/ProductPage";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface ProductListProps {
+  products: ProductProp[];
   setModalOpen: (id?: string) => void;
+  error: Error | null;
+  isLoading: boolean;
+  handleDeleteProduct: (id: string) => void;
 }
 
-export const ProductList: React.FC<ProductListProps> = ({ setModalOpen }) => {
+export const ProductList: React.FC<ProductListProps> = ({
+  setModalOpen,
+  error,
+  isLoading,
+  products,
+  handleDeleteProduct,
+}) => {
   const { setMessage } = useSnackbarContext();
-  const {
-    data: inventoryOrders,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: [QueryKey.GET_COMPANY_STATISTICS],
-    queryFn: inventoryApi.getCompanyInventory,
-  });
 
   useEffect(() => {
     if (error) setMessage(error.message);
@@ -170,14 +96,14 @@ export const ProductList: React.FC<ProductListProps> = ({ setModalOpen }) => {
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-gray-200 bg-white'>
-                    {inventoryOrders.map((product: InventoryProduct) => (
+                    {products?.map((product: ProductProp) => (
                       <tr key={product.name}>
                         <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6'>
                           <div className='flex items-center'>
                             <div className='h-10 w-10 flex-shrink-0'>
                               <img
                                 className='h-10 w-10'
-                                src={product.image}
+                                src={product.pictureUrl}
                                 alt=''
                               />
                             </div>
@@ -190,24 +116,28 @@ export const ProductList: React.FC<ProductListProps> = ({ setModalOpen }) => {
                           </div>
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          <div className='text-gray-900'>
-                            {product.category}
-                          </div>
+                          <div className='text-gray-900'>{product.type}</div>
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           <span className='inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800'>
-                            {statusEnum[product.status]}
+                            {product.isConfirmed
+                              ? t("BackofficeInventoryPage.TableRow.Active")
+                              : t("BackofficeInventoryPage.TableRow.Pending")}
                           </span>
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {product.quantity}
+                          {product.quantityInPackage}
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {product.price}
+                          {product.cost}
                         </td>
                         <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
+                          <DeleteForeverIcon
+                            onClick={() => handleDeleteProduct(product.sku)}
+                            className='text-red-500 mr-3 cursor-pointer'
+                          />
                           <button
-                            onClick={() => setModalOpen(product.id)}
+                            onClick={() => setModalOpen(product.sku)}
                             className='text-indigo-600 hover:text-indigo-900'
                           >
                             {t("BackofficeInventoryPage.TableHeader.Edit")}

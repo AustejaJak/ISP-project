@@ -124,6 +124,11 @@ if (app.Environment.IsDevelopment())
     }
 }
 
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5070");
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

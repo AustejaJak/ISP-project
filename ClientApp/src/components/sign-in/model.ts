@@ -2,17 +2,17 @@ import { t } from "i18next";
 import { z, object, string } from "zod";
 
 export const signInModel = object({
-  email: string().min(1, t("Errors.FieldNotEmpty")).email(),
+  username: string().min(1, t("Errors.FieldNotEmpty")),
   password: string().min(1, t("Errors.FieldNotEmpty")),
 });
 
 export const signInDefaultValues = {
-  email: "",
+  username: "",
   password: "",
 };
 
 export enum SignInFormField {
-  EMAIL = "email",
+  USERNAME = "username",
   PASSWORD = "password",
 }
 

@@ -76,21 +76,16 @@ export const CheckoutUi = () => {
                     className='divide-y divide-gray-200 border-b border-gray-200'
                   >
                     {products.map(({ product }) => (
-                      <li key={product.id} className='flex space-x-6 py-6'>
+                      <li key={product.sku} className='flex space-x-6 py-6'>
                         <img
-                          src={product.images[0].imageUrl}
+                          src={product.pictureUrl}
                           alt=''
                           className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
                         />
                         <div className='flex flex-col justify-between space-y-4'>
                           <div className='space-y-1 text-sm font-medium'>
                             <h3 className='text-gray-900'>{product.name}</h3>
-                            <p className='text-gray-900'>
-                              {product.price / 100}$
-                            </p>
-                            <p className='text-gray-500'>
-                              {product.colors[0].name}
-                            </p>
+                            <p className='text-gray-900'>{product.cost}$</p>
                           </div>
                           <div className='flex space-x-4'>
                             <button
@@ -170,17 +165,16 @@ export const CheckoutUi = () => {
             className='flex-auto divide-y divide-gray-200 overflow-y-auto px-6'
           >
             {products.map(({ product }) => (
-              <li key={product.id} className='flex space-x-6 py-6'>
+              <li key={product.sku} className='flex space-x-6 py-6'>
                 <img
-                  src={product.images[0].imageUrl}
+                  src={product.pictureUrl}
                   alt=''
                   className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
                 />
                 <div className='flex flex-col justify-between space-y-4'>
                   <div className='space-y-1 text-sm font-medium'>
                     <h3 className='text-gray-900'>{product.name}</h3>
-                    <p className='text-gray-900'>{product.price / 100}$</p>
-                    <p className='text-gray-500'>{product.colors[0].name}</p>
+                    <p className='text-gray-900'>{product.cost}$</p>
                   </div>
                   <div className='flex space-x-4'>
                     <button
