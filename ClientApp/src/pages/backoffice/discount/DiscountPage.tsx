@@ -4,10 +4,13 @@ import { useSnackbarContext } from "../../../context/snackbarContext";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { discountApi } from "../../../clients/api/backoffice/discountApi";
+import { ProductList } from "../../../components/product-list/ProductList";
+import { DiscountList } from "../../../components/DiscountsList/DiscountsList";
+import { DiscountModal } from "../../../components/DiscountModal/DiscountModal";
 
 export const DiscountPage = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
-  const [discountCodeId, setDiscountCodeId] = useState<number | undefined>(
+  const [discountCodeId, setDiscountCodeId] = useState<string | undefined>(
     undefined
   );
   const { setMessage } = useSnackbarContext();
@@ -76,20 +79,20 @@ export const DiscountPage = () => {
 
   const handleListRefetch = () => refetch();
 
-  const handleDeleteProduct = (id: string) => {
-    deleteProduct.mutate(
-      { productId: id },
-      {
-        onSuccess: () => {
-          setMessage("Produktas sėkmingai pašalintas.");
-          refetch();
-        },
-        onError: () => {
-          setMessage("Įvyko klaida, bandykite dar kartą.");
-        },
-      }
-    );
-  };
+  // const handleDeleteProduct = (id: string) => {
+  //   deleteProduct.mutate(
+  //     { productId: id },
+  //     {
+  //       onSuccess: () => {
+  //         setMessage("Produktas sėkmingai pašalintas.");
+  //         refetch();
+  //       },
+  //       onError: () => {
+  //         setMessage("Įvyko klaida, bandykite dar kartą.");
+  //       },
+  //     }
+  //   );
+  // };
 
   return (
     <>
@@ -107,31 +110,31 @@ export const DiscountPage = () => {
         <main className='-mt-32'>
           <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
             <div className='rounded-lg bg-white px-5 py-6 shadow sm:px-6'>
-              <ProductList
-                handleDeleteProduct={handleDeleteProduct}
+              <DiscountList
+                // handleDeleteProduct={handleDeleteProduct}
                 error={error}
                 isLoading={isLoading}
-                products={inventoryOrders || []}
+                discounts={inventoryOrders || []}
                 setModalOpen={handleProductEdit}
               />
             </div>
           </div>
         </main>
       </div>
-      <ProductModal
+      <DiscountModal
         buttonTitle={
-          productId ? t("ProductModal.Save") : t("ProductModal.Create")
+          discountCodeId ? t("ProductModal.Save") : t("ProductModal.Create")
         }
         refetch={handleListRefetch}
         isBackoffice={true}
-        approveAbility={!!productId}
-        productId={productId}
+        approveAbility={!!discountCodeId}
+        discountId={discountCodeId}
         closeModal={handleModalClose}
         processSubmit={(data) => processForm(data)}
         headerTitle={
-          productId
-            ? t("ProductModal.EditProduct")
-            : t("ProductModal.CreateProduct")
+          discountCodeId
+            ? t("DiscountModal.EditDiscount")
+            : t("DiscountModal.CreateDiscount")
         }
         open={isProductModalOpen}
       />

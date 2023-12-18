@@ -8,6 +8,7 @@ import UserPage from "./users/UserPage";
 import ProductAdd from "../../components/product-add-ui/ProductAddUI";
 import Header from "../../components/header/Header";
 import { t } from "i18next";
+import { DiscountPage } from "./discount/DiscountPage";
 
 const userNavigation = [{ name: "Atsijungti", href: Routes.client.base }];
 
@@ -30,7 +31,7 @@ const Backoffice = () => {
     },
     {
       name: t("BackofficeBasePage.DiscountNavigationTitle"),
-      href: `${Routes.backoffice.discount}`,
+      href: `${Routes.backoffice.prefix}${Routes.backoffice.discount}`,
       current: false,
     },
   ];
@@ -71,6 +72,14 @@ const Backoffice = () => {
           element={
             <PrivateRoute>
               <ProductAdd />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={Routes.backoffice.discount}
+          element={
+            <PrivateRoute>
+              <DiscountPage />
             </PrivateRoute>
           }
         />
