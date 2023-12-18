@@ -64,6 +64,12 @@ const CreateProcuctForm = () => {
       <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
         <div className='flex flex-col gap-5'>
           <BaseTextField
+            formField={CreateProductFields.SKU}
+            label={t("Product.SKU")}
+            type='text'
+            errorMessage={errors[CreateProductFields.SKU]?.message}
+          />
+          <BaseTextField
             formField={CreateProductFields.TITLE}
             label={t("Product.Title")}
             type='text'
@@ -74,6 +80,26 @@ const CreateProcuctForm = () => {
             label={t("Product.Description")}
             type='text'
             errorMessage={errors[CreateProductFields.DESCRIPTION]?.message}
+          />
+          <BaseTextField
+            formField={CreateProductFields.PICTURE_URL}
+            label={t("Product.Description")}
+            type='text'
+            errorMessage={errors[CreateProductFields.PICTURE_URL]?.message}
+          />
+          <BaseTextField
+            formField={CreateProductFields.QUANTITY_IN_STORAGE}
+            label={t("Product.Description")}
+            type='number'
+            errorMessage={
+              errors[CreateProductFields.QUANTITY_IN_STORAGE]?.message
+            }
+          />
+          <BaseTextField
+            formField={CreateProductFields.TYPE}
+            label={t("Product.Description")}
+            type='text'
+            errorMessage={errors[CreateProductFields.TYPE]?.message}
           />
 
           <BaseTextField
@@ -90,24 +116,28 @@ const CreateProcuctForm = () => {
             errorMessage={errors[CreateProductFields.VENDOR]?.message}
           />
 
-          <FileUploader
-            label={t("Product.Images")}
-            fieldName={CreateProductFields.IMAGES}
-          />
-
-          <BaseSelect
-            formField={CreateProductFields.COLORS}
-            label={t("Product.Color")}
-            items={colors || []}
-            errorMessage={errors[CreateProductFields.COLORS]?.message}
-          />
-
-          {/* <BaseTextField
-            formField={CreateProductFields.DETAILS}
-            label={t("Product.Details")}
+          <BaseTextField
+            formField={CreateProductFields.COUNTRY_OF_ORIGIN}
+            label={t("Product.Vendor")}
             type='text'
-            errorMessage={errors[CreateProductFields.DETAILS]?.message}
-          /> */}
+            errorMessage={
+              errors[CreateProductFields.COUNTRY_OF_ORIGIN]?.message
+            }
+          />
+          <BaseTextField
+            formField={CreateProductFields.MEASUREMENTS}
+            label={t("Product.Vendor")}
+            type='text'
+            errorMessage={errors[CreateProductFields.MEASUREMENTS]?.message}
+          />
+          <BaseTextField
+            formField={CreateProductFields.QUANTITY_IN_PACKAGE}
+            label={t("Product.Vendor")}
+            type='text'
+            errorMessage={
+              errors[CreateProductFields.QUANTITY_IN_PACKAGE]?.message
+            }
+          />
         </div>
         <div>
           <button

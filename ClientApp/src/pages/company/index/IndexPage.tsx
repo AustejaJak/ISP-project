@@ -14,7 +14,7 @@ const IndexPage = () => {
   const { setMessage } = useSnackbarContext();
 
   const createProduct = useMutation({
-    mutationKey: [QueryKey.EDIT_PRODUCT],
+    mutationKey: [QueryKey.CREATE_PRODUCT],
     mutationFn: productApi.createProduct,
   });
 

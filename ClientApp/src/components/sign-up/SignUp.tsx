@@ -29,9 +29,9 @@ const SignUp = () => {
   const { setMessage } = useSnackbarContext();
 
   const processForm = () => {
-    const data = signUpModel.parse(getValues());
+    const { repeatPassword, ...rest } = signUpModel.parse(getValues());
 
-    registerClient.mutate(data, {
+    registerClient.mutate(rest, {
       onSuccess: (res) => {
         setMessage("Registracija sėkminga");
       },
@@ -53,6 +53,14 @@ const SignUp = () => {
         <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
             <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
+              <BaseTextField
+                formField={SignUpFormField.USERNAME}
+                label={t("SignUpPage.Username")}
+                type='text'
+                className='w-full'
+                autoComplete='username'
+                errorMessage={errors[SignUpFormField.USERNAME]?.message}
+              />
               <BaseTextField
                 formField={SignUpFormField.NAME}
                 label={t("SignUpPage.FirstName")}
@@ -76,6 +84,22 @@ const SignUp = () => {
                 className='w-full'
                 autoComplete='email'
                 errorMessage={errors[SignUpFormField.EMAIL]?.message}
+              />
+              <BaseTextField
+                formField={SignUpFormField.PHONE_NUMBER}
+                label={t("SignUpPage.PhoneNumber")}
+                type='text'
+                className='w-full'
+                autoComplete='phoneNumber'
+                errorMessage={errors[SignUpFormField.PHONE_NUMBER]?.message}
+              />
+              <BaseTextField
+                formField={SignUpFormField.ADDRESS}
+                label={t("SignUpPage.Address")}
+                type='text'
+                className='w-full'
+                autoComplete='address'
+                errorMessage={errors[SignUpFormField.ADDRESS]?.message}
               />
               <BaseDatePicker
                 formField={SignUpFormField.BIRTHDATE}

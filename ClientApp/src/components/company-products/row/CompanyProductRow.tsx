@@ -1,29 +1,25 @@
 import React from "react";
 import editIcon from "../../../images/edit.svg";
+import { ProductProp } from "../../../pages/client/product/ProductPage";
 
 type CompanyProductRowProps = {
   setModalOpen: (id: string) => void;
-  product: {
-    id: number;
-    imageUrl: string;
-    title: string;
-    description: string;
-  };
+  product: ProductProp;
 };
 
 const CompanyProductRow: React.FC<CompanyProductRowProps> = ({
   product,
   setModalOpen,
 }) => {
-  const { id, imageUrl, title, description } = product;
+  const { sku, pictureUrl, name, description } = product;
   return (
     <>
-      <img src={imageUrl} alt='' className='w-24 h-24' />
-      <div>{title}</div>
+      <img src={pictureUrl} alt='' className='w-24 h-24' />
+      <div>{name}</div>
       <div>{description}</div>
       <img
         className='cursor-pointer'
-        onClick={() => setModalOpen(id.toString())}
+        onClick={() => setModalOpen(sku)}
         src={editIcon}
         alt='edit icon'
       />

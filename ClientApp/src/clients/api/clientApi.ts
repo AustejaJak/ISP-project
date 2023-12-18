@@ -1,6 +1,6 @@
 import axiosInstance from "../axios";
 
-const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/authentication`;
+const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Users`;
 
 export const clientApi = {
   getClient: async () => {
@@ -12,16 +12,16 @@ export const clientApi = {
   registerClient: async (userInformation: any) => {
     const { data } = await axiosInstance.post<{
       data: any;
-    }>(`${BASE_URL}`, { userInformation });
+    }>(`${BASE_URL}/ClientRegister`, userInformation);
     return data.data;
   },
   authenticateClient: async (userInformation: {
-    email: string;
+    username: string;
     password: string;
   }) => {
     const { data } = await axiosInstance.post<{
       data: any;
-    }>(`${BASE_URL}`, { userInformation });
+    }>(`${BASE_URL}/login`, userInformation);
     return data.data;
   },
 };

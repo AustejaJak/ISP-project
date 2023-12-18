@@ -76,16 +76,16 @@ namespace API.Controllers
                     Weight = prod.Weight,
                     IsConfirmed = prod.IsConfirmed,
 
-                }       
+                }
             ).ToListAsync();
 
             return products;
 
         }
 
-        [Authorize(Roles = "Client")]
+        // [Authorize(Roles = "Client")]
         [HttpGet("{sku}", Name = "GetById")]
-        public async Task<ActionResult<ProductDTO>> GetProductById (string sku)
+        public async Task<ActionResult<ProductDTO>> GetProductById(string sku)
         {
             if (_context.Products == null)
             {
@@ -172,7 +172,7 @@ namespace API.Controllers
             return Ok(updatedProduct);
         }
 
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpDelete("{sku}")]
         public async Task<ActionResult> DeleteProduct(string sku)
         {

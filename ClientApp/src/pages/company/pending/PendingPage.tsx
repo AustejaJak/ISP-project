@@ -16,7 +16,7 @@ const PendingPage = () => {
 
   const { data: products, isLoading } = useQuery({
     queryKey: [QueryKey.GET_COMPANY_PENDING_PRODUCTS],
-    queryFn: () => productApi.getCompanyPendingProducts(),
+    queryFn: productApi.getCompanyPendingProducts,
   });
 
   const editProduct = useMutation({
@@ -36,6 +36,8 @@ const PendingPage = () => {
     });
   };
 
+  console.log(products);
+
   const handleProductEdit = (id: string) => {
     setProductId(id);
     setIsProductModalOpen(true);
@@ -49,7 +51,7 @@ const PendingPage = () => {
     <BasePage isLoading={isLoading}>
       <CompanyProductsList
         setModalOpen={handleProductEdit}
-        items={products || []}
+        items={products ?? []}
         title={t("PageTitle.PendingProducts")}
       />
       <ProductModal

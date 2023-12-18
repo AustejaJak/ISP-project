@@ -1,19 +1,19 @@
 import { ProductProp } from "../../pages/client/product/ProductPage";
 import axiosInstance from "../axios";
 
-const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/product`;
+const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Products`;
 
 export const productApi = {
   findProductById: async ({ productId }: { productId: string }) => {
-    const { data } = await axiosInstance.get<{
-      data: ProductProp;
-    }>(`${BASE_URL}/${productId}`);
-    return data.data;
+    const { data } = await axiosInstance.get<ProductProp>(
+      `${BASE_URL}/${productId}`
+    );
+    return data;
   },
   createProduct: async (product: any) => {
     const { data } = await axiosInstance.post<{
       data: ProductProp;
-    }>(`${BASE_URL}`, { product });
+    }>(`${BASE_URL}`, product);
     return data.data;
   },
   editProduct: async (product: any) => {
@@ -41,9 +41,9 @@ export const productApi = {
     return data.data;
   },
   getCompanyPendingProducts: async () => {
-    const { data } = await axiosInstance.get<{
-      data: ProductProp[];
-    }>(`${BASE_URL}/pending`);
-    return data.data;
+    const { data } = await axiosInstance.get<ProductProp[]>(
+      `${BASE_URL}/GetUnvalidated`
+    );
+    return data;
   },
 };

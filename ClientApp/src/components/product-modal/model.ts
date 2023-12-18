@@ -1,66 +1,56 @@
-import { z, object, string, number, array } from "zod";
+import { z, object, string } from "zod";
 import { t } from "i18next";
 
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
 export enum CreateProductFields {
-  TITLE = "title",
+  SKU = "sku",
+  PICTURE_URL = "pictureUrl",
+  TYPE = "type",
+  COUNTRY_OF_ORIGIN = "countryOfOrigin",
+  MEASUREMENTS = "measurements",
+  QUANTITY_IN_PACKAGE = "quantityInPackage",
+  TITLE = "name",
   DESCRIPTION = "description",
-  PRICE = "price",
-  VENDOR = "vendor",
-  IMAGES = "images",
-  COLORS = "colors",
-  // DETAILS = "details",
+  PRICE = "cost",
+  WEIGHT = "weight",
 }
 
-const imagesSchema = z.object({
-  image: z
-    .any()
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      t("Error.ProductDetails.SizeOverLimit")
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      t("Error.ProductImages.SupportedImageTypes")
-    ),
-});
-
-// const detailsSchema = z.object({
-//   name: string(),
-//   items: array(string()),
-// });
-
 export const createProductModel = object({
+  [CreateProductFields.SKU]: string().min(1, t("Errors.FieldNotEmpty")),
+  [CreateProductFields.PICTURE_URL]: string().min(1, t("Errors.FieldNotEmpty")),
+  [CreateProductFields.TYPE]: string().min(1, t("Errors.FieldNotEmpty")),
+  [CreateProductFields.WEIGHT]: string()
+    .min(1, t("Errors.FieldNotEmpty"))
+    .transform((val) => Number(val)),
+  [CreateProductFields.COUNTRY_OF_ORIGIN]: string().min(
+    1,
+    t("Errors.FieldNotEmpty")
+  ),
+  [CreateProductFields.MEASUREMENTS]: string().min(
+    1,
+    t("Errors.FieldNotEmpty")
+  ),
+  [CreateProductFields.QUANTITY_IN_PACKAGE]: string()
+    .min(1, t("Errors.FieldNotEmpty"))
+    .transform((val) => Number(val)),
   [CreateProductFields.TITLE]: string().min(1, t("Error.ProductNameRequired")),
   [CreateProductFields.DESCRIPTION]: string().min(
     1,
     t("Error.ProductDescriptionRequired")
   ),
-  [CreateProductFields.PRICE]: number(),
-  [CreateProductFields.VENDOR]: string().min(
-    1,
-    t("Error.ProductVendorRequired")
-  ),
-  [CreateProductFields.IMAGES]: array(imagesSchema),
-  [CreateProductFields.COLORS]: string().min(1, t("Errors.FieldNotEmpty")),
-  // [CreateProductFields.DETAILS]: array(detailsSchema),
+  [CreateProductFields.PRICE]: string().transform((val) => Number(val)),
 });
 
 export const createProductDefaultValues = {
+  [CreateProductFields.SKU]: "",
+  [CreateProductFields.PICTURE_URL]: "",
+  [CreateProductFields.TYPE]: "",
+  [CreateProductFields.WEIGHT]: 0,
+  [CreateProductFields.COUNTRY_OF_ORIGIN]: "",
+  [CreateProductFields.MEASUREMENTS]: "",
+  [CreateProductFields.QUANTITY_IN_PACKAGE]: 0,
   [CreateProductFields.TITLE]: "",
   [CreateProductFields.DESCRIPTION]: "",
   [CreateProductFields.PRICE]: 0,
-  [CreateProductFields.VENDOR]: "",
-  [CreateProductFields.IMAGES]: [],
-  [CreateProductFields.COLORS]: "",
-  // [CreateProductFields.DETAILS]: [],
 };
 
 export type SignUpModel = z.infer<typeof createProductModel>;

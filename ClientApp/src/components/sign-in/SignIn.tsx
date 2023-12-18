@@ -25,7 +25,7 @@ const SignIn = () => {
   const { setMessage } = useSnackbarContext();
 
   const authenticateClient = useMutation({
-    mutationKey: [QueryKey.REGISTER_CLIENT],
+    mutationKey: [QueryKey.LOGIN_CLIENT],
     mutationFn: clientApi.authenticateClient,
   });
 
@@ -56,12 +56,12 @@ const SignIn = () => {
           <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
             <form className='space-y-6' onSubmit={handleSubmit(processForm)}>
               <BaseTextField
-                formField={SignInFormField.EMAIL}
-                label={t("SignInPage.Email")}
-                type='email'
+                formField={SignInFormField.USERNAME}
+                label={t("SignInPage.Username")}
+                type='test'
                 className='w-full'
-                autoComplete='email'
-                errorMessage={errors[SignInFormField.EMAIL]?.message}
+                autoComplete='username'
+                errorMessage={errors[SignInFormField.USERNAME]?.message}
               />
 
               <BaseTextField

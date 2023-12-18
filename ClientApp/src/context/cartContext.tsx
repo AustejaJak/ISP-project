@@ -38,7 +38,7 @@ export const CartContextProvider: React.FC<CartContextProviderProps> = ({
 
   const AddItemToCart = (product: ProductProp) => {
     const found = cart.find(
-      (item: CartProductsProps) => item.product.id === product.id
+      (item: CartProductsProps) => item.product.sku === product.sku
     );
     if (found) {
       return setCart((prevState) =>
@@ -52,22 +52,20 @@ export const CartContextProvider: React.FC<CartContextProviderProps> = ({
   };
 
   const ClearItemFromCart = (id: string) => {
-    setCart((prevState) =>
-      prevState.filter((item) => item.product.id.toString() !== id)
-    );
+    setCart((prevState) => prevState.filter((item) => item.product.sku !== id));
   };
 
   const ChangeProductCount = (id: number, count: number) => {
     setCart((prevState) =>
       prevState.map((item) =>
-        item.product.id === id ? { ...item, count } : { ...item }
+        item.product.sku === id.toString() ? { ...item, count } : { ...item }
       )
     );
   };
 
   const recalculateTotalPrice = () => {
     return cart.reduce((acc, item) => {
-      return acc + item.product.price * item.count;
+      return acc + item.product.cost * item.count;
     }, 0);
   };
 
