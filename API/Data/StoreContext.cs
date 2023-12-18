@@ -1,4 +1,5 @@
 using API.Entities;
+using API.Entities.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ namespace API.Data
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -64,6 +67,38 @@ namespace API.Data
                     NormalizedName = "SHOP-ADMIN"
                 }
             });
+
+            builder.Entity<ProductType>().HasData(new List<ProductType>
+            {
+                new ProductType
+                {
+                    Id = 1,
+                    Type = "Watches"
+                },
+                new ProductType
+                {
+                    Id = 2,
+                    Type = "Clotches"
+                },
+                new ProductType
+                {
+                    Id = 3,
+                    Type = "Decorations"
+                },
+                new ProductType
+                {
+                    Id = 4,
+                    Type = "Electronics"
+                },
+                new ProductType
+                {
+                    Id = 5,
+                    Type = "Books"
+                },
+
+            });
+                
+
 
 
         }

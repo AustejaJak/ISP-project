@@ -89,7 +89,12 @@ namespace API.Controllers
 
                 var dto = new UserDTO 
                 { 
+                    UserId = result.Id,
                     Username = result.UserName!,
+                    Name = result.Name,
+                    Surname = result.Surname,
+                    PhoneNumber = result.PhoneNumber ?? "",
+                    Email = result.Email ?? "",
                     Token = await _jwtGenerationService.CreateToken(result),
                     Basket = anonBasket != null ? anonBasket.MapBasketToBasketDTO() : userBasket?.MapBasketToBasketDTO() };
                 

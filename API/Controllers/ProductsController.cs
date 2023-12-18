@@ -230,49 +230,54 @@ namespace API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("filters")]
-        public async Task<ActionResult> GetFilters()
+        //[HttpGet("filters")]
+        //public async Task<ActionResult> GetFilters()
+        //{
+        //    var types = await _context.Products.Select(p => p.Type).ToListAsync();
+        //    var brands = await _context.Products.Select(p => p.Brand).ToListAsync();
+
+        //    return Ok(new { types, brands });
+        //}
+
+        [HttpGet("types")]
+        public async Task<ActionResult<ProductType>> GetTypes()
         {
-            var types = await _context.Products.Select(p => p.Type).ToListAsync();
-            var brands = await _context.Products.Select(p => p.Brand).ToListAsync();
-
-            return Ok(new { types, brands });
-        }
-
-        [HttpGet("filter")]
-        public async Task<ActionResult<List<ProductDTO>>> GetByType(string type)
-        {
-            if (type == null)
-            {
-                return BadRequest();
-            }
-
-            var products = await _context.Products.Where(x => x.Type.Equals(type)).Select(prod => new ProductDTO
-            {
-                SKU = prod.SKU,
-                Name = prod.Name,
-                Description = prod.Description,
-                Cost = prod.Cost,
-                PictureUrl = prod.PictureUrl,
-                QuantityInStorage = prod.QuantityInStorage,
-                Type = prod.Type,
-                CountryOfOrigin = prod.CountryOfOrigin,
-                Brand = prod.Brand,
-                Measurements = prod.Measurements,
-                QuantityInPackage = prod.QuantityInPackage,
-                Weight = prod.Weight,
-                IsConfirmed = prod.IsConfirmed
-            }).ToListAsync();
-
-            if (products == null)
+            var types = await _context.ProductType.ToListAsync();
+            if (types == null)
             {
                 return NotFound();
             }
-
-            return Ok(products);
-
-
+            return Ok(types);
         }
+
+        [HttpGet("filters")]
+        public async Task<ActionResult> GetFilters()
+        {
+            var types = await _context.ProductType.ToListAsync();
+            if (types == null)
+            {
+                return NotFound("No types were found");
+            }
+
+            var products = await _context.Products.ToListAsync();
+            if (products == null)
+            {
+                return NotFound("No products were found");
+            }
+
+
+            Dictionary<string, List<string>> typeBrandPairs = new Dictionary<string, List<string>>();
+            foreach(var type in types)
+            {
+                var brands = products.Where(x => x.Type.ToLower().Equals(type.Type.ToLower())).Select(p => p.Brand).ToList();
+                typeBrandPairs.Add(type.Type, brands);
+            }
+
+            return Ok(typeBrandPairs);
+
+            
+        }
+
 
         
     }
