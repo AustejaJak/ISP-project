@@ -21,9 +21,9 @@ const NewPage = () => {
 
   return (
     <>
-      <ProductsFilter category={category} filters={defaultFilters}>
+      {/* <ProductsFilter category={category} filters={defaultFilters}>
         <ProductsList products={watchItems} />
-      </ProductsFilter>
+      </ProductsFilter> */}
     </>
   );
 };

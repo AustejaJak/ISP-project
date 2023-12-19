@@ -22,7 +22,7 @@ const CollectionPage = () => {
   return (
     <>
       <ProductsFilter category={category} filters={defaultFilters}>
-        <ProductsList products={watchItems} />
+        {/* <ProductsList products={watchItems} /> */}
       </ProductsFilter>
     </>
   );

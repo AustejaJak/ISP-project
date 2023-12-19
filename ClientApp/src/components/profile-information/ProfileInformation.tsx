@@ -11,6 +11,7 @@ import BaseChangeableInput from "../changeable-input/ChangeableInput";
 import { BaseModal } from "../Modal/BaseModal";
 import { ChangeEmailForm } from "./change-email/ChangeEmail";
 import { useUserContext } from "../../context/userContext";
+import { ChangePasswordForm } from "./change-password/ChangePassword";
 
 const ProfileInformation = () => {
   const methods = useForm({
@@ -18,6 +19,8 @@ const ProfileInformation = () => {
     defaultValues: profileInformationDefaultValues,
   });
   const [isChangeEmailModalOpen, setIsChangeEmailModalOpen] = useState(false);
+  const [isChangePasswordModalOpen, setIsPasswordEmailModalOpen] =
+    useState(false);
   const { userInformation } = useUserContext();
   const {
     handleSubmit,
@@ -44,7 +47,17 @@ const ProfileInformation = () => {
         open={isChangeEmailModalOpen}
         onClose={() => setIsChangeEmailModalOpen(false)}
       >
-        <ChangeEmailForm />
+        <ChangeEmailForm closeModal={() => setIsChangeEmailModalOpen(false)} />
+      </BaseModal>
+
+      <BaseModal
+        title='Pakeisti slaptažodį'
+        open={isChangePasswordModalOpen}
+        onClose={() => setIsPasswordEmailModalOpen(false)}
+      >
+        <ChangePasswordForm
+          closeModal={() => setIsPasswordEmailModalOpen(false)}
+        />
       </BaseModal>
 
       <div className='w-[350px] pt-5'>
@@ -83,7 +96,7 @@ const ProfileInformation = () => {
             errorMessage={errors[ProfileInformationFormField.PASSWORD]?.message}
             isChangeable
             changeableText='Pakeisti slaptažodį'
-            onChangeableTextClick={() => setIsChangeEmailModalOpen(true)}
+            onChangeableTextClick={() => setIsPasswordEmailModalOpen(true)}
           />
         </form>
       </div>

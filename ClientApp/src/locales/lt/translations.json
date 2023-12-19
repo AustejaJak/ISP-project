@@ -22,6 +22,15 @@
   "Product.Color": "Spalva",
   "ProductRow.ViewProductText": "Peržiūrėti",
 
+  "DiscountCode.Code": "Kodas",
+  "DiscountCode.Discount": "Nuolaidos koeficientas",
+  "DiscountCode.StartDate": "Galiojimo pradžios data",
+  "DiscountCode.EndDate": "Galiojimo pabaigos data",
+  "DiscountCode.MinSum": "Minimali nuolaidai pritaikyti suma",
+
+  "DiscountModal.EditDiscount": "Nuolaidos kodo koregavimas",
+  "DiscountModal.CreateDiscount": "Nuolaidos kodo sukūrimas",
+
   "ProductModal.Save": "Išsaugoti",
   "ProductModal.Create": "Sukurti",
   "ProductModal.EditProduct": "Redaguoti produktą",
@@ -101,6 +110,17 @@
 
   "BackofficeInventoryPage.TableRow.Active": "Aktyvus",
   "BackofficeInventoryPage.AddProduct": "Pridėti produktą",
+
+  "BackofficeDiscountPage.TitleText": "Nuolaidų kodai",
+  "BackofficeDiscountPage.TableHeader.Title": "Pavadinimas",
+  "BackofficeDiscountPage.TableHeader.DiscountCoeff": "Nuolaidos koeficientas",
+  "BackofficeDiscountPage.TableHeader.Status": "Statusas",
+  "BackofficeDiscountPage.TableHeader.StartingDate": "Pradžios data",
+  "BackofficeDiscountPage.TableHeader.EndingDate": "Pabaigos data",
+  "BackofficeDiscountPage.TableHeader.MinimumSum": "Minimali suma",
+  "BackofficeDiscountPage.TableHeader.Edit": "Redaguoti",
+  "BackofficeDiscountPage.TableRow.Pending": "Laukiantis patvirtinimo",
+  "BackofficeDiscountPage.AddDiscount": "Pridėti nuolaidos kodą",
 
   "BackofficeEmployersPage.TitleText": "Darbuotojai",
   "BackofficeEmployersPage.WebsiteEmployersHeader": "Svetainės darbuotojai",

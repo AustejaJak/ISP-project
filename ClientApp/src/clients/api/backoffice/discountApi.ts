@@ -1,14 +1,14 @@
-import { Employer } from "../../../types/types";
+import { DiscountCode } from "../../../types/types";
 import axiosInstance from "../../axios";
 
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Admins`;
 
 export const discountApi = {
   getDiscountList: async () => {
-    const { data } = await axiosInstance.get<Employer[]>(`${BASE_URL}`);
+    const { data } = await axiosInstance.get<DiscountCode[]>(`${BASE_URL}`);
     return data;
   },
-  createDiscountCode: async (discountData: any) => {
+  createDiscountCode: async (discountData: DiscountCode) => {
     const { data } = await axiosInstance.post<any>(
       `${BASE_URL}/AddDiscount`,
       discountData
@@ -19,8 +19,8 @@ export const discountApi = {
     discountId,
     discountData,
   }: {
-    discountId: number;
-    discountData: any;
+    discountId: string;
+    discountData: DiscountCode;
   }) => {
     const { data } = await axiosInstance.patch<any>(
       `${BASE_URL}/${discountId}`,

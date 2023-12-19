@@ -23,3 +23,16 @@ export type InventoryProduct = {
   quantity: string;
   price: string;
 };
+
+export type DiscountCode = {
+  code: string;
+  discount: number;
+  endDate: string;
+  startDate: string;
+  minSum: string;
+};
+
+export type ProductFilters = {
+  types: string[];
+  brands: string[];
+};

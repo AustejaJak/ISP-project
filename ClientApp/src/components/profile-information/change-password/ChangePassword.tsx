@@ -1,57 +1,52 @@
-import React, { useEffect } from "react";
-import {
-  ChangeEmailFormField,
-  changeEmailDefaultValues,
-  changeEmailModel,
-} from "./model";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BaseInput from "../../input/Input";
-import { useUserContext } from "../../../context/userContext";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { useMutation } from "@tanstack/react-query";
 import { usersApi } from "../../../clients/api/userApi";
 import { useSnackbarContext } from "../../../context/snackbarContext";
+import {
+  ChangePasswordFormField,
+  changePasswordDefaultValues,
+  changePasswordModel,
+} from "./model";
 
-interface ChangeEmailFormProps {
+interface ChangePasswordFormProps {
   closeModal: () => void;
 }
 
-export const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({
+export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   closeModal,
 }) => {
   const methods = useForm({
-    resolver: zodResolver(changeEmailModel),
-    defaultValues: changeEmailDefaultValues,
+    resolver: zodResolver(changePasswordModel),
+    defaultValues: changePasswordDefaultValues,
   });
 
-  const { userInformation } = useUserContext();
   const { setMessage } = useSnackbarContext();
 
   const {
     handleSubmit,
     getValues,
     formState: { errors },
-    setValue,
   } = methods;
 
-  useEffect(() => {
-    setValue("currentEmail", userInformation.email);
-  }, [userInformation]);
-
-  const changeEmail = useMutation({
+  const changePassword = useMutation({
     mutationKey: [QueryKey.CHANGE_EMAIL],
-    mutationFn: usersApi.changeEmail,
+    mutationFn: usersApi.changePassword,
   });
 
   const processForm = () => {
-    const data = changeEmailModel.parse(getValues());
-    const { newEmail } = data;
-    changeEmail.mutate(
-      { userId: "", newEmail },
+    const data = changePasswordModel.parse(getValues());
+    changePassword.mutate(
+      {
+        userId: "",
+        ...data,
+      },
       {
         onSuccess: () => {
-          setMessage("Elektroninis paštas sėkmingai pakeistas.");
+          setMessage("Slaptažodis sėkmingai pakeistas.");
           closeModal();
         },
       }
@@ -62,18 +57,18 @@ export const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({
       <form onSubmit={handleSubmit(processForm)}>
         <div className='flex flex-col gap-5'>
           <BaseInput
-            formField={ChangeEmailFormField.CURRENT_EMAIL}
-            label='Dabartinis El. paštas'
+            formField={ChangePasswordFormField.OLD_PASSWORD}
+            label='Dabartinis slaptažodis'
             type='text'
             disabled
-            errorMessage={errors[ChangeEmailFormField.CURRENT_EMAIL]?.message}
+            errorMessage={errors[ChangePasswordFormField.OLD_PASSWORD]?.message}
           />
 
           <BaseInput
-            formField={ChangeEmailFormField.NEW_EMAIL}
-            label='Naujas El. paštas'
+            formField={ChangePasswordFormField.NEW_PASSWORD}
+            label='Naujas slaptažodis'
             type='text'
-            errorMessage={errors[ChangeEmailFormField.NEW_EMAIL]?.message}
+            errorMessage={errors[ChangePasswordFormField.NEW_PASSWORD]?.message}
           />
           <div>
             <button
