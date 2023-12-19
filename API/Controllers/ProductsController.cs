@@ -5,6 +5,7 @@ using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace API.Controllers
@@ -24,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery]ProductFilterParams test)
+        public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery]ProductFilterParams filterParams)
         {
             if (_context.Products == null)
             {
@@ -32,13 +33,13 @@ namespace API.Controllers
             }
 
 
-            if (test != null)
+            if (filterParams != null)
             {
-                return await _context.Products
-                    .Where(p => string.IsNullOrEmpty(test.Brands) || p.Brand.ToLower().Equals(test.Brands.ToLower()))
-                    .Where(p => string.IsNullOrEmpty(test.Types) || p.Type.ToLower().Equals(test.Types.ToLower()))
-                    .Where(p => !test.PriceFrom.HasValue || p.Cost >= test.PriceFrom.Value)
-                    .Where(p => !test.PriceTo.HasValue || p.Cost <= test.PriceTo.Value)
+                var prods = await _context.Products
+                    .Where(p => string.IsNullOrEmpty(filterParams.Brands) || p.Brand.ToLower().Equals(filterParams.Brands.ToLower()))
+                    .Where(p => string.IsNullOrEmpty(filterParams.Types) || p.Type.ToLower().Equals(filterParams.Types.ToLower()))
+                    .Where(p => !filterParams.PriceFrom.HasValue || p.Cost >= filterParams.PriceFrom.Value)
+                    .Where(p => !filterParams.PriceTo.HasValue || p.Cost <= filterParams.PriceTo.Value)
                     .Select(prod => 
                     new ProductDTO()
                     {
@@ -57,6 +58,13 @@ namespace API.Controllers
                         IsConfirmed = prod.IsConfirmed,
                     })
                     .ToListAsync();
+
+                if (prods.IsNullOrEmpty())
+                {
+                    return NotFound();
+                }
+
+
             }
 
             var products = await _context.Products.Select(prod =>

@@ -3,6 +3,8 @@ using API.Data.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,7 @@ namespace API.Controllers
 
         private Basket CreateBasket()
         {
-            var buyerId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var buyerId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(buyerId))
             {
                 buyerId = Guid.NewGuid().ToString();
@@ -40,10 +42,13 @@ namespace API.Controllers
             _context.Baskets.Add(basket);
             return basket;
         }
-        [Authorize]
+
         [HttpGet(Name = "GetBasket")]
         public async Task<ActionResult<BasketDTO>> GetUsersBasket()
         {
+            
+            //var isAuthenticated = User.Identity.IsAuthenticated;
+            //var id = User.Identity.Name;//HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var basket = await _basketService.GetBasket(GetBuyerId());
             if (basket == null)
             {
@@ -63,7 +68,8 @@ namespace API.Controllers
             }
             return NotFound();
         }
-        [Authorize]
+
+
         [HttpPost("AddItem")]
         public async Task<ActionResult<BasketDTO>> AddItemToBasket(string productId, int quantity)
         {
@@ -130,7 +136,7 @@ namespace API.Controllers
 
         private string GetBuyerId()
         {
-            return HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value ?? Request.Cookies["buyerId"];
+            return HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? Request.Cookies["buyerId"];
         }
 
 

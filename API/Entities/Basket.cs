@@ -15,21 +15,19 @@ namespace API.Entities
 
         public void AddItem(Product product, int quantity)
         {
-            if(Items.All(it => !it.Id.Equals(product.SKU)))
+            var existingItem = Items.FirstOrDefault(it => it.ProductId.Equals(product.SKU));
+            if (existingItem == null)
             {
                 Items.Add(new BasketItem { Product = product, ProductId = product.SKU, Quantity = quantity });
             }
-
-            var item = Items.FirstOrDefault(it => it.ProductId.Equals(product.SKU));
-            if (item != null)
+            else
             {
-                item.Quantity += quantity;
-                TotalSum += product.Cost * quantity;
-                ItemCount += quantity;
+                existingItem.Quantity += quantity;
+
             }
 
-            
-
+            TotalSum += product.Cost * quantity;
+            ItemCount += quantity;
         }
 
         public void RemoveItem(string itemId, int quantity)
@@ -43,9 +41,16 @@ namespace API.Entities
             item.Quantity -= quantity;
             if (item.Quantity <= 0)
             {
-                TotalSum -= itemsCount * item.Product.Cost;
-                ItemCount -= itemsCount;
                 Items.Remove(item);
+                ItemCount -= itemsCount;
+                if (ItemCount <= 0)
+                {
+                    ItemCount = 0;
+                    TotalSum = 0;
+                    return;
+                }
+                TotalSum -= itemsCount * item.Product.Cost;                           
+                return;
             }
             TotalSum -= item.Product.Cost * quantity;
             ItemCount -= quantity;

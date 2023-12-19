@@ -13,6 +13,8 @@ namespace API.Extensions
                 ClientId = basket.ClientId,
                 PaymentIntentId = basket.PaymentIntentId,
                 ClientSecret = basket.ClientSecret,
+                TotalSum = basket.TotalSum,
+                TotalItemCount = basket.ItemCount,
                 Items = basket.Items.Select(item => new BasketItemDTO
                 {
                     ProductSKU = item.ProductId,
@@ -20,8 +22,7 @@ namespace API.Extensions
                     Description = item.Product.Description,
                     Cost = item.Product.Cost,
                     PictureUrl = item.Product.PictureUrl,
-                    QuantityInStorage = item.Product.QuantityInStorage,
-                    QuantityInPackage = item.Product.QuantityInPackage,
+                    Quantity = item.Quantity,
                     Type = item.Product.Type,
                     CountryOfOrigin = item.Product.CountryOfOrigin,
                     Measurements = item.Product.Measurements,
