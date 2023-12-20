@@ -4,6 +4,8 @@
     {
         PENDING,
         PAYMENT_RECEIVED,
-        PAYMENT_FAILED
+        PAYMENT_FAILED,
+        REFUNDED,
+        CANCELLED
     }
 }

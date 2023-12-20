@@ -53,7 +53,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getDiscounts")]
-        public async Task<ActionResult<Discount>> GetDiscounts()
+        public async Task<ActionResult<List<Discount>>> GetDiscounts()
         {
             var discounts = await _adminService.GetDiscounts();
             if (discounts.IsNullOrEmpty())
@@ -61,6 +61,18 @@ namespace API.Controllers
                 return NotFound();
             }
             return Ok(discounts);
+        }
+
+        [HttpGet("{discountId}")]
+        public async Task<ActionResult<Discount>> GetDiscount(int discountId)
+        {
+            var discount = await _adminService.GetDiscount(discountId);
+            if (discount == null)
+            {
+                return BadRequest();
+            }
+            return Ok(discount);
+
         }
 
         [HttpPatch("ChangeUserRole")]

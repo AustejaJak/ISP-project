@@ -123,9 +123,9 @@ namespace API.Controllers
         }
 
         [HttpPost("ApplyDiscount")]
-        public async Task<ActionResult> ApplyDiscountOnBasket(int discountId)
+        public async Task<ActionResult> ApplyDiscountOnBasket(string discountCode)
         {
-            var result = await _basketService.ApplyDiscount(GetBuyerId(), discountId);
+            var result = await _basketService.ApplyDiscount(GetBuyerId(), discountCode);
             if (result == null)
             {
                 return NotFound();

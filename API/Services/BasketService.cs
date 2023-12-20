@@ -17,7 +17,7 @@ namespace API.Services
             _storeContext = storeContext;
         }
 
-        public async Task<BasketDTO> GetBasket(string buyerId)
+        public async Task<BasketDTO?> GetBasket(string buyerId)
         {
             var basket = await RetrieveBasket(buyerId);
             if (basket == null)
@@ -84,14 +84,14 @@ namespace API.Services
             return false;
         }
 
-        public async Task<BasketDTO> ApplyDiscount(string buyerId, int discountId)
+        public async Task<BasketDTO?> ApplyDiscount(string buyerId, string discountCode)
         {
             var basket = await RetrieveBasket(buyerId);
             if (basket == null)
             {
                 return null;
             }
-            var discount = await _storeContext.Discounts.FindAsync(discountId);
+            var discount = await _storeContext.Discounts.Where(x => x.Code.Equals(discountCode)).SingleOrDefaultAsync();
             if (discount == null)
             {
                 return null;
@@ -114,7 +114,7 @@ namespace API.Services
 
         }
 
-        public async Task<List<BasketDTO>> GetAllBasket()
+        public async Task<List<BasketDTO>?> GetAllBasket()
         {
             var baskets = await _storeContext.Baskets.Select(basket => basket.MapBasketToBasketDTO()).ToListAsync();
             if (baskets == null)

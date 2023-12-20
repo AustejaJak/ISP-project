@@ -8,7 +8,8 @@ namespace API.Services.Interfaces
     {
         Task<Discount> CreateDiscountCode(DiscountCodeDTO data);
         Task<InventorySummary> CreateInventorySummary();
-        Task<List<Discount>> GetDiscounts();
+        Task<Discount?> GetDiscount(int discountId);
+        Task<List<Discount>?> GetDiscounts();
         Task<Discount> ManipulateDiscountCode(int discountId, DiscountEditDTO modifiedDiscountCode);
         Task<bool> RemoveAccount(string userId);
         Task<User> UpdateUserRole(ChangeRolesDTO data);

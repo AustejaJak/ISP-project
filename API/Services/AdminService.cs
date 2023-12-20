@@ -104,7 +104,7 @@ namespace API.Services
             return user;  
         }
 
-        public async Task<List<Discount>> GetDiscounts()
+        public async Task<List<Discount>?> GetDiscounts()
         {
             var discounts = await _storeContext.Discounts.ToListAsync();
             if (discounts.IsNullOrEmpty())
@@ -112,6 +112,16 @@ namespace API.Services
                 return null;
             }
             return discounts;
+        }
+
+        public async Task<Discount?> GetDiscount(int discountId)
+        {
+            var discount = await _storeContext.Discounts.Where(x => x.Id == discountId).SingleOrDefaultAsync();
+            if (discount == null)
+            {
+                return null;
+            }
+            return discount;
         }
 
         public async Task<InventorySummary> CreateInventorySummary()
