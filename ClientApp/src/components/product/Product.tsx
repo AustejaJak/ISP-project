@@ -5,6 +5,9 @@ import { ProductProp } from "../../pages/client/product/ProductPage";
 import { Loader } from "../Loader/Loader";
 import { t } from "i18next";
 import { useCartContext } from "../../context/cartContext";
+import { useMutation } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { basketApi } from "../../clients/api/basketApi";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -17,6 +20,12 @@ type ProductProps = {
 
 const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
   const { AddItemToCart } = useCartContext();
+
+  const addToBasket = useMutation({
+    mutationKey: [QueryKey.ADD_TO_BASKET],
+    mutationFn: basketApi.addItemToBasket,
+  });
+
   if (isLoading)
     return (
       <div className='w-full'>
@@ -33,6 +42,8 @@ const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
   const handleItemAdd = (e: any) => {
     e.preventDefault();
     AddItemToCart(product);
+    console.log({ quantity: 1, productId: product.sku });
+    addToBasket.mutate({ quantity: 1, productId: product.sku });
   };
 
   return (

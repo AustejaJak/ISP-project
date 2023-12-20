@@ -38,19 +38,22 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
   });
 
   const processForm = () => {
-    const data = changePasswordModel.parse(getValues());
-    changePassword.mutate(
-      {
-        userId: "",
-        ...data,
-      },
-      {
-        onSuccess: () => {
-          setMessage("Slaptažodis sėkmingai pakeistas.");
-          closeModal();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      const data = changePasswordModel.parse(getValues());
+      changePassword.mutate(
+        {
+          userId,
+          ...data,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            setMessage("Slaptažodis sėkmingai pakeistas.");
+            closeModal();
+          },
+        }
+      );
+    }
   };
   return (
     <FormProvider {...methods}>
@@ -59,15 +62,14 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
           <BaseInput
             formField={ChangePasswordFormField.OLD_PASSWORD}
             label='Dabartinis slaptažodis'
-            type='text'
-            disabled
+            type='password'
             errorMessage={errors[ChangePasswordFormField.OLD_PASSWORD]?.message}
           />
 
           <BaseInput
             formField={ChangePasswordFormField.NEW_PASSWORD}
             label='Naujas slaptažodis'
-            type='text'
+            type='password'
             errorMessage={errors[ChangePasswordFormField.NEW_PASSWORD]?.message}
           />
           <div>

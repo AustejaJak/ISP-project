@@ -1,9 +1,16 @@
 import { ProductProp } from "../../pages/client/product/ProductPage";
+import { generateQueryString } from "../../utils/queryGenerator";
 import axiosInstance from "../axios";
 
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Products`;
 
 export const productApi = {
+  getProducts: async ({ query }: { query?: { [key: string]: unknown } }) => {
+    const { data } = await axiosInstance.get<ProductProp[]>(
+      `${BASE_URL}${query && generateQueryString(query)}`
+    );
+    return data;
+  },
   findProductById: async ({ productId }: { productId: string }) => {
     const { data } = await axiosInstance.get<ProductProp>(
       `${BASE_URL}/${productId}`

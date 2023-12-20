@@ -14,6 +14,8 @@ import { productApi } from "../../clients/api/productApi";
 import { BaseTextField } from "../BaseTextField/BaseTextField";
 import { BaseForm } from "../BaseForm/BaseForm";
 import { inventoryApi } from "../../clients/api/backoffice/inventoryApi";
+import { BaseSelect } from "../base-select/BaseSelect";
+import { backofficeProductApi } from "../../clients/api/backoffice/productApi";
 
 interface ProductModalProps {
   open: boolean;
@@ -61,6 +63,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     queryKey: [QueryKey.FIND_PRODUCT_BY_ID],
     queryFn: () => productApi.findProductById({ productId: productId! }),
     enabled: !!productId,
+  });
+
+  const { data: categories } = useQuery({
+    queryKey: [QueryKey.GET_CATEGORIES],
+    queryFn: () => backofficeProductApi.getProductCategories(),
   });
 
   useEffect(() => {
@@ -148,10 +155,14 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const renderRightSide = () => {
     return (
       <div className='flex flex-col gap-5 w-full'>
-        <BaseTextField
+        <BaseSelect
           formField={CreateProductFields.TYPE}
           label={t("Product.Type")}
-          type='text'
+          items={categories?.map(({ type, ...rest }) => ({
+            ...rest,
+            id: rest.id.toString(),
+            name: type,
+          }))}
           errorMessage={errors[CreateProductFields.TYPE]?.message}
         />
 

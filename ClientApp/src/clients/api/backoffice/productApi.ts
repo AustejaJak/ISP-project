@@ -1,5 +1,5 @@
 import { ProductProp } from "../../../pages/client/product/ProductPage";
-import { ProductFilters } from "../../../types/types";
+import { Category } from "../../../types/types";
 import axiosInstance from "../../axios";
 
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Products`;
@@ -38,10 +38,8 @@ export const backofficeProductApi = {
     return data.data;
   },
   getProductCategories: async () => {
-    const { data } = await axiosInstance.get<ProductFilters>(
-      `${BASE_URL}/filters`
-    );
-    return data?.types;
+    const { data } = await axiosInstance.get<Category[]>(`${BASE_URL}/types`);
+    return data;
   },
   getProductsByCategory: async ({ category }: { category: string }) => {
     const { data } = await axiosInstance.get<ProductProp[]>(

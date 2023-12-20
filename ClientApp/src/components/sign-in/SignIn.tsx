@@ -37,6 +37,7 @@ const SignIn = () => {
       onSuccess: (data) => {
         console.log(data);
         cookie("token", data.token, 7);
+        localStorage.setItem("userId", data.userId);
         navigate("/");
       },
       onError: (err) => {
