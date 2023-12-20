@@ -3,6 +3,7 @@ using API.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
@@ -49,6 +50,17 @@ namespace API.Controllers
             }
             return Ok(updatedDiscount);
 
+        }
+
+        [HttpGet("getDiscounts")]
+        public async Task<ActionResult<Discount>> GetDiscounts()
+        {
+            var discounts = await _adminService.GetDiscounts();
+            if (discounts.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(discounts);
         }
 
         [HttpPatch("ChangeUserRole")]

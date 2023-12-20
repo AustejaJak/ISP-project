@@ -53,11 +53,7 @@ namespace API.Controllers
             {
                 return Ok();
             }
-
-
             return BadRequest();
-
-
         }
 
 

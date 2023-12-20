@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Stripe;
 
@@ -27,7 +28,7 @@ namespace API.Controllers
         public async Task<ActionResult<List<Shop>>> GetShops()
         {
             var shops = await _context.Shops.ToListAsync();
-            if (shops == null)
+            if (shops.IsNullOrEmpty())
             {
                 return NotFound();
             }

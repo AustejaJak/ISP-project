@@ -5,6 +5,7 @@ using API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace API.Services
@@ -100,9 +101,17 @@ namespace API.Services
             {
                 await _signInManager.RefreshSignInAsync(user);
             }
-            return user;
+            return user;  
+        }
 
-            
+        public async Task<List<Discount>> GetDiscounts()
+        {
+            var discounts = await _storeContext.Discounts.ToListAsync();
+            if (discounts.IsNullOrEmpty())
+            {
+                return null;
+            }
+            return discounts;
         }
 
         public async Task<InventorySummary> CreateInventorySummary()

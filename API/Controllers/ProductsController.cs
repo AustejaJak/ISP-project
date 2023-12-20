@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -27,7 +28,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery]ProductFilterParams filterParams)
         {
-            if (_context.Products == null)
+            if (!await _context.Products.AnyAsync())
             {
                 return NotFound();
             }
@@ -95,7 +96,7 @@ namespace API.Controllers
         [HttpGet("{sku}", Name = "GetById")]
         public async Task<ActionResult<ProductDTO>> GetProductById(string sku)
         {
-            if (_context.Products == null)
+            if (!await _context.Products.AnyAsync())
             {
                 return NotFound();
             }
@@ -145,7 +146,7 @@ namespace API.Controllers
         [HttpPatch("{sku}")]
         public async Task<ActionResult<ProductDTO>> UpdateProduct(string sku, [FromBody] ProductEditDTO productDTO)
         {
-            if (_context.Products == null)
+            if (!await _context.Products.AnyAsync())
             {
                 return NotFound();
             }
@@ -184,7 +185,7 @@ namespace API.Controllers
         [HttpDelete("{sku}")]
         public async Task<ActionResult> DeleteProduct(string sku)
         {
-            if (_context.Products == null)
+            if (!await _context.Products.AnyAsync())
             {
                 return NotFound();
             }
@@ -262,13 +263,13 @@ namespace API.Controllers
         public async Task<ActionResult> GetFilters()
         {
             var types = await _context.ProductType.ToListAsync();
-            if (types == null)
+            if (types.IsNullOrEmpty())
             {
                 return NotFound("No types were found");
             }
 
             var products = await _context.Products.ToListAsync();
-            if (products == null)
+            if (products.IsNullOrEmpty())
             {
                 return NotFound("No products were found");
             }
@@ -284,6 +285,77 @@ namespace API.Controllers
             return Ok(typeBrandPairs);
 
             
+        }
+
+        [Authorize]
+        [HttpGet("recommendations")]
+        public async Task<ActionResult<List<ProductDTO>>> GetProductRecommendations()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var userBasket = await _context.Baskets
+                .Include(it => it.Items)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefaultAsync(x => x.ClientId.Equals(userId));
+
+            if (userBasket == null)
+            {
+                return NotFound("Basket of the user was not found");
+            }
+
+            if (userBasket.Items.Count == 0)
+            {
+                return BadRequest("User has no items in the basket");
+            }
+
+            var products = await _context.Products.ToListAsync();
+            if (products.Count == 0)
+            {
+                return BadRequest(new ProblemDetails() { Title = "No products werte found" });
+            }
+
+            List<ProductDTO> suggestions = new List<ProductDTO>();
+            foreach(var item in userBasket.Items)
+            {
+                foreach(var product in products)
+                {
+                    if((product.Type.Equals(item.Product.Type) || product.Brand.Equals(item.Product.Brand))&& !product.SKU.Equals(item.Product.SKU))
+                    {
+                        var productDTO = new ProductDTO()
+                        {
+                            SKU = product.SKU,
+                            Name = product.Name,
+                            Description = product.Description,
+                            Cost = product.Cost,
+                            PictureUrl = product.PictureUrl,
+                            QuantityInStorage = product.QuantityInStorage,
+                            Type = product.Type,
+                            CountryOfOrigin = product.CountryOfOrigin,
+                            Brand = product.Brand,
+                            Measurements = product.Measurements,
+                            QuantityInPackage = product.QuantityInPackage,
+                            Weight = product.Weight,
+                            IsConfirmed = product.IsConfirmed
+                        };
+                        suggestions.Add(productDTO);
+                    }
+                }
+            }
+
+            if (suggestions.Count > 0)
+            {
+                return Ok(suggestions);
+            }
+            else
+            {
+                return NotFound("No item suggestions were found for the user");
+            }
+
+
         }
 
 
