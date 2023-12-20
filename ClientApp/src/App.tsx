@@ -11,10 +11,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "date-fns/locale/lt";
 import { SnackbarContextProvider } from "./context/snackbarContext";
+import { useEffect } from "react";
+import cookie from "cookiejs";
 
 const queryClient = new QueryClient();
 
-function App() {
+export const App = () => {
+  useEffect(() => {
+    const token = cookie.get("token")
+  }, []);
+
   return (
     <I18nextProvider i18n={i18next}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -34,6 +40,6 @@ function App() {
       </LocalizationProvider>
     </I18nextProvider>
   );
-}
+};
 
 export default App;

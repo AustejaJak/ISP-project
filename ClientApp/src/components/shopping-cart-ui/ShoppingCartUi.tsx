@@ -4,11 +4,12 @@ import {
 } from "@heroicons/react/20/solid";
 import Routes from "../../routes/routes";
 import React from "react";
-import { CartProductsProps, useCartContext } from "../../context/cartContext";
+import { useCartContext } from "../../context/cartContext";
 import Anchor from "../anchor/Anchor";
+import { BasketProduct } from "../../types/types";
 
 interface ShoppingCartProps {
-  products: CartProductsProps[];
+  products: BasketProduct[];
   total: number;
 }
 

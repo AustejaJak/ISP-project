@@ -36,7 +36,7 @@ export const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({
   } = methods;
 
   useEffect(() => {
-    setValue("currentEmail", userInformation.email);
+    setValue("currentEmail", userInformation.email || "man@gmail.com");
   }, [userInformation]);
 
   const changeEmail = useMutation({
@@ -45,17 +45,20 @@ export const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({
   });
 
   const processForm = () => {
-    const data = changeEmailModel.parse(getValues());
-    const { newEmail } = data;
-    changeEmail.mutate(
-      { userId: "", newEmail },
-      {
-        onSuccess: () => {
-          setMessage("Elektroninis paštas sėkmingai pakeistas.");
-          closeModal();
-        },
-      }
-    );
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      const data = changeEmailModel.parse(getValues());
+      const { newEmail } = data;
+      changeEmail.mutate(
+        { userId, newEmail },
+        {
+          onSuccess: () => {
+            setMessage("Elektroninis paštas sėkmingai pakeistas.");
+            closeModal();
+          },
+        }
+      );
+    }
   };
   return (
     <FormProvider {...methods}>

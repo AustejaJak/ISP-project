@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { productsApi } from "../../../clients/api/productsApi";
 import { backofficeProductApi } from "../../../clients/api/backoffice/productApi";
+import { productApi } from "../../../clients/api/productApi";
 
 export type categoryProps = {
   title: string;
@@ -31,10 +32,14 @@ const CategoryPage = () => {
   //   };
   // }, [category]);
 
+  console.log(category![0]);
+
   const { data: products } = useQuery({
     queryKey: [QueryKey.GET_PRODUCTS_BY_FILTER_QUERY, category],
     queryFn: () =>
-      backofficeProductApi.getProductsByCategory({ category: category! }),
+      productApi.getProducts({
+        query: { type: `${category![0].toUpperCase()}${category?.slice(1)}` },
+      }),
     enabled: !!category,
   });
 

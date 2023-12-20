@@ -1,4 +1,5 @@
 import { statusEnum } from "../enums/enums";
+import { ProductProp } from "../pages/client/product/ProductPage";
 
 export type Employer = {
   id: string;
@@ -32,7 +33,19 @@ export type DiscountCode = {
   minSum: string;
 };
 
-export type ProductFilters = {
-  types: string[];
-  brands: string[];
+export type Category = {
+  id: number;
+  type: string;
+};
+
+export type BasketItem = {
+  id: number;
+  clientId: string;
+  paymentIntentId: string;
+  clientSecret: string;
+  items: BasketProduct[];
+};
+
+export type BasketProduct = Omit<ProductProp, "sku"> & {
+  productSKU: string;
 };

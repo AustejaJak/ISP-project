@@ -17,7 +17,7 @@ const ShoppingCartPage = () => {
 
   return (
     <>
-      <ShoppingCart products={cart.products} total={cart.total} />
+      <ShoppingCart products={data?.items || []} total={cart.total} />
     </>
   );
 };
