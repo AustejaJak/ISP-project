@@ -20,4 +20,16 @@ export const basketApi = {
     );
     return data;
   },
+  removeItemFromBasket: async ({
+    productId,
+    quantity,
+  }: {
+    productId: string;
+    quantity: number;
+  }) => {
+    const { data } = await axiosInstance.delete<BasketItem>(
+      `${BASE_URL}/RemoveItem?productId=${productId}&quantity=${quantity}`
+    );
+    return data;
+  },
 };

@@ -16,6 +16,8 @@ import ShoppingCartPage from "./shopping-cart-page-ui/ShoppingCartPage";
 import OrderHistoryPage from "./order-history/OrderHistoryPage";
 import ReturnPage from "./return/ReturnPage";
 import { Footer } from "../../components/footer/Footer";
+import { WorkerSignUp } from "../../components/WorkerSignUp/WorkerSignUp";
+import { WorkerSignIn } from "../../components/WorkerSignIn/WorkerSignIn";
 
 const userNavigation = [
   { name: "Mano paskyra", href: Routes.client.profile },
@@ -43,6 +45,8 @@ const Client = () => {
           }
         />
         <Route path={Routes.client.register} element={<SignUpPage />} />
+        <Route path={Routes.client.workerRegister} element={<WorkerSignUp />} />
+        <Route path={Routes.client.workerLogin} element={<WorkerSignIn />} />
         <Route path={Routes.client.shop} element={<CategoryPreview />} />
         <Route path={Routes.client.category} element={<CategoryPage />} />
         <Route path={Routes.client.new} element={<NewPage />} />

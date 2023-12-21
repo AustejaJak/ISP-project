@@ -22,7 +22,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
     <div className='bg-white'>
       <main className='mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8'>
         <h1 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-          Shopping Cart
+          Prekių krepšelis
         </h1>
 
         <form className='mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16'>
@@ -35,8 +35,8 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               role='list'
               className='divide-y divide-gray-200 border-t border-b border-gray-200'
             >
-              {products.map(({ product, count }, productIdx) => (
-                <li key={product.sku} className='flex py-6 sm:py-10'>
+              {products.map((product, productIdx) => (
+                <li key={product.productSKU} className='flex py-6 sm:py-10'>
                   <div className='flex-shrink-0'>
                     <img
                       src={product.pictureUrl}
@@ -51,7 +51,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                         <div className='flex justify-between'>
                           <h3 className='text-sm'>
                             <Anchor
-                              href={`/product/${product.sku}`}
+                              href={`/product/${product.productSKU}`}
                               className='font-medium text-gray-700 hover:text-gray-800'
                             >
                               {product.name}
@@ -73,10 +73,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                         <select
                           id={`quantity-${productIdx}`}
                           name={`quantity-${productIdx}`}
-                          value={count}
+                          value={product.quantity}
                           onChange={(e) =>
                             ChangeProductCount(
-                              Number(product.sku),
+                              Number(product.productSKU),
                               Number(e.target.value)
                             )
                           }
@@ -94,7 +94,9 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
                         <div className='absolute top-0 right-0'>
                           <button
-                            onClick={() => ClearItemFromCart(product.sku)}
+                            onClick={() =>
+                              ClearItemFromCart(product.productSKU)
+                            }
                             type='button'
                             className='-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500'
                           >
@@ -142,17 +144,17 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
               id='summary-heading'
               className='text-lg font-medium text-gray-900'
             >
-              Order summary
+              Prekės
             </h2>
 
             <dl className='mt-6 space-y-4'>
               <div className='flex items-center justify-between'>
-                <dt className='text-sm text-gray-600'>Subtotal</dt>
-                <dd className='text-sm font-medium text-gray-900'>$99.00</dd>
+                <dt className='text-sm text-gray-600'>Prekių suma</dt>
+                <dd className='text-sm font-medium text-gray-900'>${total}</dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='flex items-center text-sm text-gray-600'>
-                  <span>Shipping estimate</span>
+                  <span>Siuntimo išlaidos</span>
                   <Anchor
                     href='#'
                     className='ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500'
@@ -166,11 +168,11 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                     />
                   </Anchor>
                 </dt>
-                <dd className='text-sm font-medium text-gray-900'>$5.00</dd>
+                <dd className='text-sm font-medium text-gray-900'>$0.00</dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='flex text-sm text-gray-600'>
-                  <span>Tax estimate</span>
+                  <span>Mokesčiai</span>
                   <Anchor
                     href='#'
                     className='ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500'
@@ -184,14 +186,14 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                     />
                   </Anchor>
                 </dt>
-                <dd className='text-sm font-medium text-gray-900'>$8.32</dd>
+                <dd className='text-sm font-medium text-gray-900'>$0.00</dd>
               </div>
               <div className='flex items-center justify-between border-t border-gray-200 pt-4'>
                 <dt className='text-base font-medium text-gray-900'>
-                  Order total
+                  Visa suma
                 </dt>
                 <dd className='text-base font-medium text-gray-900'>
-                  {Number(total / 100).toPrecision(3)}$
+                  {total}$
                 </dd>
               </div>
             </dl>
@@ -201,7 +203,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
                 href={Routes.client.checkout}
                 className='w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
               >
-                Checkout
+                Eiti į apmokėjimą
               </Anchor>
             </div>
           </section>

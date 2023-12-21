@@ -115,27 +115,30 @@ export const DiscountList: React.FC<DiscountListProps> = ({
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           <div className='text-gray-900'>
-                            {discount.discount}
+                            {discount.discountAmount}
                           </div>
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                           <span className='inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800'>
                             {getIsValid({
-                              start: new Date(discount.startDate),
-                              end: new Date(discount.endDate),
+                              start: new Date(discount.discountStart),
+                              end: new Date(discount.discountEnd),
                             })
                               ? t("BackofficeDiscountPage.TableRow.Active")
-                              : t("BackofficeDiscountPage.TableRow.Pending")}
+                              : t("BackofficeDiscountPage.TableRow.NonActive")}
                           </span>
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {format(new Date(discount.startDate), "YYYY-MM-DD")}
+                          {format(
+                            new Date(discount.discountStart),
+                            "yyyy-MM-dd"
+                          )}
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {format(new Date(discount.endDate), "YYYY-MM-DD")}
+                          {format(new Date(discount.discountEnd), "yyyy-MM-dd")}
                         </td>
                         <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                          {discount.minSum}
+                          {discount.minimalAmount}
                         </td>
                         <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                           {/* <DeleteForeverIcon

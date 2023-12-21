@@ -13,6 +13,12 @@ interface UserListProps {
   isLoading: boolean;
 }
 
+const getGender = (genderNumber: number) => {
+  if (genderNumber === 0) return "Vyras";
+  if (genderNumber === 1) return "Moteris";
+  if (genderNumber === 2) return "Kita";
+};
+
 export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
@@ -59,6 +65,12 @@ export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
                       </th>
                       <th
                         scope='col'
+                        className='sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell'
+                      >
+                        {t("BackofficeEmployersPage.TableHeader.Gender")}
+                      </th>
+                      <th
+                        scope='col'
                         className='sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell'
                       >
                         {t("BackofficeEmployersPage.TableHeader.Email")}
@@ -98,7 +110,17 @@ export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell"
                           )}
                         >
-                          {person.position}
+                          {person.jobPosition}
+                        </td>
+                        <td
+                          className={classNames(
+                            personIdx !== employers.length - 1
+                              ? "border-b border-gray-200"
+                              : "",
+                            "whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell"
+                          )}
+                        >
+                          {getGender(person.gender)}
                         </td>
                         <td
                           className={classNames(

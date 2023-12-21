@@ -126,8 +126,6 @@ export const DiscountPage = () => {
           discountCodeId ? t("ProductModal.Save") : t("ProductModal.Create")
         }
         refetch={handleListRefetch}
-        isBackoffice={true}
-        approveAbility={!!discountCodeId}
         discountId={discountCodeId}
         closeModal={handleModalClose}
         processSubmit={(data) => processForm(data)}

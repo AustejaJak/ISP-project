@@ -10,14 +10,39 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { BasketProduct } from "../../types/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { basketApi } from "../../clients/api/basketApi";
+import { Payment } from "../Payment/Payment";
+import { paymentsApi } from "../../clients/api/paymentApi";
 
 const discount = { code: "CHEAPSKATE", amount: 0.0 };
 
-export const CheckoutUi = () => {
-  const {
-    cart: { products, total },
-  } = useCartContext();
+type CheckoutUiProps = {
+  products?: BasketProduct[];
+  total: number;
+  handleRefetch: () => void;
+};
+
+export const CheckoutUi: React.FC<CheckoutUiProps> = ({
+  products,
+  total,
+  handleRefetch,
+}) => {
+  // const {
+  //   cart: { products, total },
+  // } = useCartContext();
+
+  const { data: paymentIntent } = useQuery({
+    queryKey: [QueryKey.GET_PAYMENT_INTENT],
+    queryFn: paymentsApi.getPaymentIntent,
+  });
+
+  const clientSecret = useMemo(() => paymentIntent, [paymentIntent]);
+
+  console.log(clientSecret);
 
   const totalAfterDiscounts = useMemo(
     () => (total / 100 - Number(discount.amount / 100)).toFixed(2),
@@ -39,6 +64,22 @@ export const CheckoutUi = () => {
     const data = checkoutModel.parse(getValues());
   };
 
+  const removeProductByQuantity = useMutation({
+    mutationKey: [QueryKey.ADD_FROM_BASKET],
+    mutationFn: basketApi.removeItemFromBasket,
+  });
+
+  const handleProductRemove = (productId: string) => {
+    removeProductByQuantity.mutate(
+      { productId, quantity: 1 },
+      {
+        onSuccess: () => {
+          handleRefetch();
+        },
+      }
+    );
+  };
+
   return (
     <FormProvider {...methods}>
       <main className='lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden'>
@@ -57,7 +98,7 @@ export const CheckoutUi = () => {
                     id='order-heading'
                     className='text-lg font-medium text-gray-900'
                   >
-                    Your Order
+                    Jūsų užsakymas
                   </h2>
                   <Disclosure.Button className='font-medium text-indigo-600 hover:text-indigo-500'>
                     {open ? (
@@ -73,37 +114,41 @@ export const CheckoutUi = () => {
                     role='list'
                     className='divide-y divide-gray-200 border-b border-gray-200'
                   >
-                    {products.map(({ product }) => (
-                      <li key={product.sku} className='flex space-x-6 py-6'>
-                        <img
-                          src={product.pictureUrl}
-                          alt=''
-                          className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
-                        />
-                        <div className='flex flex-col justify-between space-y-4'>
-                          <div className='space-y-1 text-sm font-medium'>
-                            <h3 className='text-gray-900'>{product.name}</h3>
-                            <p className='text-gray-900'>{product.cost}$</p>
-                          </div>
-                          <div className='flex space-x-4'>
-                            <button
-                              type='button'
-                              className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
-                            >
-                              Edit
-                            </button>
-                            <div className='flex border-l border-gray-300 pl-4'>
-                              <button
-                                type='button'
-                                className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
-                              >
-                                Remove
-                              </button>
+                    {products &&
+                      products.map((product) => (
+                        <li
+                          key={product.productSKU}
+                          className='flex space-x-6 py-6'
+                        >
+                          <img
+                            src={product.pictureUrl}
+                            alt=''
+                            className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
+                          />
+                          <div className='flex flex-col justify-between space-y-4'>
+                            <div className='space-y-1 text-sm font-medium'>
+                              <h3 className='text-gray-900'>{product.name}</h3>
+                              <p className='text-gray-900'>{product.cost}$</p>
+                              <p className='text-gray-900'>
+                                {product.quantity}
+                              </p>
+                            </div>
+                            <div className='flex space-x-4'>
+                              <div className='flex border-gray-300'>
+                                <button
+                                  onClick={() =>
+                                    handleProductRemove(product.productSKU)
+                                  }
+                                  type='button'
+                                  className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
+                                >
+                                  Panaikinti
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      ))}
                   </ul>
 
                   <form className='mt-10' onSubmit={handleSubmit(processForm)}>
@@ -124,7 +169,7 @@ export const CheckoutUi = () => {
                   <dl className='mt-10 space-y-6 text-sm font-medium text-gray-500'>
                     <div className='flex justify-between'>
                       <dt>{t("Checkout.Total")}</dt>
-                      <dd className='text-gray-900'>{total / 100}</dd>
+                      <dd className='text-gray-900'>{total}</dd>
                     </div>
                     <div className='flex justify-between'>
                       <dt className='flex'>
@@ -162,37 +207,36 @@ export const CheckoutUi = () => {
             role='list'
             className='flex-auto divide-y divide-gray-200 overflow-y-auto px-6'
           >
-            {products.map(({ product }) => (
-              <li key={product.sku} className='flex space-x-6 py-6'>
-                <img
-                  src={product.pictureUrl}
-                  alt=''
-                  className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
-                />
-                <div className='flex flex-col justify-between space-y-4'>
-                  <div className='space-y-1 text-sm font-medium'>
-                    <h3 className='text-gray-900'>{product.name}</h3>
-                    <p className='text-gray-900'>{product.cost}$</p>
-                  </div>
-                  <div className='flex space-x-4'>
-                    <button
-                      type='button'
-                      className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
-                    >
-                      Edit
-                    </button>
-                    <div className='flex border-l border-gray-300 pl-4'>
-                      <button
-                        type='button'
-                        className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
-                      >
-                        Remove
-                      </button>
+            {products &&
+              products.map((product) => (
+                <li key={product.productSKU} className='flex space-x-6 py-6'>
+                  <img
+                    src={product.pictureUrl}
+                    alt=''
+                    className='h-40 w-40 flex-none rounded-md bg-gray-200 object-cover object-center'
+                  />
+                  <div className='flex flex-col justify-between space-y-4'>
+                    <div className='space-y-1 text-sm font-medium'>
+                      <h3 className='text-gray-900'>{product.name}</h3>
+                      <p className='text-gray-900'>{product.cost}$</p>
+                      <p className='text-gray-900'>{product.quantity}</p>
+                    </div>
+                    <div className='flex space-x-4'>
+                      <div className='flex border-gray-300'>
+                        <button
+                          onClick={() =>
+                            handleProductRemove(product.productSKU)
+                          }
+                          type='button'
+                          className='text-sm font-medium text-indigo-600 hover:text-indigo-500'
+                        >
+                          Panaikinti
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              ))}
           </ul>
 
           <div className='sticky bottom-0 flex-none border-t border-gray-200 bg-gray-50 p-6'>
@@ -214,7 +258,7 @@ export const CheckoutUi = () => {
             <dl className='mt-10 space-y-6 text-sm font-medium text-gray-500'>
               <div className='flex justify-between'>
                 <dt>{t("Checkout.Total")}</dt>
-                <dd className='text-gray-900'>{(total / 100).toFixed(2)}</dd>
+                <dd className='text-gray-900'>{total.toFixed(2)}</dd>
               </div>
               <div className='flex justify-between'>
                 <dt className='flex'>
@@ -236,7 +280,8 @@ export const CheckoutUi = () => {
         </section>
 
         {/* Checkout form */}
-        <section
+        {clientSecret && <Payment clientSecret={clientSecret.clientSecret} />}
+        {/* <section
           aria-labelledby='payment-heading'
           className='flex-auto overflow-y-auto px-4 pt-12 pb-16 sm:px-6 sm:pt-16 lg:px-8 lg:pt-0 lg:pb-24'
         >
@@ -384,7 +429,7 @@ export const CheckoutUi = () => {
               </p>
             </form>
           </div>
-        </section>
+        </section> */}
       </main>
     </FormProvider>
   );
