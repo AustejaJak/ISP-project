@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20231220210337_UpdateOrderSummary")]
+    [Migration("20231221142505_UpdateOrderSummary")]
     partial class UpdateOrderSummary
     {
         /// <inheritdoc />
@@ -809,7 +809,7 @@ namespace API.Data.Migrations
                         .HasForeignKey("DiscountId");
 
                     b.HasOne("API.Entities.OrderSummary", null)
-                        .WithMany("Order")
+                        .WithMany("Orders")
                         .HasForeignKey("OrderSummaryId");
 
                     b.HasOne("API.Entities.Shop", "Shop")
@@ -959,7 +959,7 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.OrderSummary", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("API.Entities.Shop", b =>

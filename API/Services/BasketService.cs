@@ -91,7 +91,7 @@ namespace API.Services
             {
                 return null;
             }
-            var discount = await _storeContext.Discounts.Where(x => x.Code.Equals(discountCode)).SingleOrDefaultAsync();
+            var discount = await _storeContext.Discounts.Where(x => x.Code.ToLower().Equals(discountCode.ToLower())).SingleOrDefaultAsync();
             if (discount == null)
             {
                 return null;

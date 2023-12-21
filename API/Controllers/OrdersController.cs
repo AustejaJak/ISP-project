@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace API.Controllers
@@ -76,10 +77,13 @@ namespace API.Controllers
             var newOrder = new Order
             {
                 OrderCost = basket.TotalSum,
+                OrderDate = DateTime.Now,
+                Status = OrderStatus.PENDING,
                 AttachedDocuments = order.AttachedDocuments,
                 DeliveryAddress = order.Address,
                 PaymentIntentId = basket.PaymentIntentId!,
                 ClientId = userId,
+                Basket = basket,
                 BasketId = basket.Id,
                 ShopId = order.ShopId,
                 DiscountId = order.DiscountId
@@ -89,9 +93,140 @@ namespace API.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             if (result)
             {
-                return CreatedAtRoute("GetOrder", new { id = newOrder.OrderId }, newOrder);
+                var oderDto = new OrderDTO()
+                {
+                    OrderId = newOrder.OrderId,
+                    OrderDate = newOrder.OrderDate,
+                    OrderCost = newOrder.OrderCost,
+                    Status = newOrder.Status,
+                    DeliveryAddress = newOrder.DeliveryAddress,
+                    ClientId = newOrder.ClientId,
+                    ShopId = newOrder.ShopId,
+                    BasketId = newOrder.BasketId,
+                    BasketItems = newOrder.Basket.Items.Select(item => new BasketItemDTO()
+                    { 
+                        ProductSKU = item.Product.SKU,
+                        Name = item.Product.Name,
+                        Description = item.Product.Description,
+                        Cost = item.Product.Cost,
+                        PictureUrl = item.Product.PictureUrl,
+                        Quantity = item.Quantity,
+                        Type = item.Product.Type,
+                        CountryOfOrigin = item.Product.CountryOfOrigin,
+                        Measurements = item.Product.Measurements,
+                        Weight = item.Product.Weight,
+                    }).ToList(),
+                    DiscountId = newOrder.DiscountId,
+                    AttachedDocuments = newOrder.AttachedDocuments,
+                };
+                return CreatedAtRoute("GetOrder", new { id = newOrder.OrderId }, oderDto);
             }
             return BadRequest(new ProblemDetails { Title = "Problem occurred while trying to save new order" });
+        }
+
+
+        [HttpPost("orderSummary")]
+        public async Task<ActionResult<OrderSummaryDTO>> CreateOrderSummary()
+        {
+            var orders = await _context.Orders.Include(o => o.Client).Include(o => o.Shop).Include(o => o.Basket).ThenInclude(b => b.Items).ThenInclude(it => it.Product).Include(o => o.Discount).ToListAsync();
+            if (orders.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+
+            float avg = orders.Sum(x => x.OrderCost) / orders.Count;
+
+            var summary = new OrderSummary()
+            {
+                AverageSum = avg,
+                GenerationDate = DateTime.Now,
+                Orders = orders.ToList()
+            };
+
+            _context.OrderSummaries.Add(summary);
+            var result = await _context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                var dto = new OrderSummaryDTO()
+                {
+                    Id = summary.Id,
+                    AverageSum = summary.AverageSum,
+                    GenerationDate = summary.GenerationDate,
+                    Orders = orders.Select(order => new OrderInfoDTO()
+                    {
+                        OrderId = order.OrderId,
+                        OrderCost = order.OrderCost,
+                        OrderDate = order.OrderDate,
+                        Status = order.Status,
+                        ShopName = order.Shop.Name,
+                        ClientName = order.Client.Name,
+                        BasketItems = order.Basket.Items.Select(item => new BasketItemDTO()
+                        {
+                            ProductSKU = item.ProductId,
+                            Name = item.Product.Name,
+                            Description = item.Product.Description,
+                            Cost = item.Product.Cost,
+                            PictureUrl = item.Product.PictureUrl,
+                            Quantity = item.Quantity,
+                            Type = item.Product.Type,
+                            CountryOfOrigin = item.Product.CountryOfOrigin,
+                            Measurements = item.Product.Measurements,
+                            Weight = item.Product.Weight,
+                        }).ToList(),
+                        AttachedDocuments = order.AttachedDocuments,
+                        DeliveryAddress = order.DeliveryAddress,
+                        DiscountName = order.Discount?.Code ?? "",
+                    }).ToList()
+                };
+                return Ok(dto);
+            }
+
+            return BadRequest(new ProblemDetails() { Title = "There was a problem saving the inventory summary" });
+
+        }
+
+        [HttpGet("orderSummaries")]
+        public async Task<ActionResult<List<OrderSummaryDTO>>> GetOrderSummaries()
+        {
+            var summaries = await _context.OrderSummaries
+                .Select(summary => new OrderSummaryDTO()
+                {
+                    Id = summary.Id,
+                    AverageSum = summary.AverageSum,
+                    GenerationDate = summary.GenerationDate,
+                    Orders = summary.Orders.Select(order => new OrderInfoDTO()
+                    {
+                        OrderId = order.OrderId,
+                        OrderCost = order.OrderCost,
+                        OrderDate = order.OrderDate,
+                        Status = order.Status,
+                        ShopName = order.Shop.Name,
+                        ClientName = order.Client.Name,
+                        BasketItems = order.Basket.Items.Select(item => new BasketItemDTO()
+                        {
+                            ProductSKU = item.ProductId,
+                            Name = item.Product.Name,
+                            Description = item.Product.Description,
+                            Cost = item.Product.Cost,
+                            PictureUrl = item.Product.PictureUrl,
+                            Quantity = item.Quantity,
+                            Type = item.Product.Type,
+                            CountryOfOrigin = item.Product.CountryOfOrigin,
+                            Measurements = item.Product.Measurements,
+                            Weight = item.Product.Weight,
+                        }).ToList(),
+                        AttachedDocuments = order.AttachedDocuments,
+                        DeliveryAddress = order.DeliveryAddress,
+                        DiscountName = order.Discount == null ? "" : order.Discount.Code,
+                    }).ToList()
+                }).ToListAsync();
+
+            if (summaries.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+
+            return Ok(summaries);
         }
     }
 }

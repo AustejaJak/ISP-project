@@ -97,7 +97,6 @@ var connectionString = config.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 
-
 builder.Services.AddControllers().AddNewtonsoftJson();
 //builder.Services.AddControllers().AddJsonOptions(options =>
 //{

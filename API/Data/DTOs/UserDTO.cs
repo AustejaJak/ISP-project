@@ -6,6 +6,7 @@
         public required string Username { get; set; }
         public required string Name { get; set; }
         public required string Surname { get; set; }
+        public required List<string> Roles { get; set; } = new List<string>();
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Token { get; set; }

@@ -287,6 +287,47 @@ namespace API.Controllers
             
         }
 
+        [HttpPost("inventorySummary")]
+        public async Task<ActionResult<InventorySummary>> CreateInventorySummary()
+        {
+            var products = await _context.Products.ToListAsync();
+            if (products.IsNullOrEmpty())
+            {
+                return BadRequest();
+            }
+
+            float avg = products.Sum(x => x.Cost) / products.Count;
+
+            var summary = new InventorySummary()
+            {
+                Amount = products.Count,
+                AveragePrice = avg,
+                CreatedDate = DateTime.Now,
+                Products = products.ToList()
+            };
+
+            _context.InventorySummaries.Add(summary);
+            var result = await _context.SaveChangesAsync() > 0;
+            if (result)
+            {
+                return Ok(summary);
+            }
+
+            return BadRequest(new ProblemDetails() { Title = "There was a problem saving the inventory summary" });
+            
+        }
+
+        [HttpGet("inventorySummaries")]
+        public async Task<ActionResult<List<InventorySummary>>> GetInvetorySummaries()
+        {
+            var summaries = await _context.InventorySummaries.Include(summary => summary.Products).ToListAsync();
+            if (summaries.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(summaries);
+        }
+
         [Authorize]
         [HttpGet("recommendations")]
         public async Task<ActionResult<List<ProductDTO>>> GetProductRecommendations()

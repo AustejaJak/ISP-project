@@ -72,7 +72,7 @@ namespace API.Services
 
         }
 
-        public async Task<User?> Login(UserLoginDTO client)
+        public async Task<UserInfoDTO?> Login(UserLoginDTO client)
         {
             var user = await _userManager.FindByNameAsync(client.Username);
             if (user == null || !await _userManager.CheckPasswordAsync(user, client.Password))
@@ -80,7 +80,14 @@ namespace API.Services
                 return null;
             }
 
-            return user;
+            var roles = await _userManager.GetRolesAsync(user);
+            var obj = new UserInfoDTO()
+            {
+                User = user,
+                Roles = (List<string>)roles
+            };
+
+            return obj;
 
         }
 

@@ -9,6 +9,6 @@ namespace API.Entities
         public int Id { get; set; }
         public float AverageSum { get; set; }
         public DateTime GenerationDate { get; set; } = DateTime.Now;
-        public virtual ICollection<Order> Order { get; set; } = new List<Order>();
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

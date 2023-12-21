@@ -1,9 +1,8 @@
-﻿using API.Entities;
-using API.Entities.Enums;
+﻿using API.Entities.Enums;
 
 namespace API.Data.DTOs
 {
-    public class OrderDTO
+    public class OrderInfoDTO
     {
         public required int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
@@ -11,11 +10,9 @@ namespace API.Data.DTOs
         public OrderStatus Status { get; set; }
         public required string AttachedDocuments { get; set; }
         public required string DeliveryAddress { get; set; }
-        public required string ClientId { get; set; }
-        public required int BasketId { get; set; }
+        public required string ClientName { get; set; }
         public List<BasketItemDTO> BasketItems { get; set; } = new List<BasketItemDTO>();
-        public required int ShopId { get; set; }
-        public int? DiscountId { get; set; }
-
+        public required string ShopName { get; set; }
+        public required string DiscountName { get; set; }
     }
 }

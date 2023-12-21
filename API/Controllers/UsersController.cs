@@ -66,10 +66,12 @@ namespace API.Controllers
                 return BadRequest();
             }
             var result = await _authService.Login(user);
+
             if (result != null)
             {
-                var userBasket = await RetrieveBasket(result.Id!);
+                var userBasket = await RetrieveBasket(result.User.Id!);
                 var anonBasket = await RetrieveBasket(Request.Cookies["buyerId"]);
+
 
                 if (anonBasket != null)
                 {
@@ -78,20 +80,21 @@ namespace API.Controllers
                         _storeContext.Baskets.Remove(userBasket);
                     }
 
-                    anonBasket.ClientId = result.Id;
+                    anonBasket.ClientId = result.User.Id;
                     Response.Cookies.Delete("buyerId");
                     await _storeContext.SaveChangesAsync();
                 }
 
                 var dto = new UserDTO 
                 { 
-                    UserId = result.Id,
-                    Username = result.UserName!,
-                    Name = result.Name,
-                    Surname = result.Surname,
-                    PhoneNumber = result.PhoneNumber ?? "",
-                    Email = result.Email ?? "",
-                    Token = await _jwtGenerationService.CreateToken(result),
+                    UserId = result.User.Id,
+                    Username = result.User.UserName!,
+                    Name = result.User.Name,
+                    Surname = result.User.Surname,
+                    Roles = result.Roles.ToList(),
+                    PhoneNumber = result.User.PhoneNumber ?? "",
+                    Email = result.User.Email ?? "",
+                    Token = await _jwtGenerationService.CreateToken(result.User),
                     Basket = anonBasket != null ? anonBasket.MapBasketToBasketDTO() : userBasket?.MapBasketToBasketDTO() };
                 
                 return Ok(dto);
