@@ -22,9 +22,7 @@ interface DiscountModalProps {
   buttonTitle: string;
   processSubmit: (data: any) => void;
   closeModal: () => void;
-  isBackoffice?: boolean;
   discountId?: string;
-  approveAbility?: boolean;
   refetch?: () => void;
 }
 
@@ -35,8 +33,6 @@ export const DiscountModal: React.FC<DiscountModalProps> = ({
   processSubmit,
   closeModal,
   discountId,
-  approveAbility,
-  isBackoffice = "false",
   refetch,
 }) => {
   const { t } = useTranslation();
@@ -64,27 +60,27 @@ export const DiscountModal: React.FC<DiscountModalProps> = ({
   //     enabled: !!productId,
   //   });
 
-  //   useEffect(() => {
-  //     if (product && productId) {
-  //       setValue("sku", product.sku as never);
-  //       setValue("pictureUrl", product.pictureUrl as never);
-  //       setValue("type", product.type as never);
-  //       setValue("countryOfOrigin", product.countryOfOrigin as never);
-  //       setValue("measurements", product.measurements as never);
-  //       setValue(
-  //         "quantityInPackage",
-  //         product.quantityInPackage.toString() as never
-  //       );
-  //       setValue("name", product.name as never);
-  //       setValue("description", product.description as never);
-  //       setValue("cost", product.cost.toString() as never);
-  //       setValue("weight", product.weight.toString() as never);
-  //       setValue("brand", product.brand as never);
-  //     }
-  //     return () => {
-  //       reset();
-  //     };
-  //   }, [product, productId, setValue]);
+  // useEffect(() => {
+  //   if (discountId) {
+  //     setValue("code", product.sku as never);
+  //     setValue("discount", product.pictureUrl as never);
+  //     setValue("endDate", product.type as never);
+  //     setValue("startDate", product.countryOfOrigin as never);
+  //     setValue("minSum", product.measurements as never);
+  //     setValue(
+  //       "quantityInPackage",
+  //       product.quantityInPackage.toString() as never
+  //     );
+  //     setValue("name", product.name as never);
+  //     setValue("description", product.description as never);
+  //     setValue("cost", product.cost.toString() as never);
+  //     setValue("weight", product.weight.toString() as never);
+  //     setValue("brand", product.brand as never);
+  //   }
+  //   return () => {
+  //     reset();
+  //   };
+  // }, [product, productId, setValue]);
 
   const processForm = () => {
     const data = createDiscountModel.parse(getValues());

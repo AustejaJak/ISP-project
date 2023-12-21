@@ -13,11 +13,9 @@ const ShoppingCartPage = () => {
     queryFn: basketApi.getClientBasket,
   });
 
-  console.log(data);
-
   return (
     <>
-      <ShoppingCart products={data?.items || []} total={cart.total} />
+      <ShoppingCart products={data?.items || []} total={data?.totalSum || 0} />
     </>
   );
 };

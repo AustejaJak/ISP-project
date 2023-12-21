@@ -5,7 +5,7 @@ const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Admins`;
 
 export const discountApi = {
   getDiscountList: async () => {
-    const { data } = await axiosInstance.get<DiscountCode[]>(`${BASE_URL}`);
+    const { data } = await axiosInstance.get<DiscountCode[]>(`${BASE_URL}/getDiscounts`);
     return data;
   },
   createDiscountCode: async (discountData: DiscountCode) => {

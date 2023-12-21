@@ -7,7 +7,8 @@ export type Employer = {
   surname: string;
   birthDate: string;
   role: string;
-  position: string;
+  jobPosition: string;
+  gender: number;
   email: string;
   phoneNumber: string;
 };
@@ -26,11 +27,12 @@ export type InventoryProduct = {
 };
 
 export type DiscountCode = {
+  id: number;
   code: string;
-  discount: number;
-  endDate: string;
-  startDate: string;
-  minSum: string;
+  discountAmount: number;
+  discountEnd: string;
+  discountStart: string;
+  minimalAmount: string;
 };
 
 export type Category = {
@@ -43,9 +45,11 @@ export type BasketItem = {
   clientId: string;
   paymentIntentId: string;
   clientSecret: string;
+  totalSum: number;
   items: BasketProduct[];
 };
 
 export type BasketProduct = Omit<ProductProp, "sku"> & {
   productSKU: string;
+  quantity: number;
 };

@@ -12,6 +12,8 @@ const Routes = {
     base: "/",
     register: "/sign-up",
     login: "/log-in",
+    workerRegister: "/sign-up-employee",
+    workerLogin: "/log-in-employee",
     shop: "/shop",
     new: "/new",
     profile: "/profile",

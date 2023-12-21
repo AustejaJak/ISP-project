@@ -7,8 +7,9 @@ import { employersApi } from "../../clients/api/backoffice/employersApi";
 export const UserUI = () => {
   const { data: employers, isLoading } = useQuery({
     queryKey: [QueryKey.GET_COMPANY_EMPLOYERS],
-    queryFn: employersApi.getCompanyEmployers,
+    queryFn: () => employersApi.getCompanyEmployers({ shopId: 1 }),
   });
+  console.log(employers);
 
   return (
     <>

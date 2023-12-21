@@ -15,6 +15,13 @@ export const clientApi = {
     }>(`${BASE_URL}/ClientRegister`, userInformation);
     return data.data;
   },
+  registerEmployee: async (userInformation: any) => {
+    const { data } = await axiosInstance.post(
+      `${BASE_URL}/EmployeeRegister`,
+      userInformation
+    );
+    return data;
+  },
   authenticateClient: async (userInformation: {
     username: string;
     password: string;

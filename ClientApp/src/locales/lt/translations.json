@@ -28,6 +28,9 @@
   "DiscountCode.EndDate": "Galiojimo pabaigos data",
   "DiscountCode.MinSum": "Minimali nuolaidai pritaikyti suma",
 
+  "BackofficeDiscountPage.TableRow.Active": "Aktyvus",
+  "BackofficeDiscountPage.TableRow.NonActive": "Neaktyvus",
+
   "DiscountModal.EditDiscount": "Nuolaidos kodo koregavimas",
   "DiscountModal.CreateDiscount": "Nuolaidos kodo sukūrimas",
 
@@ -71,6 +74,8 @@
   "SignUpPage.PhoneNumber": "Telefono numeris",
   "SignUpPage.FirstName": "Vardas",
   "SignUpPage.Address": "Adresas",
+  "SignUpPage.Gender": "Lytis",
+  "SignUpPage.JobPosition": "Darbo pozicija",
   "SignUpPage.LastName": "Pavardė",
   "SignUpPage.Birthdate": "Gimimo data",
   "SignUpPage.Email": "Elektroninis paštas",
@@ -128,6 +133,7 @@
   "BackofficeEmployersPage.AddEmployer": "Pridėti darbuotoją",
   "BackofficeEmployersPage.TableHeader.Name": "Vardas",
   "BackofficeEmployersPage.TableHeader.Position": "Pozicija",
+  "BackofficeEmployersPage.TableHeader.Gender": "Lytis",
   "BackofficeEmployersPage.TableHeader.Email": "Elektroninis paštas",
   "BackofficeEmployersPage.TableHeader.Role": "Rolė",
   "BackofficeEmployersPage.TableRow.Edit": "Redaguoti",
