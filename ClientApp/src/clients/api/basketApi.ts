@@ -32,4 +32,10 @@ export const basketApi = {
     );
     return data;
   },
+  applyDiscount: async (code: string) => {
+    const { data } = await axiosInstance.post(
+      `${BASE_URL}/ApplyDiscount?discountCode=${code}`
+    );
+    return data;
+  },
 };

@@ -15,6 +15,7 @@ import {
   createDiscountModel,
 } from "./modal";
 import { BaseDatePicker } from "../BaseDatePicker/BaseDatePicker";
+import { discountApi } from "../../clients/api/backoffice/discountApi";
 
 interface DiscountModalProps {
   open: boolean;
@@ -22,7 +23,7 @@ interface DiscountModalProps {
   buttonTitle: string;
   processSubmit: (data: any) => void;
   closeModal: () => void;
-  discountId?: string;
+  discountId?: number;
   refetch?: () => void;
 }
 
@@ -49,38 +50,24 @@ export const DiscountModal: React.FC<DiscountModalProps> = ({
     reset,
   } = methods;
 
-  //   const approveProduct = useMutation({
-  //     mutationKey: [QueryKey.APPROVE_PRODUCT],
-  //     mutationFn: inventoryApi.approveProduct,
-  //   });
+  const { data: discount } = useQuery({
+    queryKey: [QueryKey.FIND_PRODUCT_BY_ID],
+    queryFn: () => discountApi.getDiscountById(discountId!),
+    enabled: !!discountId,
+  });
 
-  //   const { data: product } = useQuery({
-  //     queryKey: [QueryKey.FIND_PRODUCT_BY_ID],
-  //     queryFn: () => productApi.findProductById({ productId: productId! }),
-  //     enabled: !!productId,
-  //   });
-
-  // useEffect(() => {
-  //   if (discountId) {
-  //     setValue("code", product.sku as never);
-  //     setValue("discount", product.pictureUrl as never);
-  //     setValue("endDate", product.type as never);
-  //     setValue("startDate", product.countryOfOrigin as never);
-  //     setValue("minSum", product.measurements as never);
-  //     setValue(
-  //       "quantityInPackage",
-  //       product.quantityInPackage.toString() as never
-  //     );
-  //     setValue("name", product.name as never);
-  //     setValue("description", product.description as never);
-  //     setValue("cost", product.cost.toString() as never);
-  //     setValue("weight", product.weight.toString() as never);
-  //     setValue("brand", product.brand as never);
-  //   }
-  //   return () => {
-  //     reset();
-  //   };
-  // }, [product, productId, setValue]);
+  useEffect(() => {
+    if (discountId && discount) {
+      setValue("code", discount.code as never);
+      setValue("discount", discount.discountAmount.toString() as never);
+      setValue("endDate", new Date(discount.discountEnd) as never);
+      setValue("startDate", new Date(discount.discountStart) as never);
+      setValue("minSum", discount.minimalAmount.toString() as never);
+    }
+    return () => {
+      reset();
+    };
+  }, [discount, discountId, reset, setValue]);
 
   const processForm = () => {
     const data = createDiscountModel.parse(getValues());

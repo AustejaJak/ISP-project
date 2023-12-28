@@ -10,7 +10,7 @@ import { DiscountModal } from "../../../components/DiscountModal/DiscountModal";
 
 export const DiscountPage = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
-  const [discountCodeId, setDiscountCodeId] = useState<string | undefined>(
+  const [discountCodeId, setDiscountCodeId] = useState<number | undefined>(
     undefined
   );
   const { setMessage } = useSnackbarContext();
@@ -49,14 +49,15 @@ export const DiscountPage = () => {
       });
     }
     if (discountCodeId) {
+      console.log("labas");
       editDiscountCode.mutate(
         {
-          discountId: discountCodeId,
-          discountData: { ...data, isConfirmed: data.isConfirmed },
+          discountId: discountCodeId.toString(),
+          discountData: data,
         },
         {
           onSuccess: (res) => {
-            setMessage("Produkto informacija pakeista.");
+            setMessage("Nuolaidos kodo informacija pakeista.");
             setIsProductModalOpen(false);
             refetch();
           },
@@ -68,7 +69,7 @@ export const DiscountPage = () => {
     }
   };
 
-  const handleProductEdit = (id?: string) => {
+  const handleProductEdit = (id?: number) => {
     setDiscountCodeId(id);
     setIsProductModalOpen(true);
   };

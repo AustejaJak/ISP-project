@@ -17,6 +17,8 @@ import { QueryKey } from "../../clients/react-query/queryKeys";
 import { basketApi } from "../../clients/api/basketApi";
 import { Payment } from "../Payment/Payment";
 import { paymentsApi } from "../../clients/api/paymentApi";
+import { ordersApi } from "../../clients/api/ordersApi";
+import { discountApi } from "../../clients/api/backoffice/discountApi";
 
 const discount = { code: "CHEAPSKATE", amount: 0.0 };
 
@@ -49,10 +51,38 @@ export const CheckoutUi: React.FC<CheckoutUiProps> = ({
     [total, discount]
   );
 
+  const applyDiscount = useMutation({
+    mutationKey: [QueryKey.APPLY_DISCOUNT],
+    mutationFn: basketApi.applyDiscount,
+  });
+
   const methods = useForm({
     resolver: zodResolver(checkoutModel),
     defaultValues: checkoutDefaultValues,
   });
+
+  const createOrder = useMutation({
+    mutationKey: [QueryKey.ADD_ORDER],
+    mutationFn: ordersApi.createOrder,
+  });
+
+  // {
+  //   "address": "string",
+  //   "attachedDocuments": "string",
+  //   "shopId": 0,
+  //   "discountId": 0,
+  //   "saveAddress": true
+  // }
+
+  const handleOrderCreation = () => {
+    createOrder.mutate({
+      orderData: {
+        address: "Babtiejaus g.3",
+        shopId: 1,
+        discountId: "",
+      },
+    });
+  };
 
   const {
     handleSubmit,
@@ -68,6 +98,11 @@ export const CheckoutUi: React.FC<CheckoutUiProps> = ({
     mutationKey: [QueryKey.ADD_FROM_BASKET],
     mutationFn: basketApi.removeItemFromBasket,
   });
+
+  const handleDiscountCodeActivation = () => {
+    const code = getValues("discount");
+    applyDiscount.mutate(code);
+  };
 
   const handleProductRemove = (productId: string) => {
     removeProductByQuantity.mutate(
@@ -158,6 +193,7 @@ export const CheckoutUi: React.FC<CheckoutUiProps> = ({
                         label={t("Checkout.DiscoundCode")}
                       />
                       <button
+                        onClick={handleDiscountCodeActivation}
                         type='submit'
                         className='rounded-md bg-gray-200 px-4 text-sm font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
                       >
@@ -247,6 +283,7 @@ export const CheckoutUi: React.FC<CheckoutUiProps> = ({
                   label={t("Checkout.DiscoundCode")}
                 />
                 <button
+                  onClick={handleDiscountCodeActivation}
                   type='submit'
                   className='h-9 rounded-md bg-gray-200 px-4 text-sm font-medium text-gray-600 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50'
                 >
@@ -280,7 +317,12 @@ export const CheckoutUi: React.FC<CheckoutUiProps> = ({
         </section>
 
         {/* Checkout form */}
-        {clientSecret && <Payment clientSecret={clientSecret.clientSecret} />}
+        {clientSecret && (
+          <Payment
+            handleOrder={handleOrderCreation}
+            clientSecret={clientSecret.clientSecret}
+          />
+        )}
         {/* <section
           aria-labelledby='payment-heading'
           className='flex-auto overflow-y-auto px-4 pt-12 pb-16 sm:px-6 sm:pt-16 lg:px-8 lg:pt-0 lg:pb-24'

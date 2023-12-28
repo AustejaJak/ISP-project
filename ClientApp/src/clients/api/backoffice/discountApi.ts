@@ -5,7 +5,9 @@ const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Admins`;
 
 export const discountApi = {
   getDiscountList: async () => {
-    const { data } = await axiosInstance.get<DiscountCode[]>(`${BASE_URL}/getDiscounts`);
+    const { data } = await axiosInstance.get<DiscountCode[]>(
+      `${BASE_URL}/getDiscounts`
+    );
     return data;
   },
   createDiscountCode: async (discountData: DiscountCode) => {
@@ -15,6 +17,10 @@ export const discountApi = {
     );
     return data;
   },
+  getDiscountById: async (id: number) => {
+    const { data } = await axiosInstance.get<DiscountCode>(`${BASE_URL}/${id}`);
+    return data;
+  },
   editDiscountCode: async ({
     discountId,
     discountData,
@@ -22,7 +28,8 @@ export const discountApi = {
     discountId: string;
     discountData: DiscountCode;
   }) => {
-    const { data } = await axiosInstance.patch<any>(
+    console.log(discountId);
+    const { data } = await axiosInstance.patch(
       `${BASE_URL}/${discountId}`,
       discountData
     );

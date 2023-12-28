@@ -27,10 +27,10 @@ export const createDiscountModel = object({
 
 export const createDiscountDefaultValues = {
   [CreateDiscountFields.CODE]: "",
-  [CreateDiscountFields.DISCOUNT]: 0,
+  [CreateDiscountFields.DISCOUNT]: "",
   [CreateDiscountFields.END_DATE]: null as Date | null,
   [CreateDiscountFields.START_DATE]: null as Date | null,
-  [CreateDiscountFields.MIN_SUM]: 0,
+  [CreateDiscountFields.MIN_SUM]: "",
 };
 
 export type SignUpModel = z.infer<typeof createDiscountModel>;

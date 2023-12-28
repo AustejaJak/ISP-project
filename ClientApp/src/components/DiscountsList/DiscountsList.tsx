@@ -8,7 +8,7 @@ import { format, startOfDay } from "date-fns";
 
 interface DiscountListProps {
   discounts: DiscountCode[];
-  setModalOpen: (id?: string) => void;
+  setModalOpen: (id?: number) => void;
   error: Error | null;
   isLoading: boolean;
   handleDeleteProduct?: (id: string) => void;
@@ -146,7 +146,7 @@ export const DiscountList: React.FC<DiscountListProps> = ({
                             className='text-red-500 mr-3 cursor-pointer'
                           /> */}
                           <button
-                            onClick={() => setModalOpen(discount.code)}
+                            onClick={() => setModalOpen(discount.id)}
                             className='text-indigo-600 hover:text-indigo-900'
                           >
                             {t("BackofficeDiscountPage.TableHeader.Edit")}
