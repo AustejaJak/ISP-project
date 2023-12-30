@@ -70,7 +70,7 @@ namespace API.Controllers
 
             if (basket == null)
             {
-                return BadRequest(new ProblemDetails { Title = "Could not locate basket" });
+                return BadRequest("Couldn't locate the basket");
             }
 
 
@@ -121,7 +121,7 @@ namespace API.Controllers
                 };
                 return CreatedAtRoute("GetOrder", new { id = newOrder.OrderId }, oderDto);
             }
-            return BadRequest(new ProblemDetails { Title = "Problem occurred while trying to save new order" });
+            return BadRequest("Problem occurred while trying to save new order");
         }
 
 
