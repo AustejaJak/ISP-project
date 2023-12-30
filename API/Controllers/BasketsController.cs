@@ -69,6 +69,28 @@ namespace API.Controllers
             return NotFound();
         }
 
+        [HttpDelete("clearBasket")]
+        public async Task<ActionResult> ClearUserBasket()
+        {
+            var basket = await RetrieveBasket(GetBuyerId());
+            if (basket == null)
+            {
+                return NotFound();
+            }
+
+            basket.PaymentIntentId = null;
+            basket.ClientSecret = null;
+            basket.TotalSum = 0;
+            basket.ItemCount = 0;
+            basket.Items.Clear();
+            var res = await _context.SaveChangesAsync() > 0;
+            if (res)
+            {
+                return StatusCode(204);
+            }
+            return BadRequest(new ProblemDetails { Title = "Problem clearing the basket" });
+        }
+
 
         [HttpPost("AddItem")]
         public async Task<ActionResult<BasketDTO>> AddItemToBasket(string productId, int quantity)
