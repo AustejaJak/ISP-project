@@ -162,6 +162,9 @@ namespace API.Controllers
                         Status = order.Status,
                         ShopName = order.Shop.Name,
                         ClientName = order.Client.Name,
+                        ClientSurname = order.Client.Surname,
+                        ClientEmail = order.Client.Email!,
+                        ClientPhoneNumber = order.Client.PhoneNumber!,
                         OrderItems = order.Items.Select(item => new BasketItemDTO()
                         {
                             ProductSKU = item.ProductId,
@@ -204,6 +207,9 @@ namespace API.Controllers
                         Status = order.Status,
                         ShopName = order.Shop.Name,
                         ClientName = order.Client.Name,
+                        ClientSurname = order.Client.Surname,
+                        ClientEmail = order.Client.Email!,
+                        ClientPhoneNumber = order.Client.PhoneNumber!,
                         OrderItems = order.Items.Select(item => new BasketItemDTO()
                         {
                             ProductSKU = item.ProductId,
