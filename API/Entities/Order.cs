@@ -13,15 +13,22 @@ namespace API.Entities
         public string AttachedDocuments { get; set; } = null!;
         public string DeliveryAddress { get; set; } = null!;
         public string PaymentIntentId { get; set; } = null!;
+        public virtual ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
         public virtual string ClientId { get; set; } = null!;
         public virtual Client Client { get; set; } = null!;
-        public virtual int BasketId { get; set; }
-        public virtual Basket Basket { get; set; } = null!;
         public virtual int ShopId { get; set; }
         public virtual Shop Shop { get; set; } = null!;
         public virtual int? DiscountId { get; set; }
         public virtual Discount? Discount { get; set; }
 
-
+        public void AddItem(BasketItem item)
+        {
+            var orderItem = new OrderItem();
+            orderItem.Product = item.Product;
+            orderItem.ProductId = item.ProductId;
+            orderItem.Quantity = item.Quantity;
+            Items.Add(orderItem);
+            
+        }
     }
 }

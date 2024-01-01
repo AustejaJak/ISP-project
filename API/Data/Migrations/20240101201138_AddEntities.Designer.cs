@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20231220131013_UpdateWishlist")]
-    partial class UpdateWishlist
+    [Migration("20240101201138_AddEntities")]
+    partial class AddEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,9 +131,6 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("BasketId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -166,8 +163,6 @@ namespace API.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("BasketId");
-
                     b.HasIndex("ClientId");
 
                     b.HasIndex("DiscountId");
@@ -179,17 +174,42 @@ namespace API.Data.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("API.Entities.OrderItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("API.Entities.OrderSummary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<float>("AverageSum")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("GenerationDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<float>("TotalSum")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -792,12 +812,6 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Order", b =>
                 {
-                    b.HasOne("API.Entities.Basket", "Basket")
-                        .WithMany()
-                        .HasForeignKey("BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
@@ -809,7 +823,7 @@ namespace API.Data.Migrations
                         .HasForeignKey("DiscountId");
 
                     b.HasOne("API.Entities.OrderSummary", null)
-                        .WithMany("Order")
+                        .WithMany("Orders")
                         .HasForeignKey("OrderSummaryId");
 
                     b.HasOne("API.Entities.Shop", "Shop")
@@ -818,13 +832,30 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Basket");
-
                     b.Navigation("Client");
 
                     b.Navigation("Discount");
 
                     b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderItem", b =>
+                {
+                    b.HasOne("API.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API.Entities.Payment", b =>
@@ -957,9 +988,14 @@ namespace API.Data.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("API.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("API.Entities.OrderSummary", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("API.Entities.Shop", b =>

@@ -83,11 +83,14 @@ namespace API.Controllers
                 DeliveryAddress = order.Address,
                 PaymentIntentId = basket.PaymentIntentId!,
                 ClientId = userId,
-                Basket = basket,
-                BasketId = basket.Id,
                 ShopId = order.ShopId,
                 DiscountId = order.DiscountId
             };
+
+            foreach(var basketItem in basket.Items)
+            {
+                newOrder.AddItem(basketItem);
+            }
 
             _context.Orders.Add(newOrder);
             var result = await _context.SaveChangesAsync() > 0;
@@ -102,8 +105,7 @@ namespace API.Controllers
                     DeliveryAddress = newOrder.DeliveryAddress,
                     ClientId = newOrder.ClientId,
                     ShopId = newOrder.ShopId,
-                    BasketId = newOrder.BasketId,
-                    BasketItems = newOrder.Basket.Items.Select(item => new BasketItemDTO()
+                    OrderItems = newOrder.Items.Select(item => new BasketItemDTO()
                     { 
                         ProductSKU = item.Product.SKU,
                         Name = item.Product.Name,
@@ -128,7 +130,7 @@ namespace API.Controllers
         [HttpPost("orderSummary")]
         public async Task<ActionResult<OrderSummaryDTO>> CreateOrderSummary()
         {
-            var orders = await _context.Orders.Include(o => o.Client).Include(o => o.Shop).Include(o => o.Basket).ThenInclude(b => b.Items).ThenInclude(it => it.Product).Include(o => o.Discount).ToListAsync();
+            var orders = await _context.Orders.Include(o => o.Client).Include(o => o.Shop).Include(o => o.Items).ThenInclude(it => it.Product).Include(o => o.Discount).ToListAsync();
             if (orders.IsNullOrEmpty())
             {
                 return BadRequest();
@@ -160,7 +162,7 @@ namespace API.Controllers
                         Status = order.Status,
                         ShopName = order.Shop.Name,
                         ClientName = order.Client.Name,
-                        BasketItems = order.Basket.Items.Select(item => new BasketItemDTO()
+                        OrderItems = order.Items.Select(item => new BasketItemDTO()
                         {
                             ProductSKU = item.ProductId,
                             Name = item.Product.Name,
@@ -202,7 +204,7 @@ namespace API.Controllers
                         Status = order.Status,
                         ShopName = order.Shop.Name,
                         ClientName = order.Client.Name,
-                        BasketItems = order.Basket.Items.Select(item => new BasketItemDTO()
+                        OrderItems = order.Items.Select(item => new BasketItemDTO()
                         {
                             ProductSKU = item.ProductId,
                             Name = item.Product.Name,

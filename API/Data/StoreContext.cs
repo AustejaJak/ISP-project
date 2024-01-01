@@ -31,6 +31,7 @@ namespace API.Data
         public DbSet<ShopEmployee> ShopEmployees { get; set; }
         public DbSet<OrderSummary> OrderSummaries { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ProductType> ProductType { get; set; }

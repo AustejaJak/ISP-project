@@ -11,7 +11,7 @@ namespace API.Data.DTOs
         public required string AttachedDocuments { get; set; }
         public required string DeliveryAddress { get; set; }
         public required string ClientName { get; set; }
-        public List<BasketItemDTO> BasketItems { get; set; } = new List<BasketItemDTO>();
+        public List<BasketItemDTO> OrderItems { get; set; } = new List<BasketItemDTO>();
         public required string ShopName { get; set; }
         public required string DiscountName { get; set; }
     }

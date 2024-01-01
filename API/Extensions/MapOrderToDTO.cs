@@ -19,8 +19,7 @@ namespace API.Extensions
                 AttachedDocuments = order.AttachedDocuments,
                 DeliveryAddress = order.DeliveryAddress,
                 ClientId = order.ClientId,
-                BasketId = order.BasketId,
-                BasketItems = order.Basket.Items.Select(item => new BasketItemDTO()
+                OrderItems = order.Items.Select(item => new BasketItemDTO()
                 {
                     ProductSKU = item.Product.SKU,
                     Name = item.Product.Name,

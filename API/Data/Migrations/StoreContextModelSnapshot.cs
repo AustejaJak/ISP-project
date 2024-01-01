@@ -128,9 +128,6 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("BasketId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -163,8 +160,6 @@ namespace API.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("BasketId");
-
                     b.HasIndex("ClientId");
 
                     b.HasIndex("DiscountId");
@@ -174,6 +169,31 @@ namespace API.Data.Migrations
                     b.HasIndex("ShopId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("API.Entities.OrderSummary", b =>
@@ -789,12 +809,6 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Order", b =>
                 {
-                    b.HasOne("API.Entities.Basket", "Basket")
-                        .WithMany()
-                        .HasForeignKey("BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
@@ -815,13 +829,30 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Basket");
-
                     b.Navigation("Client");
 
                     b.Navigation("Discount");
 
                     b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderItem", b =>
+                {
+                    b.HasOne("API.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API.Entities.Payment", b =>
@@ -952,6 +983,11 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.InventorySummary", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("API.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("API.Entities.OrderSummary", b =>
