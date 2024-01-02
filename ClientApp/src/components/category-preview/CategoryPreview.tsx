@@ -63,8 +63,6 @@ const CategoryPreview = () => {
     queryFn: backofficeProductApi.getProductCategories,
   });
 
-  console.log(categories);
-
   return (
     <div className='bg-white'>
       <div className='py-16 sm:py-24 xl:mx-auto xl:max-w-7xl xl:px-8'>

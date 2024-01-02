@@ -3,6 +3,8 @@ import { QueryKey } from "../../../clients/react-query/queryKeys";
 import Product from "../../../components/product/Product";
 import { useParams } from "react-router-dom";
 import { productApi } from "../../../clients/api/productApi";
+import { reviewsApi } from "../../../clients/api/reviewsApi";
+import { useMemo } from "react";
 
 export type ProductProp = {
   sku: string;
@@ -29,8 +31,29 @@ const ProductPage = () => {
     queryFn: () => productApi.findProductById({ productId: productId! }),
     enabled: !!productId,
   });
+
+  const { data: reviews, refetch } = useQuery({
+    queryKey: [QueryKey.GET_PRODUCT_REVIEWS, productId],
+    queryFn: () => reviewsApi.getProductReviews({ productId: productId! }),
+    enabled: !!productId,
+  });
+
+  const reviewsAverage = useMemo(() => {
+    if (!reviews) return;
+    return (
+      (reviews?.reduce((acc, { rating }) => acc + rating, 0) || 0) /
+      reviews?.length
+    );
+  }, [reviews]);
+
   return (
-    <Product isLoading={isLoading} product={product || ({} as ProductProp)} />
+    <Product
+      isLoading={isLoading}
+      reviews={reviews || []}
+      product={product || ({} as ProductProp)}
+      reviewAvg={reviewsAverage || 0}
+      reviewsRefetch={() => refetch()}
+    />
   );
 };
 

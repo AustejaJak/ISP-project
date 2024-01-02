@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useContext } from "react";
 
 interface UserProps {
-  id: string;
   name: string;
   surname: string;
   email: string;
+  roles: string[];
+  userId: string;
+  phoneNumber: string;
+  username: string;
+  authenticated?: boolean;
 }
 
 interface UserContextProps {
@@ -25,10 +29,14 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
   children,
 }) => {
   const [userInformation, setUserInformation] = useState<UserProps>({
-    id: "",
     name: "",
     surname: "",
     email: "",
+    phoneNumber: "",
+    roles: [],
+    userId: "",
+    username: "",
+    authenticated: false,
   });
 
   return (

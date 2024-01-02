@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { ProductProp } from "../../pages/client/product/ProductPage";
 import { Loader } from "../Loader/Loader";
 import { t } from "i18next";
 import { useCartContext } from "../../context/cartContext";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
 import { basketApi } from "../../clients/api/basketApi";
+import { Review } from "../../types/types";
+import ReviewCard from "../review-card/ReviewCard";
+import { ReviewModal } from "../ReviewForm/ReviewModal";
+import { wishlistApi } from "../../clients/api/wishlistApi";
+import { useUserContext } from "../../context/userContext";
+import { Button } from "@mui/material";
+import { useSnackbarContext } from "../../context/snackbarContext";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -16,15 +23,46 @@ function classNames(...classes: any[]) {
 type ProductProps = {
   product: ProductProp;
   isLoading: boolean;
+  reviews: Review[];
+  reviewAvg: number;
+  reviewsRefetch: () => void;
 };
 
-const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
+const Product: React.FC<ProductProps> = ({
+  product,
+  isLoading,
+  reviews,
+  reviewAvg,
+  reviewsRefetch,
+}) => {
+  const { setMessage } = useSnackbarContext();
   const { AddItemToCart } = useCartContext();
+  const { userInformation } = useUserContext();
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const addToBasket = useMutation({
     mutationKey: [QueryKey.ADD_TO_BASKET],
     mutationFn: basketApi.addItemToBasket,
   });
+
+  const addToWishlist = useMutation({
+    mutationKey: [QueryKey.ADD_TO_WISHLIST],
+    mutationFn: wishlistApi.addToWishlist,
+  });
+
+  const { data: wishlistedProducts } = useQuery({
+    queryKey: [QueryKey.GET_WISHLISTED_PRODUCTS, userInformation.userId],
+    queryFn: () =>
+      wishlistApi.getWishlistProducts({ userId: userInformation.userId }),
+  });
+
+  const isWishlisted = useMemo(
+    () =>
+      !!wishlistedProducts?.products?.find(
+        (wishlistedProduct) => wishlistedProduct.sku === product.sku
+      ),
+    [product.sku, wishlistedProducts?.products]
+  );
 
   if (isLoading)
     return (
@@ -42,8 +80,25 @@ const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
   const handleItemAdd = (e: any) => {
     e.preventDefault();
     AddItemToCart(product);
-    console.log({ quantity: 1, productId: product.sku });
     addToBasket.mutate({ quantity: 1, productId: product.sku });
+  };
+
+  const handleItemAddToWishlist = (e: any) => {
+    e.preventDefault();
+    addToWishlist.mutate(
+      {
+        userId: userInformation.userId,
+        productId: product.sku,
+      },
+      {
+        onSuccess: () => {
+          setMessage("Prekė sėkmingai pridėta į norų sąrašą");
+        },
+        onError: () => {
+          setMessage("Įvyko klaida. Veiksmą pabandykite atlikti dar kartą.");
+        },
+      }
+    );
   };
 
   return (
@@ -110,18 +165,20 @@ const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
               <h3 className='sr-only'>Reviews</h3>
               <div className='flex items-center'>
                 <div className='flex items-center'>
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        product.rating > rating
-                          ? "text-indigo-500"
-                          : "text-gray-300",
-                        "h-5 w-5 flex-shrink-0"
-                      )}
-                      aria-hidden='true'
-                    />
-                  ))}
+                  {Array(reviewAvg)
+                    .fill(0)
+                    .map((rating) => (
+                      <StarIcon
+                        key={rating}
+                        className={classNames(
+                          product.rating > rating
+                            ? "text-indigo-500"
+                            : "text-gray-300",
+                          "h-5 w-5 flex-shrink-0"
+                        )}
+                        aria-hidden='true'
+                      />
+                    ))}
                 </div>
                 <p className='sr-only'>{product.rating} out of 5 stars</p>
               </div>
@@ -139,17 +196,46 @@ const Product: React.FC<ProductProps> = ({ product, isLoading }) => {
             </div>
 
             <form className='mt-6' onSubmit={handleItemAdd}>
-              <div className='sm:flex-col1 mt-10 flex'>
+              <div className='mt-10 flex flex-col gap-3'>
                 <button
                   type='submit'
                   className='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full'
                 >
                   {t("Product.AddToCart")}
                 </button>
+                <Button
+                  disabled={isWishlisted}
+                  onClick={handleItemAddToWishlist}
+                  className='flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-slate-600 py-3 px-8 text-base font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-50 sm:w-full'
+                >
+                  {isWishlisted
+                    ? t("Product.AlreadyInWishlist")
+                    : t("Product.AddToWishList")}
+                </Button>
               </div>
             </form>
           </div>
         </div>
+      </div>
+      <div className='mx-20'>
+        <div className='flex justify-between'>
+          <h1 className='text-2xl bold mb-3'>Atsiliepimai</h1>
+          <button onClick={() => setIsReviewModalOpen(true)}>
+            Parašyti atsiliepimą
+          </button>
+        </div>
+
+        <div className='flex gap-5 justify-start w-full flex-wrap'>
+          {reviews?.map((review) => (
+            <ReviewCard review={review} />
+          ))}
+        </div>
+        <ReviewModal
+          productId={product.sku}
+          open={isReviewModalOpen}
+          closeModal={() => setIsReviewModalOpen(false)}
+          refetch={reviewsRefetch}
+        />
       </div>
     </div>
   );

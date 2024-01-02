@@ -8,11 +8,9 @@ export const ordersApi = {
     const { data } = await axiosInstance.post(`${BASE_URL}`, orderData);
     return data;
   },
-  getOrdersHistory: async ({ userId }: { userId: string }) => {
-    const { data } = await axiosInstance.get<{
-      data: OrderProps[];
-    }>(`${BASE_URL}/${userId}`);
-    return data.data;
+  getOrdersHistory: async () => {
+    const { data } = await axiosInstance.get<OrderProps[]>(`${BASE_URL}`);
+    return data;
   },
   getOrderById: async ({
     userId,

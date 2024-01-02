@@ -19,6 +19,8 @@
   "Product.Images.DragAndDrop": "Tempkite arba paspauskite ir pasirinkite nuotraukas.",
   "Product.CreateButton": "Sukurti produktą",
   "Product.AddToCart": "Pridėti į krepšelį",
+  "Product.AddToWishList": "Pridėti į norų sąrašą",
+  "Product.AlreadyInWishlist": "Norų sąraše",
   "Product.Color": "Spalva",
   "ProductRow.ViewProductText": "Peržiūrėti",
 
@@ -137,6 +139,10 @@
   "BackofficeEmployersPage.TableHeader.Email": "Elektroninis paštas",
   "BackofficeEmployersPage.TableHeader.Role": "Rolė",
   "BackofficeEmployersPage.TableRow.Edit": "Redaguoti",
+
+  "ReviewModal.Rating": "Reitingas",
+  "ReviewModal.Comment": "Komentaras",
+  "ReviewModal.PictureUrl": "Nuotraukos nuoroda",
 
   "Error.ProductNameRequired": "Prekės pavadinimas privalomas.",
   "Error.ProductDescriptionRequired": "Prekės aprašymas privalomas.",

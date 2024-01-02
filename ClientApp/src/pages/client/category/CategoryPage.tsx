@@ -1,14 +1,12 @@
 import { useParams } from "react-router-dom";
 import ProductsList from "../../../components/products-list/ProductsList";
-import ProductsFilter from "../../../components/products-filter/ProductsFilter";
 import products from "../../../products.json";
-import { useEffect, useMemo, useState } from "react";
-import { filters } from "./model";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
-import { productsApi } from "../../../clients/api/productsApi";
 import { backofficeProductApi } from "../../../clients/api/backoffice/productApi";
 import { productApi } from "../../../clients/api/productApi";
+import { useQuery } from "@tanstack/react-query";
+import ProductsFilter from "../../../components/products-filter/ProductsFilter";
 
 export type categoryProps = {
   title: string;
@@ -21,54 +19,60 @@ const CategoryPage = () => {
   const { category } = useParams();
   const [queryFilters, setQueryFilters] = useState<string>("");
 
-  // const clothingCategory = useMemo(() => {
-  //   const categoryInformation =
-  //     products[category as informationByCategoryValues];
-  //   if (!categoryInformation) return;
-  //   const { title, description } = categoryInformation;
-  //   return {
-  //     title,
-  //     description,
-  //   };
-  // }, [category]);
+  const { data: categories } = useQuery({
+    queryKey: [QueryKey.GET_CATEGORIES],
+    queryFn: () => backofficeProductApi.getProductCategories(),
+  });
 
-  console.log(category![0]);
+  const currentCategory = categories?.find(
+    (shopCategory) => shopCategory.type.toLowerCase() === category
+  )?.type;
 
   const { data: products } = useQuery({
     queryKey: [QueryKey.GET_PRODUCTS_BY_FILTER_QUERY, category],
     queryFn: () =>
       productApi.getProducts({
-        query: { type: `${category![0].toUpperCase()}${category?.slice(1)}` },
+        query: { Types: `${currentCategory}` },
       }),
-    enabled: !!category,
+    enabled: !!category && !!currentCategory,
   });
 
-  console.log(products);
+  const { data: productBrands } = useQuery({
+    queryKey: [QueryKey.GET_PRODUCTS_BRANDS, category],
+    queryFn: productApi.getProductBrands,
+    enabled: !!category && !!currentCategory,
+  });
 
+  const getCurrentProductBrands = () => {
+    if (!productBrands) return;
+    let brands: string[] = [];
+    Object.entries(productBrands).forEach(([key, value]) => {
+      if (key.toLowerCase() === category) brands = value;
+    });
+    return brands;
+  };
+
+  console.log(productBrands);
   if (!products) return null;
-
-  // const clothingItems = useMemo(() => {
-  //   const items = products[category as informationByCategoryValues]?.items;
-  //   return items.map(({ id, name, images, price }) => ({
-  //     id,
-  //     name,
-  //     imageSrc: images[0]?.imageUrl,
-  //     imageAlt: images[0]?.alt,
-  //     price,
-  //   }));
-  // }, [category]);
-
-  // useEffect(() => {
-  //   console.log(queryFilters);
-  //   getProducts.mutate({
-  //     query: queryFilters,
-  //     category: category as informationByCategoryValues,
-  //   });
-  // }, [queryFilters]);
 
   return (
     <>
-      <ProductsList products={products} />
+      <ProductsFilter
+        setQueryFilters={(query) => console.log(query)}
+        filters={[
+          {
+            id: "brands",
+            name: "Gamintojai",
+            options:
+              getCurrentProductBrands()?.map((brand) => ({
+                label: brand,
+                value: brand,
+              })) || [],
+          },
+        ]}
+      >
+        <ProductsList products={products} />
+      </ProductsFilter>
     </>
   );
 };

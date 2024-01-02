@@ -1,5 +1,3 @@
-import { SVGProps } from "react";
-import { JSX } from "react/jsx-runtime";
 import Routes from "../../routes/routes";
 import { SocialMedias } from "./SocialMedias";
 
@@ -7,7 +5,7 @@ const navigation = {
   main: [
     { name: "Pagrindinis puslapis", href: Routes.client.base },
     { name: "Naujienos", href: Routes.client.new },
-    { name: "Kolekcija", href: Routes.client.collection },
+    { name: "Norų sąrašas", href: Routes.client.wishlist },
     { name: "Parduotuvė", href: Routes.client.shop },
     { name: "Paskyra", href: Routes.client.profile },
   ],

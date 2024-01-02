@@ -74,7 +74,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     if (product && productId) {
       setValue("sku", product.sku as never);
       setValue("pictureUrl", product.pictureUrl as never);
-      setValue("type", product.type as never);
+      setValue("type", convertTypeId(product.type) as never);
       setValue("countryOfOrigin", product.countryOfOrigin as never);
       setValue("measurements", product.measurements as never);
       setValue(
@@ -92,10 +92,21 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     };
   }, [product, productId, setValue]);
 
+  const convertType = (id: string) => {
+    return categories?.find((category) => category.id === Number(id))?.type;
+  };
+
+  const convertTypeId = (type: string) => {
+    return categories?.find(
+      (category) => category.type.toLowerCase() === type.toLowerCase()
+    )?.id;
+  };
+
   const processForm = () => {
-    const data = createProductModel.parse(getValues());
+    const { type, ...rest } = createProductModel.parse(getValues());
     processSubmit({
-      ...data,
+      type: convertType(type),
+      ...rest,
       isConfirmed: product?.isConfirmed || isBackoffice,
     });
   };

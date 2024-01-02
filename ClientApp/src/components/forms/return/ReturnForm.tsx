@@ -19,7 +19,7 @@ const ReturnForm: React.FC<ReturnFormProps> = ({ order, isLoading }) => {
   const navigate = useNavigate();
 
   const returnOrder = useMutation({
-    mutationKey: [QueryKey.MAKE_ORDER_RETURN, order?.number],
+    mutationKey: [QueryKey.MAKE_ORDER_RETURN, order as any],
     mutationFn: returnApi.makeOrderReturn,
   });
 
@@ -36,7 +36,7 @@ const ReturnForm: React.FC<ReturnFormProps> = ({ order, isLoading }) => {
   const handleOrderReturn = () => {
     returnOrder.mutate(
       {
-        orderId: order!.number,
+        orderId: order as any,
         items: checkedItems,
       },
       {
@@ -60,7 +60,7 @@ const ReturnForm: React.FC<ReturnFormProps> = ({ order, isLoading }) => {
         </>
       ) : (
         <>
-          {order!.products.map((product) => (
+          {/* {order!.products.map((product) => (
             <div className='flex items-center gap-3'>
               <input
                 type='checkbox'
@@ -70,7 +70,7 @@ const ReturnForm: React.FC<ReturnFormProps> = ({ order, isLoading }) => {
               />
               <ProductRow product={product} />
             </div>
-          ))}
+          ))} */}
           <div>
             <Button
               disabled={returnOrder.isPending}

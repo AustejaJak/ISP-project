@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import ProfileBubble from "../profile-bubble/ProfileBubble";
+import { useUserContext } from "../../context/userContext";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +12,7 @@ interface DropdownMenuProps {
 }
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({ navigation }) => {
+  const { userInformation } = useUserContext();
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <ProfileBubble />
@@ -28,7 +30,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ navigation }) => {
           <div className='px-4 py-3'>
             <p className='text-sm'>Prisijungęs kaip</p>
             <p className='truncate text-sm font-medium text-gray-900'>
-              tom@example.com
+              {userInformation.email}
             </p>
           </div>
           {navigation.map((link) => (
