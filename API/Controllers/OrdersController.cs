@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace API.Controllers
@@ -235,6 +236,49 @@ namespace API.Controllers
             }
 
             return Ok(summaries);
+        }
+
+        [HttpPatch("orderId")]
+        public async Task<ActionResult<OrderDTO>> UpdateOrderDetails(int orderId, [FromBody]EditOrderDTO editOrder)
+        {
+            var order = await _context.Orders.Include(o => o.Items).ThenInclude(i => i.Product).Where(x => x.OrderId == orderId).FirstOrDefaultAsync();
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            string jsonString = System.Text.Json.JsonSerializer.Serialize<EditOrderDTO>(editOrder);
+            JsonConvert.PopulateObject(jsonString, order);
+            await _context.SaveChangesAsync();
+
+            var orderDto = new OrderDTO()
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                OrderCost = order.OrderCost,
+                Status = order.Status,
+                DeliveryAddress = order.DeliveryAddress,
+                ClientId = order.ClientId,
+                ShopId = order.ShopId,
+                OrderItems = order.Items.Select(item => new BasketItemDTO()
+                {
+                    ProductSKU = item.Product.SKU,
+                    Name = item.Product.Name,
+                    Description = item.Product.Description,
+                    Cost = item.Product.Cost,
+                    PictureUrl = item.Product.PictureUrl,
+                    Quantity = item.Quantity,
+                    Type = item.Product.Type,
+                    CountryOfOrigin = item.Product.CountryOfOrigin,
+                    Measurements = item.Product.Measurements,
+                    Weight = item.Product.Weight,
+                }).ToList(),
+                DiscountId = order.DiscountId,
+                AttachedDocuments = order.AttachedDocuments,
+            };
+
+            return Ok(orderDto);
+
         }
     }
 }
