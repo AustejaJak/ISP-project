@@ -34,7 +34,7 @@ namespace API.Controllers
             }
 
 
-            if (filterParams != null)
+            if (!filterParams.AreAllFieldsNull())
             {
                 var prods = await _context.Products
                     .Where(p => string.IsNullOrEmpty(filterParams.Brands) || p.Brand.ToLower().Equals(filterParams.Brands.ToLower()))
@@ -63,6 +63,10 @@ namespace API.Controllers
                 if (prods.IsNullOrEmpty())
                 {
                     return NotFound();
+                }
+                else
+                {
+                    return prods;
                 }
 
 

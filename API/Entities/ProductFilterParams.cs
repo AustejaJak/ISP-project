@@ -6,5 +6,10 @@
         public string? Brands { get; set; }
         public float? PriceFrom { get; set; }
         public float? PriceTo { get; set; }
+
+        public bool AreAllFieldsNull()
+        {
+            return Types == null && Brands == null && PriceFrom == null && PriceTo == null;
+        }
     }
 }
