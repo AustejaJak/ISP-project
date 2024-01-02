@@ -10,7 +10,6 @@ import ProductPage from "./product/ProductPage";
 import ProfilePage from "./profile/ProfilePage";
 import InitialUiPage from "./initial-promo-section/InitialUiPage";
 import NewPage from "./new/NewPage";
-import CollectionPage from "./collection/CollectionPage";
 import CheckoutPage from "./checkout/CheckoutPage";
 import ShoppingCartPage from "./shopping-cart-page-ui/ShoppingCartPage";
 import OrderHistoryPage from "./order-history/OrderHistoryPage";
@@ -18,6 +17,7 @@ import ReturnPage from "./return/ReturnPage";
 import { Footer } from "../../components/footer/Footer";
 import { WorkerSignUp } from "../../components/WorkerSignUp/WorkerSignUp";
 import { WorkerSignIn } from "../../components/WorkerSignIn/WorkerSignIn";
+import { WishlistPage } from "./wishlist/WishlistPage";
 
 const userNavigation = [
   { name: "Mano paskyra", href: Routes.client.profile },
@@ -25,8 +25,7 @@ const userNavigation = [
 ];
 
 const navigation = [
-  { name: "Naujienos", href: Routes.client.new },
-  { name: "Kolekcija", href: Routes.client.collection },
+  { name: "Norų sąrašas", href: Routes.client.wishlist },
   { name: "Parduotuvė", href: Routes.client.shop },
 ];
 
@@ -47,11 +46,11 @@ const Client = () => {
         <Route path={Routes.client.register} element={<SignUpPage />} />
         <Route path={Routes.client.workerRegister} element={<WorkerSignUp />} />
         <Route path={Routes.client.workerLogin} element={<WorkerSignIn />} />
+        <Route path={Routes.client.wishlist} element={<WishlistPage />} />
         <Route path={Routes.client.shop} element={<CategoryPreview />} />
         <Route path={Routes.client.category} element={<CategoryPage />} />
         <Route path={Routes.client.new} element={<NewPage />} />
         <Route path={Routes.client.newProducts} element={<ProductPage />} />
-        <Route path={Routes.client.collection} element={<CollectionPage />} />
         <Route
           path={Routes.client.collectionProduct}
           element={<ProductPage />}

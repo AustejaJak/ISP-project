@@ -143,12 +143,6 @@ export default function OrderList() {
                         scope='col'
                         className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
                       >
-                        {t("BackofficeBasePage.OrderList.Tax")}
-                      </th>
-                      <th
-                        scope='col'
-                        className='whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900'
-                      >
                         {t("BackofficeBasePage.OrderList.Price")}
                       </th>
                       <th
@@ -160,37 +154,27 @@ export default function OrderList() {
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-gray-200 bg-white'>
-                    {orders.map(
-                      (transaction: {
-                        id: string;
-                        name: string;
-                        surname: string;
-                        email: string;
-                        phoneNumber: string;
-                        commission: string;
-                        price: string;
-                      }) => (
-                        <tr key={transaction.id}>
+                    {orders &&
+                      orders.length > 0 &&
+                      orders[orders.length - 1].orders?.map((order) => (
+                        <tr key={order.orderId}>
                           <td className='whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6'>
-                            {transaction.id}
+                            {order.orderId}
                           </td>
                           <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
-                            {transaction.name}
+                            {order.clientName}
                           </td>
                           <td className='whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900'>
-                            {transaction.surname}
+                            {order.clientSurname}
                           </td>
                           <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                            {transaction.email}
+                            {order.clientEmail}
                           </td>
                           <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                            {transaction.phoneNumber}
+                            {order.clientPhoneNumber}
                           </td>
                           <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                            {transaction.commission}
-                          </td>
-                          <td className='whitespace-nowrap px-2 py-2 text-sm text-gray-500'>
-                            {transaction.price}
+                            {order.orderCost}
                           </td>
                           <td className='relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
                             <Anchor
@@ -198,14 +182,11 @@ export default function OrderList() {
                               className='text-indigo-600 hover:text-indigo-900'
                             >
                               {t("BackofficeBasePage.OrderList.ViewOrder")}
-                              <span className='sr-only'>
-                                , {transaction.id}
-                              </span>
+                              <span className='sr-only'>, {order.orderId}</span>
                             </Anchor>
                           </td>
                         </tr>
-                      )
-                    )}
+                      ))}
                   </tbody>
                 </table>
               ) : (

@@ -1,13 +1,5 @@
-import { z, object, string, number, array } from "zod";
+import { z, object, string, number } from "zod";
 import { t } from "i18next";
-
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 
 export enum CreateProductFields {
   SKU = "sku",

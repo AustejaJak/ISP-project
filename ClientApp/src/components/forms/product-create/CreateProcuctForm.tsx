@@ -6,9 +6,7 @@ import {
   createProductModel,
 } from "./model";
 import { useTranslation } from "react-i18next";
-import FileUploader from "../../file-uploader/FileUploader";
 import { BaseTextField } from "../../BaseTextField/BaseTextField";
-import { BaseSelect } from "../../base-select/BaseSelect";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { productApi } from "../../../clients/api/productApi";

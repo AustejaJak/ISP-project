@@ -53,3 +53,16 @@ export type BasketProduct = Omit<ProductProp, "sku"> & {
   productSKU: string;
   quantity: number;
 };
+
+export type Review = {
+  rating: number;
+  comment: string;
+  reviewDate?: string;
+  likeAmount?: string;
+  pictureUrl: string;
+};
+
+export type WishList = {
+  id: string;
+  products: ProductProp[];
+};

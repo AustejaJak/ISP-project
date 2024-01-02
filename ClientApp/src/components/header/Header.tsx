@@ -2,8 +2,7 @@ import React from "react";
 import Anchor from "../anchor/Anchor";
 import { DropdownMenu } from "../dropdownmenu/DropdownMenu";
 import ShoppingCart from "../shopping-cart/ShoppingCart";
-
-const isAuthenticated = true;
+import { useUserContext } from "../../context/userContext";
 
 interface HeaderProps {
   navigation: { name: string; href: string }[];
@@ -16,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({
   profileNavigation,
   isCompany = false,
 }) => {
+  const { userInformation } = useUserContext();
   return (
     <header className='bg-indigo-600 relative'>
       <nav className='mx-auto max-w-7xl px-6 lg:px-8' aria-label='Top'>
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
           <div className='flex items-center space-x-4 absolute right-6 top-6'>
-            {!isAuthenticated ? (
+            {!userInformation.authenticated ? (
               <>
                 <Anchor
                   href='/log-in'

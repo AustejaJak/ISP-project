@@ -17,6 +17,16 @@ export const productApi = {
     );
     return data;
   },
+  getProductBrands: async () => {
+    const { data } = await axiosInstance.get<{
+      Watches: string[];
+      Clotches: string[];
+      Decorations: string[];
+      Electronics: string[];
+      Books: string[];
+    }>(`${BASE_URL}/filters`);
+    return data;
+  },
   createProduct: async (product: any) => {
     const { data } = await axiosInstance.post<{
       data: ProductProp;

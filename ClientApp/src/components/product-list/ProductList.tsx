@@ -4,6 +4,9 @@ import { useSnackbarContext } from "../../context/snackbarContext";
 import { useEffect } from "react";
 import { ProductProp } from "../../pages/client/product/ProductPage";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { useMutation } from "@tanstack/react-query";
+import { ordersApi } from "../../clients/api/backoffice/ordersApi";
 
 interface ProductListProps {
   products: ProductProp[];
@@ -26,6 +29,19 @@ export const ProductList: React.FC<ProductListProps> = ({
     if (error) setMessage(error.message);
   }, [error]);
 
+  const generateStatistics = useMutation({
+    mutationKey: [QueryKey.GENERATE_COMPANY_STATISTICS],
+    mutationFn: ordersApi.generateCompanyOrdersStatistics,
+  });
+
+  const handleStatisticsGenerate = () => {
+    generateStatistics.mutate(1, {
+      onSuccess: () => {
+        // refetch();
+      },
+    });
+  };
+
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center'>
@@ -44,6 +60,12 @@ export const ProductList: React.FC<ProductListProps> = ({
             className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
           >
             {t("BackofficeInventoryPage.AddProduct")}
+          </button>
+          <button
+            className='mt-2 flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+            // onClick={handleStatisticsGenerate}
+          >
+            Generuoti ataskaitą
           </button>
         </div>
       </div>

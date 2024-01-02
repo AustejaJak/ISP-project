@@ -37,7 +37,18 @@ const SignIn = () => {
       onSuccess: (data) => {
         console.log(data);
         cookie("token", data.token, 7);
-        localStorage.setItem("userId", data.userId);
+        const { username, name, surname, email, roles, phoneNumber, userId } =
+          data;
+        const credentials = {
+          username,
+          name,
+          surname,
+          email,
+          roles,
+          phoneNumber,
+          userId,
+        };
+        localStorage.setItem("credentials", JSON.stringify(credentials));
         navigate("/");
       },
       onError: (err) => {

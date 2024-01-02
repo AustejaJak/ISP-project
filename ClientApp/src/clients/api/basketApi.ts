@@ -38,4 +38,8 @@ export const basketApi = {
     );
     return data;
   },
+  clearBasket: async () => {
+    const { data } = await axiosInstance.delete(`${BASE_URL}/clearBasket`);
+    return data;
+  },
 };

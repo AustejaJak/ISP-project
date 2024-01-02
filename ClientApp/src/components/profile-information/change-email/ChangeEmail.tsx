@@ -45,7 +45,7 @@ export const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({
   });
 
   const processForm = () => {
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("credentials");
     if (userId) {
       const data = changeEmailModel.parse(getValues());
       const { newEmail } = data;

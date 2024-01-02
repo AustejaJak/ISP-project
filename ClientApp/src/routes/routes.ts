@@ -21,7 +21,7 @@ const Routes = {
     product: "/shop/:category/:productId",
     individualProduct: "/product/:productId",
     newProducts: "/new/:productId",
-    collection: "/collection/",
+    wishlist: "/wishlist",
     collectionProduct: "/collection/:productId",
     checkout: "/checkout",
     shoppingBag: "/shopping-bag",
