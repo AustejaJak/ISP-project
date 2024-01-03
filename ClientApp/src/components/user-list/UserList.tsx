@@ -1,8 +1,10 @@
 import { t } from "i18next";
-import Routes from "../../routes/routes";
-import Anchor from "../anchor/Anchor";
 import { Employer } from "../../types/types";
 import { Loader } from "../Loader/Loader";
+import { useMutation } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { userApi } from "../../clients/api/backoffice/userApi";
+import { useSnackbarContext } from "../../context/snackbarContext";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +13,7 @@ function classNames(...classes: string[]) {
 interface UserListProps {
   employers: Employer[];
   isLoading: boolean;
+  refetch: () => void;
 }
 
 const getGender = (genderNumber: number) => {
@@ -19,7 +22,34 @@ const getGender = (genderNumber: number) => {
   if (genderNumber === 2) return "Kita";
 };
 
-export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
+export const UserList: React.FC<UserListProps> = ({
+  employers,
+  isLoading,
+  refetch,
+}) => {
+  const { setMessage } = useSnackbarContext();
+  const deleteUser = useMutation({
+    mutationKey: [QueryKey.DELETE_USER],
+    mutationFn: userApi.deleteUser,
+  });
+
+  const handleEmployeeDeletion = (id: string) => {
+    deleteUser.mutate(
+      {
+        userId: id,
+      },
+      {
+        onSuccess: () => {
+          setMessage("Darbuotojas ištrintas sėkmingai!");
+          refetch();
+        },
+        onError: () => {
+          setMessage("Įvyko klaida, bandykite dar kartą.");
+        },
+      }
+    );
+  };
+
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center'>
@@ -30,14 +60,6 @@ export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
           <p className='mt-2 text-sm text-gray-700'>
             {t("BackofficeEmployersPage.WebsiteEmployersDescription")}
           </p>
-        </div>
-        <div className='mt-4 sm:mt-0 sm:ml-16 sm:flex-none'>
-          <Anchor
-            href={`${Routes.backoffice.prefix}${Routes.backoffice.productsAdd}`}
-            className='inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto'
-          >
-            {t("BackofficeEmployersPage.AddEmployer")}
-          </Anchor>
         </div>
       </div>
       <div className='mt-8 flex flex-col'>
@@ -140,7 +162,7 @@ export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           )}
                         >
-                          {person.role}
+                          Darbuotojas
                         </td>
                         <td
                           className={classNames(
@@ -150,12 +172,12 @@ export const UserList: React.FC<UserListProps> = ({ employers, isLoading }) => {
                             "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8"
                           )}
                         >
-                          <Anchor
-                            href=''
+                          <button
+                            onClick={() => handleEmployeeDeletion(person.id)}
                             className='text-indigo-600 hover:text-indigo-900'
                           >
-                            Edit<span className='sr-only'>, {person.name}</span>
-                          </Anchor>
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}

@@ -5,11 +5,18 @@ import { QueryKey } from "../../clients/react-query/queryKeys";
 import { employersApi } from "../../clients/api/backoffice/employersApi";
 
 export const UserUI = () => {
-  const { data: employers, isLoading } = useQuery({
+  const {
+    data: employers,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [QueryKey.GET_COMPANY_EMPLOYERS],
     queryFn: () => employersApi.getCompanyEmployers({ shopId: 1 }),
   });
-  console.log(employers);
+
+  const handleRefetch = () => {
+    refetch();
+  };
 
   return (
     <>
@@ -27,7 +34,11 @@ export const UserUI = () => {
         <main className='-mt-32'>
           <div className='mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8'>
             <div className='rounded-lg bg-white px-5 py-6 shadow sm:px-6'>
-              <UserList isLoading={isLoading} employers={employers || []} />
+              <UserList
+                refetch={handleRefetch}
+                isLoading={isLoading}
+                employers={employers || []}
+              />
             </div>
           </div>
         </main>

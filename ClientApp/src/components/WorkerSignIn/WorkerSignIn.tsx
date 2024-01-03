@@ -9,6 +9,7 @@ import { QueryKey } from "../../clients/react-query/queryKeys";
 import { useNavigate } from "react-router-dom";
 import { useSnackbarContext } from "../../context/snackbarContext";
 import cookie from "cookiejs";
+import Anchor from "../anchor/Anchor";
 
 export const WorkerSignIn = () => {
   const methods = useForm({
@@ -35,10 +36,21 @@ export const WorkerSignIn = () => {
 
     authenticateClient.mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
         cookie("token", data.token, 7);
         localStorage.setItem("userId", data.userId);
-        navigate("/");
+        const { username, name, surname, email, roles, phoneNumber, userId } =
+          data;
+        const credentials = {
+          username,
+          name,
+          surname,
+          email,
+          roles,
+          phoneNumber,
+          userId,
+        };
+        localStorage.setItem("credentials", JSON.stringify(credentials));
+        navigate("/company");
       },
       onError: (err) => {
         console.log(err);
@@ -84,6 +96,9 @@ export const WorkerSignIn = () => {
                 >
                   {t("SignInPage.SignInButton")}
                 </button>
+              </div>
+              <div>
+                <Anchor href='/sign-up-employee'>Eiti į registraciją</Anchor>
               </div>
             </form>
           </div>

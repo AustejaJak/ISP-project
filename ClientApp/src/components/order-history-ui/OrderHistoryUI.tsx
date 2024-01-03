@@ -7,6 +7,10 @@ import HashLoader from "react-spinners/HashLoader";
 import { useReturnContext } from "../../context/returnContext";
 import { format } from "date-fns";
 import { ProductProp } from "../../pages/client/product/ProductPage";
+import { ChangeOrderInformationModal } from "../changeOrderInformation/changeOrderInformation";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { useMutation } from "@tanstack/react-query";
+import { ordersApi } from "../../clients/api/ordersApi";
 
 interface OrdersHistoryProps {
   orders: OrderProps[];
@@ -45,9 +49,48 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
 }) => {
   const { t } = useTranslation();
   const { order: returnOrder, setOrderInformation } = useReturnContext();
-  const [open, setOpen] = useState(false);
+  const [isChangeOrderInformationOpen, setIsChangeOrderInformationOpen] =
+    useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+
+  const chandeOrderInformation = useMutation({
+    mutationKey: [QueryKey.CHANGE_ORDER_INFORMATION],
+    mutationFn: ordersApi.changeOrderInformation,
+  });
+
+  console.log(orders, "dkaskdaskodakosdkoasd");
+
+  const processForm = (data: any) => {
+    const { deliveryAddress, attachedDocuments } = data;
+    chandeOrderInformation.mutate({
+      orderId: selectedOrderId!,
+      orderData: { deliveryAddress, attachedDocuments },
+    });
+  };
+
+  const handleChangeInformationOpen = (id: any) => {
+    setIsChangeOrderInformationOpen(true);
+
+    setSelectedOrderId(id);
+  };
+
+  console.log(selectedOrderId);
+
+  const handleChangeInformationClose = () => {
+    setIsChangeOrderInformationOpen(false);
+    setSelectedOrderId(null);
+  };
+
   return (
     <div className='bg-white'>
+      <ChangeOrderInformationModal
+        open={isChangeOrderInformationOpen}
+        headerTitle={t("ChangeOrderInformationModal.Title")}
+        buttonTitle='Pakeisti'
+        closeModal={handleChangeInformationClose}
+        processSubmit={(data) => processForm(data)}
+        orderId={selectedOrderId!}
+      />
       <main className='mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8 lg:pb-24'>
         <div className='max-w-xl'>
           <h1 className='text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl'>
@@ -99,6 +142,12 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
                     </div>
                   </dl>
                   <div className='flex flex-row gap-2'>
+                    <button
+                      onClick={() => handleChangeInformationOpen(order.orderId)}
+                      className='flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                    >
+                      Pakeisti Užsakymo adresą
+                    </button>
                     <Anchor
                       onClick={() => setOrderInformation(order)}
                       href={`${order.orderId}/return`}

@@ -1,4 +1,5 @@
 import Anchor from "../../../components/anchor/Anchor";
+import { useUserContext } from "../../../context/userContext";
 import Routes from "../../../routes/routes";
 
 const navigation = [
@@ -7,9 +8,30 @@ const navigation = [
     name: "Laukiantys patvirtinimo",
     href: `${Routes.company.prefix}${Routes.company.pending}`,
   },
+  {
+    name: "Atsijungti",
+    href: `/`,
+  },
 ];
 
 const Header = () => {
+  const { setUserInformation } = useUserContext();
+  const handleLogout = (link: { name: string; href: string }) => {
+    if (link.name === "Atsijungti") {
+      localStorage.removeItem("credentials");
+      localStorage.removeItem("userId");
+      setUserInformation({
+        name: "",
+        surname: "",
+        email: "",
+        phoneNumber: "",
+        roles: [],
+        userId: "",
+        username: "",
+        authenticated: false,
+      });
+    }
+  };
   return (
     <header className='bg-indigo-600'>
       <nav className='mx-auto max-w-7xl px-6 lg:px-8' aria-label='Top'>
@@ -26,6 +48,7 @@ const Header = () => {
             <div className='ml-10 hidden space-x-8 lg:block'>
               {navigation.map((link) => (
                 <Anchor
+                  onClick={() => handleLogout(link)}
                   key={link.name}
                   href={link.href}
                   className='text-base font-medium text-white hover:text-indigo-50'
@@ -40,6 +63,7 @@ const Header = () => {
         <div className='flex flex-wrap justify-center gap-x-6 py-4 lg:hidden'>
           {navigation.map((link) => (
             <Anchor
+              onClick={() => handleLogout(link)}
               key={link.name}
               href={link.href}
               className='text-base font-medium text-white hover:text-indigo-50'

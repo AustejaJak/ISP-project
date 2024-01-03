@@ -12,6 +12,10 @@ import { BaseModal } from "../Modal/BaseModal";
 import { ChangeEmailForm } from "./change-email/ChangeEmail";
 import { useUserContext } from "../../context/userContext";
 import { ChangePasswordForm } from "./change-password/ChangePassword";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryKey } from "../../clients/react-query/queryKeys";
+import { clientsApi } from "../../clients/api/clientsApi";
+import { PaymentDetailsForm } from "./payment-details/PaymentDetails";
 
 const ProfileInformation = () => {
   const methods = useForm({
@@ -19,6 +23,8 @@ const ProfileInformation = () => {
     defaultValues: profileInformationDefaultValues,
   });
   const [isChangeEmailModalOpen, setIsChangeEmailModalOpen] = useState(false);
+  const [isCreatePaymentMethodModalOpen, setIsCreatePaymentMethodModalOpen] =
+    useState(false);
   const [isChangePasswordModalOpen, setIsPasswordEmailModalOpen] =
     useState(false);
   const { userInformation } = useUserContext();
@@ -36,8 +42,38 @@ const ProfileInformation = () => {
     setValue("password", "123456789");
   }, [userInformation]);
 
+  const { data: paymentDetails, refetch } = useQuery({
+    queryKey: [QueryKey.GET_PAYMENT_DETAILS],
+    queryFn: () =>
+      clientsApi.getClientPaymentDetails({ userId: userInformation.userId }),
+    enabled: !!userInformation.userId,
+  });
+
+  const removePaymentMethod = useMutation({
+    mutationKey: [QueryKey.DELETE_PAYMENT_DETAILS],
+    mutationFn: clientsApi.removeClientPaymentDetails,
+  });
+
   const processForm = () => {
     const data = profileInformationModel.parse(getValues());
+  };
+
+  const handlePaymentDetailsRemove = (id: number) => {
+    removePaymentMethod.mutate(
+      {
+        userId: userInformation.userId,
+        paymentId: id,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
+  };
+
+  const handleFetch = () => {
+    refetch();
   };
 
   return (
@@ -48,6 +84,17 @@ const ProfileInformation = () => {
         onClose={() => setIsChangeEmailModalOpen(false)}
       >
         <ChangeEmailForm closeModal={() => setIsChangeEmailModalOpen(false)} />
+      </BaseModal>
+
+      <BaseModal
+        title='Sukurti naują apmokėjimo adresą'
+        open={isCreatePaymentMethodModalOpen}
+        onClose={() => setIsCreatePaymentMethodModalOpen(false)}
+      >
+        <PaymentDetailsForm
+          refetch={handleFetch}
+          closeModal={() => setIsCreatePaymentMethodModalOpen(false)}
+        />
       </BaseModal>
 
       <BaseModal
@@ -99,6 +146,32 @@ const ProfileInformation = () => {
             onChangeableTextClick={() => setIsPasswordEmailModalOpen(true)}
           />
         </form>
+      </div>
+      <div>
+        <h1>Apmokėjimų adresai</h1>
+        <div className='flex gap-3 w-full'>
+          {paymentDetails?.map((detail: any) => (
+            <div className='p-5 rounded-lg bg-[#5046E5] w-72'>
+              <h1 className='text-white'>{detail.cardNumber}</h1>
+              <p>{detail.billingCity}</p>
+              <p>{detail.billingStreet}</p>
+              <button
+                onClick={() => handlePaymentDetailsRemove(detail.id)}
+                className='bg-red-500 p-2 mt-2 rounded-md'
+              >
+                Panaikinti
+              </button>
+            </div>
+          ))}
+          <div className='p-5 rounded-lg bg-[#5046E5] w-72 flex justify-center align-items'>
+            <button
+              onClick={() => setIsCreatePaymentMethodModalOpen(true)}
+              className=' bg-green-500 p-2 rounded-md'
+            >
+              Sukurti naują
+            </button>
+          </div>
+        </div>
       </div>
     </FormProvider>
   );

@@ -2,7 +2,6 @@ import { useForm, FormProvider } from "react-hook-form";
 import { SignUpFormField, signUpDefaultValues, signUpModel } from "./model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
-import { BaseDatePicker } from "../BaseDatePicker/BaseDatePicker";
 import { BaseTextField } from "../BaseTextField/BaseTextField";
 import { useMutation } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
@@ -10,6 +9,7 @@ import { clientApi } from "../../clients/api/clientApi";
 import { useSnackbarContext } from "../../context/snackbarContext";
 import { BaseSelect } from "../base-select/BaseSelect";
 import { useNavigate } from "react-router-dom";
+import Anchor from "../anchor/Anchor";
 
 interface Identifiable {
   id: string;
@@ -60,7 +60,7 @@ export const WorkerSignUp = () => {
       {
         onSuccess: (res) => {
           setMessage("Registracija sėkminga");
-          navigate("/");
+          navigate("/log-in-employee");
         },
         onError: (err) => {
           setMessage(err.message);
@@ -170,8 +170,8 @@ export const WorkerSignUp = () => {
               </div>
             </form>
 
-            <div className='mt-6'>
-              <div className='relative'></div>
+            <div>
+              <Anchor href='/log-in-employee'>Eiti į prisijungimą</Anchor>
             </div>
           </div>
         </div>

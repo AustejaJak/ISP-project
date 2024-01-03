@@ -13,6 +13,24 @@ interface DropdownMenuProps {
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({ navigation }) => {
   const { userInformation } = useUserContext();
+  const { setUserInformation } = useUserContext();
+  const handleLogout = (link: { name: string; href: string }) => {
+    console.log(link.name);
+    if (link.name === "Atsijungti") {
+      localStorage.removeItem("credentials");
+      localStorage.removeItem("userId");
+      setUserInformation({
+        name: "",
+        surname: "",
+        email: "",
+        phoneNumber: "",
+        roles: [],
+        userId: "",
+        username: "",
+        authenticated: false,
+      });
+    }
+  };
   return (
     <Menu as='div' className='relative inline-block text-left'>
       <ProfileBubble />
@@ -37,6 +55,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ navigation }) => {
             <Menu.Item>
               {({ active }) => (
                 <a
+                  onClick={() => handleLogout(link)}
                   href={link.href}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",

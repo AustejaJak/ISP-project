@@ -16,6 +16,7 @@ import { BaseForm } from "../BaseForm/BaseForm";
 import { inventoryApi } from "../../clients/api/backoffice/inventoryApi";
 import { BaseSelect } from "../base-select/BaseSelect";
 import { backofficeProductApi } from "../../clients/api/backoffice/productApi";
+import { emailApi } from "../../clients/api/emailApi";
 
 interface ProductModalProps {
   open: boolean;

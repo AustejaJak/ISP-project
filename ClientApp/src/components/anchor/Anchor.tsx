@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 interface AnchorProps {
   children: React.ReactNode;
-  href: string;
+  href?: string;
   className?: string;
   onClick?: (data: any) => void;
 }
@@ -15,7 +15,7 @@ const Anchor: React.FC<AnchorProps> = ({
   onClick,
 }) => {
   return (
-    <Link onClick={onClick} className={className} to={href}>
+    <Link onClick={onClick} className={className} to={href || ""}>
       {children}
     </Link>
   );

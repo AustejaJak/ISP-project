@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import ProductsList from "../../../components/products-list/ProductsList";
-import products from "../../../products.json";
-import { useState } from "react";
 import { QueryKey } from "../../../clients/react-query/queryKeys";
 import { backofficeProductApi } from "../../../clients/api/backoffice/productApi";
 import { productApi } from "../../../clients/api/productApi";
@@ -13,11 +11,8 @@ export type categoryProps = {
   description: string;
 };
 
-export type informationByCategoryValues = keyof typeof products;
-
 const CategoryPage = () => {
   const { category } = useParams();
-  const [queryFilters, setQueryFilters] = useState<string>("");
 
   const { data: categories } = useQuery({
     queryKey: [QueryKey.GET_CATEGORIES],
@@ -52,7 +47,6 @@ const CategoryPage = () => {
     return brands;
   };
 
-  console.log(productBrands);
   if (!products) return null;
 
   return (

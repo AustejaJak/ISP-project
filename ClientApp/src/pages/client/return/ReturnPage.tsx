@@ -23,15 +23,15 @@ const ReturnPage = () => {
 
   console.log(order);
 
-  const { data: returnOrder, isLoading } = useQuery({
-    queryKey: [QueryKey.FIND_ORDER_BY_ID],
-    queryFn: () =>
-      ordersApi.getOrderById({
-        userId: userInformation.userId,
-        orderId: orderId!,
-      }),
-    enabled: !order && !!orderId && !!userInformation,
-  });
+  // const { data: returnOrder, isLoading } = useQuery({
+  //   queryKey: [QueryKey.FIND_ORDER_BY_ID],
+  //   queryFn: () =>
+  //     ordersApi.getOrderById({
+  //       userId: userInformation.userId,
+  //       orderId: orderId!,
+  //     }),
+  //   enabled: !order && !!orderId && !!userInformation,
+  // });
 
   return (
     <BasePage>

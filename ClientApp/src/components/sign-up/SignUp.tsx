@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
 import { clientApi } from "../../clients/api/clientApi";
 import { useSnackbarContext } from "../../context/snackbarContext";
+import { emailApi } from "../../clients/api/emailApi";
 
 const SignUp = () => {
   const methods = useForm({
@@ -26,14 +27,26 @@ const SignUp = () => {
     mutationFn: clientApi.registerClient,
   });
 
+  const sendEmail = useMutation({
+    mutationKey: [QueryKey.SEND_EMAIL, "register"],
+    mutationFn: emailApi.sendEmail,
+  });
+
   const { setMessage } = useSnackbarContext();
 
   const processForm = () => {
     const { repeatPassword, ...rest } = signUpModel.parse(getValues());
 
+    const { email: userEmail, username } = rest;
+
     registerClient.mutate(rest, {
       onSuccess: (res) => {
         setMessage("Registracija sėkminga");
+        sendEmail.mutate({
+          email: userEmail,
+          emailBody: `Sveikiname ${username} sėkmingai atlikus registraciją!`,
+          emailSubject: `Sveikiname prisijungus!`,
+        });
       },
       onError: (err) => {
         setMessage(err.message);

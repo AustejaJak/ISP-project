@@ -12,16 +12,23 @@ export const ordersApi = {
     const { data } = await axiosInstance.get<OrderProps[]>(`${BASE_URL}`);
     return data;
   },
-  getOrderById: async ({
-    userId,
+  changeOrderInformation: async ({
     orderId,
+    orderData,
   }: {
-    userId: string;
-    orderId: string;
+    orderId: number;
+    orderData: any;
   }) => {
+    const { data } = await axiosInstance.patch(
+      `${BASE_URL}/orderId?orderId=${orderId}`,
+      orderData
+    );
+    return data;
+  },
+  getOrderById: async ({ orderId }: { orderId: number }) => {
     const { data } = await axiosInstance.get<{
       data: OrderProps;
-    }>(`${BASE_URL}/${userId}/order/${orderId}`);
+    }>(`${BASE_URL}/${orderId}`);
     return data.data;
   },
 };

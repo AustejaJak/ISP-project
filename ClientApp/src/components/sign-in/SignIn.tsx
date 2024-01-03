@@ -35,7 +35,6 @@ const SignIn = () => {
 
     authenticateClient.mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
         cookie("token", data.token, 7);
         const { username, name, surname, email, roles, phoneNumber, userId } =
           data;

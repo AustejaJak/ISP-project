@@ -1,5 +1,4 @@
 import Header from "../../components/header/Header";
-import PrivateRoute from "../../routes/company/PrivateRoute";
 import { Routes as DomRoutes, Route } from "react-router-dom";
 import Routes from "../../routes/routes";
 import SignInPage from "./sign-in/SignIn";
@@ -18,6 +17,7 @@ import { Footer } from "../../components/footer/Footer";
 import { WorkerSignUp } from "../../components/WorkerSignUp/WorkerSignUp";
 import { WorkerSignIn } from "../../components/WorkerSignIn/WorkerSignIn";
 import { WishlistPage } from "./wishlist/WishlistPage";
+import PrivateRoute from "../../routes/client/PrivateRoute";
 
 const userNavigation = [
   { name: "Mano paskyra", href: Routes.client.profile },
