@@ -132,5 +132,16 @@ namespace API.Controllers
                     .FirstOrDefaultAsync(x => x.ClientId == buyerId);
         }
 
+        [HttpGet("getUsers")]
+        public async Task<ActionResult<List<UserLoginDTO>>> GetCurrentUsers()
+        {
+            var list = await _authService.GetUsers();
+            if (list != null)
+            {
+                return Ok(list);
+            }
+            return NotFound();
+        }
+
     }
 }

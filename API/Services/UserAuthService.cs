@@ -3,6 +3,7 @@ using API.Entities;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Web.Mvc;
 
 namespace API.Services
@@ -113,6 +114,31 @@ namespace API.Services
             user.NormalizedEmail = newEmail.ToUpper();
             var result = await _userManager.UpdateAsync(user);
             return result.Succeeded;
+        }
+
+
+        public async Task<List<UserInfoDTO>?> GetUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            if (users.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var list = new List<UserInfoDTO>();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                list.Add(new UserInfoDTO()
+                {
+                    User = user,
+                    Roles = (List<string>)roles
+
+                });
+            }
+
+            return list;
+
         }
 
 
