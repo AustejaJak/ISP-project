@@ -22,7 +22,7 @@ const categoryDetails = {
   },
   Clotches: {
     title: "Drabužiai",
-    href: "clothes",
+    href: "clotches",
     id: 2,
     imageUrl:
       "https://cdn.vox-cdn.com/thumbor/RSVpaW37_wie2_Ch_jPJE6MmN40=/0x0:6016x4016/1200x675/filters:focal(2527x1527:3489x2489)/cdn.vox-cdn.com/uploads/chorus_image/image/68832785/GettyImages_1177471633.0.jpg",
@@ -68,15 +68,8 @@ const CategoryPreview = () => {
       <div className='py-16 sm:py-24 xl:mx-auto xl:max-w-7xl xl:px-8'>
         <div className='px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0'>
           <h2 className='text-2xl font-bold tracking-tight text-gray-900'>
-            Shop by Category
+            Pasirinkite kategoriją
           </h2>
-          <a
-            href='#'
-            className='hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block'
-          >
-            Browse all categories
-            <span aria-hidden='true'> &rarr;</span>
-          </a>
           {categories?.map((category) => {
             const detailedCategory = (categoryDetails as any)[category.type];
             return (
@@ -110,15 +103,6 @@ const CategoryPreview = () => {
               <div className='min-w-screen-xl absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0'></div>
             </div>
           </div>
-        </div>
-        <div className='mt-6 px-4 sm:hidden'>
-          <a
-            href='#'
-            className='block text-sm font-semibold text-indigo-600 hover:text-indigo-500'
-          >
-            Browse all categories
-            <span aria-hidden='true'> &rarr;</span>
-          </a>
         </div>
       </div>
     </div>

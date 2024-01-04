@@ -5,9 +5,17 @@ import axiosInstance from "../axios";
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Products`;
 
 export const productApi = {
-  getProducts: async ({ query }: { query?: { [key: string]: unknown } }) => {
+  getProducts: async ({
+    query,
+    additionalQuery,
+  }: {
+    query?: { [key: string]: unknown };
+    additionalQuery?: string;
+  }) => {
     const { data } = await axiosInstance.get<ProductProp[]>(
-      `${BASE_URL}${query && generateQueryString(query)}`
+      `${BASE_URL}${query && generateQueryString(query)}${
+        additionalQuery || ""
+      }`
     );
     return data;
   },

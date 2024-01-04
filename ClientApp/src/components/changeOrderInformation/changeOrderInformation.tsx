@@ -23,6 +23,8 @@ interface ProductModalProps {
   orderId: number;
   approveAbility?: boolean;
   refetch?: () => void;
+  address?: string;
+  attachedDocuments?: string;
 }
 
 export const ChangeOrderInformationModal: React.FC<ProductModalProps> = ({
@@ -33,6 +35,8 @@ export const ChangeOrderInformationModal: React.FC<ProductModalProps> = ({
   closeModal,
   orderId,
   refetch,
+  address,
+  attachedDocuments,
 }) => {
   const { t } = useTranslation();
   const methods = useForm({
@@ -54,16 +58,9 @@ export const ChangeOrderInformationModal: React.FC<ProductModalProps> = ({
     enabled: !!orderId,
   });
 
-  console.log(order);
-
   useEffect(() => {
-    if (order && orderId) {
-      setValue("deliveryAddress", order.deliveryAddress as never);
-      setValue("attachedDocuments", order.attachedDocuments as never);
-    }
-    return () => {
-      reset();
-    };
+    setValue("deliveryAddress", address as never);
+    setValue("attachedDocuments", attachedDocuments as never);
   }, [order, orderId, reset, setValue]);
 
   const processForm = () => {

@@ -58,8 +58,6 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
     mutationFn: ordersApi.changeOrderInformation,
   });
 
-  console.log(orders, "dkaskdaskodakosdkoasd");
-
   const processForm = (data: any) => {
     const { deliveryAddress, attachedDocuments } = data;
     chandeOrderInformation.mutate({
@@ -74,17 +72,23 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
     setSelectedOrderId(id);
   };
 
-  console.log(selectedOrderId);
-
   const handleChangeInformationClose = () => {
     setIsChangeOrderInformationOpen(false);
     setSelectedOrderId(null);
   };
 
+  const selectedOrder = orders.find(
+    (order) => order.orderId === selectedOrderId
+  );
+
+  console.log(selectedOrder, selectedOrderId);
+
   return (
     <div className='bg-white'>
       <ChangeOrderInformationModal
         open={isChangeOrderInformationOpen}
+        address={selectedOrder?.deliveryAddress}
+        attachedDocuments={selectedOrder?.attachedDocuments}
         headerTitle={t("ChangeOrderInformationModal.Title")}
         buttonTitle='Pakeisti'
         closeModal={handleChangeInformationClose}
@@ -148,14 +152,6 @@ export const OrdersHistory: React.FC<OrdersHistoryProps> = ({
                     >
                       Pakeisti Užsakymo adresą
                     </button>
-                    <Anchor
-                      onClick={() => setOrderInformation(order)}
-                      href={`${order.orderId}/return`}
-                      className='mt-6 flex w-full items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto'
-                    >
-                      {t("Order.ReturnButtonText")}
-                      <span className='sr-only'>for order {order.orderId}</span>
-                    </Anchor>
                   </div>
                 </div>
 

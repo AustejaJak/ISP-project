@@ -1,17 +1,21 @@
 import { t } from "i18next";
-import { Employer } from "../../types/types";
+import { User } from "../../types/types";
 import { Loader } from "../Loader/Loader";
 import { useMutation } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
 import { userApi } from "../../clients/api/backoffice/userApi";
 import { useSnackbarContext } from "../../context/snackbarContext";
+import { useState } from "react";
+import { BaseSelect } from "../base-select/BaseSelect";
+import { MenuItem, Select } from "@mui/material";
+import { adminApi } from "../../clients/api/backoffice/adminApi";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 interface UserListProps {
-  employers: Employer[];
+  employers: User[];
   isLoading: boolean;
   refetch: () => void;
 }
@@ -21,6 +25,17 @@ const getGender = (genderNumber: number) => {
   if (genderNumber === 1) return "Moteris";
   if (genderNumber === 2) return "Kita";
 };
+
+const roles = [
+  {
+    name: "Shop-Employee",
+    id: "Shop-Employee",
+  },
+  {
+    name: "Client",
+    id: "Client",
+  },
+];
 
 export const UserList: React.FC<UserListProps> = ({
   employers,
@@ -32,6 +47,37 @@ export const UserList: React.FC<UserListProps> = ({
     mutationKey: [QueryKey.DELETE_USER],
     mutationFn: userApi.deleteUser,
   });
+
+  const [selectedUserId, setSelectedUserId] = useState<undefined | string>(
+    undefined
+  );
+
+  const handleUserChangeRole = (id: string) => {
+    setSelectedUserId(id);
+  };
+
+  const changeUserRole = useMutation({
+    mutationKey: [QueryKey.CHANGE_USER_ROLE],
+    mutationFn: adminApi.changeUserRole,
+  });
+
+  const handleRoleChange = (e: any) => {
+    const { value } = e.target;
+    changeUserRole.mutate(
+      {
+        userData: { userId: selectedUserId, roles: [value] },
+      },
+      {
+        onSuccess: () => {
+          setMessage("Rolė pakeista sėkmingai.");
+          refetch();
+        },
+        onError: () => {
+          setMessage("Įvyko klaida. Bandykite dar kartą");
+        },
+      }
+    );
+  };
 
   const handleEmployeeDeletion = (id: string) => {
     deleteUser.mutate(
@@ -113,7 +159,7 @@ export const UserList: React.FC<UserListProps> = ({
                   </thead>
                   <tbody className='bg-white'>
                     {employers.map((person, personIdx) => (
-                      <tr key={person.email}>
+                      <tr key={person.user.email}>
                         <td
                           className={classNames(
                             personIdx !== employers.length - 1
@@ -122,7 +168,7 @@ export const UserList: React.FC<UserListProps> = ({
                             "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"
                           )}
                         >
-                          {person.name}
+                          {person.user.name}
                         </td>
                         <td
                           className={classNames(
@@ -132,7 +178,7 @@ export const UserList: React.FC<UserListProps> = ({
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell"
                           )}
                         >
-                          {person.jobPosition}
+                          {person.user.jobPosition}
                         </td>
                         <td
                           className={classNames(
@@ -142,7 +188,7 @@ export const UserList: React.FC<UserListProps> = ({
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell"
                           )}
                         >
-                          {getGender(person.gender)}
+                          {getGender(person.user.gender)}
                         </td>
                         <td
                           className={classNames(
@@ -152,7 +198,7 @@ export const UserList: React.FC<UserListProps> = ({
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden lg:table-cell"
                           )}
                         >
-                          {person.email}
+                          {person.user.email}
                         </td>
                         <td
                           className={classNames(
@@ -162,7 +208,7 @@ export const UserList: React.FC<UserListProps> = ({
                             "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                           )}
                         >
-                          Darbuotojas
+                          {person.roles[0]}
                         </td>
                         <td
                           className={classNames(
@@ -172,12 +218,36 @@ export const UserList: React.FC<UserListProps> = ({
                             "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8"
                           )}
                         >
-                          <button
-                            onClick={() => handleEmployeeDeletion(person.id)}
-                            className='text-indigo-600 hover:text-indigo-900'
-                          >
-                            Delete
-                          </button>
+                          <div className='flex gap-3'>
+                            <button
+                              onClick={() =>
+                                handleEmployeeDeletion(person.user.id)
+                              }
+                              className='text-indigo-600 hover:text-indigo-900'
+                            >
+                              Panaikinti
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleUserChangeRole(person.user.id)
+                              }
+                              className='text-indigo-600 hover:text-indigo-900'
+                            >
+                              Pakeisti rolę
+                            </button>
+                            {selectedUserId === person.user.id && (
+                              <Select
+                                onChange={(e) => handleRoleChange(e)}
+                                value={person.roles[0]}
+                              >
+                                {roles?.map(({ name, id }) => (
+                                  <MenuItem key={id} value={id}>
+                                    {name}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}

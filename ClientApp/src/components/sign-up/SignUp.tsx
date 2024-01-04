@@ -9,6 +9,7 @@ import { QueryKey } from "../../clients/react-query/queryKeys";
 import { clientApi } from "../../clients/api/clientApi";
 import { useSnackbarContext } from "../../context/snackbarContext";
 import { emailApi } from "../../clients/api/emailApi";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const methods = useForm({
@@ -33,6 +34,7 @@ const SignUp = () => {
   });
 
   const { setMessage } = useSnackbarContext();
+  const navigate = useNavigate();
 
   const processForm = () => {
     const { repeatPassword, ...rest } = signUpModel.parse(getValues());
@@ -47,6 +49,7 @@ const SignUp = () => {
           emailBody: `Sveikiname ${username} sėkmingai atlikus registraciją!`,
           emailSubject: `Sveikiname prisijungus!`,
         });
+        navigate("/");
       },
       onError: (err) => {
         setMessage(err.message);

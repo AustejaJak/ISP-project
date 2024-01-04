@@ -1,3 +1,4 @@
+import { User } from "../../types/types";
 import axiosInstance from "../axios";
 
 const BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api/Users`;
@@ -14,6 +15,10 @@ export const clientApi = {
       data: any;
     }>(`${BASE_URL}/ClientRegister`, userInformation);
     return data.data;
+  },
+  getAllClients: async () => {
+    const { data } = await axiosInstance.get<User[]>(`${BASE_URL}/getUsers`);
+    return data;
   },
   registerEmployee: async (userInformation: any) => {
     const { data } = await axiosInstance.post(

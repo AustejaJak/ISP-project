@@ -2,16 +2,16 @@ import { t } from "i18next";
 import { UserList } from "../user-list/UserList";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "../../clients/react-query/queryKeys";
-import { employersApi } from "../../clients/api/backoffice/employersApi";
+import { clientApi } from "../../clients/api/clientApi";
 
 export const UserUI = () => {
   const {
-    data: employers,
+    data: users,
     isLoading,
     refetch,
   } = useQuery({
     queryKey: [QueryKey.GET_COMPANY_EMPLOYERS],
-    queryFn: () => employersApi.getCompanyEmployers({ shopId: 1 }),
+    queryFn: () => clientApi.getAllClients(),
   });
 
   const handleRefetch = () => {
@@ -37,7 +37,7 @@ export const UserUI = () => {
               <UserList
                 refetch={handleRefetch}
                 isLoading={isLoading}
-                employers={employers || []}
+                employers={users || []}
               />
             </div>
           </div>

@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (!userInformation.roles.length) return;
-    // const isAuthenticated = !!userInformation.roles.includes("Shop-Employee");
+    // const isAuthenticated = !!userInformation.roles.includes("Admin");
     // if (!isAuthenticated) {
     //   navigate("/");
     // }

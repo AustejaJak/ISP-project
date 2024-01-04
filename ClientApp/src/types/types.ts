@@ -1,6 +1,21 @@
 import { statusEnum } from "../enums/enums";
 import { ProductProp } from "../pages/client/product/ProductPage";
 
+export type User = {
+  roles: string[];
+  user: {
+    id: string;
+    name: string;
+    surname: string;
+    birthDate: string;
+    role: string;
+    jobPosition: string;
+    gender: number;
+    email: string;
+    phoneNumber: string;
+  };
+};
+
 export type Employer = {
   id: string;
   name: string;

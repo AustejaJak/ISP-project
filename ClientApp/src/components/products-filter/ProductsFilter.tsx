@@ -31,9 +31,9 @@ const ProductsFilter: React.FC<ProductsFilterProps> = ({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    let query = "?";
+    let query = "";
     Object.entries(filterQueries).forEach(([keys, values], index) => {
-      query += index > 0 ? "&" : "";
+      query += "&";
       query += `${keys}=${values.join(",")}`;
     });
     setQueryFilters?.(query);

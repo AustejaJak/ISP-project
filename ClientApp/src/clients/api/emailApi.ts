@@ -13,7 +13,7 @@ export const emailApi = {
     emailBody: string;
   }) => {
     const { data } = await axiosInstance.post(`${BASE_URL}`, {
-      email,
+      emailName: email,
       emailSubject,
       emailBody,
       userName: "Ecommerce",
